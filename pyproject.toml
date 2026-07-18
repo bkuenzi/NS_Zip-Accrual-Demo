@@ -1,0 +1,48 @@
+[project]
+name = "accrual-agent"
+version = "0.1.0"
+description = "Autonomous accounting accrual agent: NetSuite + Zip uninvoiced-spend identification, vendor communications, ad-platform actuals, and NetSuite journal-entry write-back"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "httpx>=0.27",
+    "typer>=0.12",
+    "rich>=13.7",
+    "structlog>=24.1",
+    "jinja2>=3.1",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+llm = ["anthropic>=0.34"]
+pdf = ["pdfplumber>=0.11"]
+dev = [
+    "pytest>=8.2",
+    "respx>=0.21",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+accrual-agent = "accrual_agent.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/accrual_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4"]
+ignore = ["E501"]

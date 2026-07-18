@@ -1,0 +1,25 @@
+Subject: Accrual confirmation request — {{ vendor_name }} — {{ period }} {{ ref_token }}
+
+Hello {{ contact_name }},
+
+As part of our {{ period }} financial close, we're confirming amounts for goods
+or services {{ company_name }} received from {{ vendor_name }} during the period
+that we have not yet been invoiced for.
+
+Our records show the following incurred-but-uninvoiced amount:
+
+    Reference:        {{ source_ref }}
+    Service period:   {{ period }}
+    Estimated amount: {{ amount }} {{ currency }}
+
+Could you please reply with:
+  1. Confirmation of the amount above (or the correct amount),
+  2. The invoice number if one has been issued, and
+  3. The expected invoice date if not yet issued.
+
+A short reply to this email is all we need — please keep {{ ref_token }} in the
+subject line so it routes correctly.
+
+Thank you,
+{{ company_name }} Accounting
+{{ mailbox_address }}

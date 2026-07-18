@@ -1,0 +1,59 @@
+# GL account / cost-center / subsidiary mapping used when the source document
+# does not carry its own coding. A vendor with no entry here (and no coding on
+# the source document) raises an "unmapped vendor" escalation and its accrual
+# cannot post until mapped.
+
+accrued_liability_account: "2150"   # Cr side of every accrual JE (Accrued Liabilities)
+
+vendors:
+  V-ACME:
+    gl_account: "6210"        # Cloud & Hosting
+    cost_center: "CC-ENG"
+  V-BETA:
+    gl_account: "6410"        # Freight & Logistics
+    cost_center: "CC-OPS"
+  V-GAMMA:
+    gl_account: "6620"        # Professional Services
+    cost_center: "CC-FIN"
+  V-GOOGLE:
+    gl_account: "6510"        # Advertising - Search
+    cost_center: "CC-MKT"
+  V-META:
+    gl_account: "6511"        # Advertising - Social
+    cost_center: "CC-MKT"
+  V-EPSILON:
+    gl_account: "6710"        # Facilities
+    cost_center: "CC-OPS"
+  V-ZETA:
+    gl_account: "6620"        # Professional Services
+    cost_center: "CC-ENG"
+  V-ETA:
+    gl_account: "6520"        # Media Production
+    cost_center: "CC-MKT"
+  V-THETA:
+    gl_account: "6220"        # Software Subscriptions
+    cost_center: "CC-IT"
+  # V-DELTA (Delta Staffing) intentionally unmapped -> escalation path
+
+# Zip business unit -> NetSuite subsidiary (source-document subsidiary resolution)
+zip_business_units:
+  BU-US: "1"
+  BU-EU: "2"
+
+# Ad account -> vendor + subsidiary (API-sourced accrual lines)
+ad_accounts:
+  "1234567890":       # Google Ads customer id
+    vendor_id: V-GOOGLE
+    subsidiary_id: "1"
+  "act_123456789":    # Meta ad account id
+    vendor_id: V-META
+    subsidiary_id: "1"
+
+# Per-vendor / per-GL variance-threshold overrides (percent). Falls back to the
+# global ACCRUAL_VARIANCE_THRESHOLD_PCT setting when absent.
+variance_overrides:
+  vendors:
+    V-GOOGLE: 2.0     # large media spend: tighter gate
+    V-META: 2.0
+  gl_accounts:
+    "6620": 10.0      # small professional-services engagements: looser gate

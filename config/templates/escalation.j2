@@ -1,0 +1,18 @@
+Subject: [ACCRUAL ESCALATION{{ " — RE-RAISED" if reraised else "" }}] {{ reason_label }} — {{ vendor_name }} — {{ period }}
+
+Escalation for the {{ period }} close ({{ severity | upper }}):
+
+  Vendor:      {{ vendor_name }} ({{ vendor_id }})
+  Line:        {{ line_id }} {{ ref_token }}
+  Reason:      {{ reason_label }}
+  Amount:      {{ amount }} {{ currency }}
+  Close day:   {{ close_day }} of {{ final_close_day }}
+
+Detail:
+  {{ detail }}
+
+Suggested action:
+  {{ suggested_action }}
+
+Review with: accrual-agent review list
+— Accrual Agent (automated)
