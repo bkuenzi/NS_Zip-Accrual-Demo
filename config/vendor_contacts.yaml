@@ -1,0 +1,41 @@
+# Verified vendor contacts for accrual confirmation requests.
+#
+# The outbound gate requires BOTH:
+#   1. verified: true on the entry below, and
+#   2. the contact's email domain to match the vendor's domain(s) on the
+#      NetSuite vendor master, or appear in allowed_domains.
+#
+# Entries are managed with `accrual-agent contacts add|verify` (which validates
+# and audit-logs changes) — hand-editing works but skips the cross-checks.
+
+contacts:
+  V-ACME:
+    name: Priya Raman
+    email: ar@acmecloud.example
+    verified: true
+  V-BETA:
+    name: Marcus Webb
+    email: billing@betalogistics.example
+    verified: true
+  V-GAMMA:
+    name: Sofia Reyes
+    email: accounts@gammaconsulting.example
+    verified: true
+  V-ZETA:
+    name: Jonas Keller
+    email: rechnung@zetagmbh.example
+    verified: true
+  V-ETA:
+    name: Dana Whitfield
+    email: finance@etamedia.example
+    verified: true
+  V-THETA:
+    name: Ade Okafor
+    email: ap@thetasoftware.example
+    verified: true
+  # V-EPSILON (Epsilon Facilities) intentionally absent -> blocked-send path
+  # V-DELTA has no verified contact either
+
+# Extra domains accepted for a vendor beyond its vendor-master domain
+allowed_domains:
+  V-GAMMA: [gammaconsulting-billing.example]

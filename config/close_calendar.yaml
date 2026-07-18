@@ -1,0 +1,27 @@
+# Fiscal calendar + close calendar.
+#
+# calendar_type:
+#   calendar_month — periods are calendar months (default)
+#   custom         — periods listed explicitly below (supports 4-4-5 etc.)
+#
+# Close-day derivation: day 1 of close = first business day after period end
+# (weekends skipped when business_days: true). `final_close_day` is the last
+# day of the close cycle; unconfirmed accruals become close-risk items as it
+# approaches.
+
+calendar_type: calendar_month
+business_days: true
+final_close_day: 10
+
+# Only used when calendar_type: custom. Example 4-4-5 quarter:
+# periods:
+#   - name: "2026-P07"
+#     start: 2026-06-29
+#     end: 2026-07-26
+#   - name: "2026-P08"
+#     start: 2026-07-27
+#     end: 2026-08-23
+#   - name: "2026-P09"
+#     start: 2026-08-24
+#     end: 2026-09-27
+periods: []
