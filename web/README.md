@@ -1,9 +1,23 @@
 # Accrual Agent — Web Demo UI
 
 An interactive, static demo of the autonomous month-end accrual agent. It
-replays the scripted 2026-06 close (days 1 → 10 → final) from a checked-in
-JSON snapshot — no backend, no credentials, deployable anywhere that serves
+replays the scripted 2026-06 close (days 1 → 10 → final) from checked-in
+JSON snapshots — no backend, no credentials, deployable anywhere that serves
 a Next.js app.
+
+## Launch chooser: Demo vs MVP
+
+On load, the app presents a **deliberate choice of dataset** before anything
+else:
+
+- **Demo walkthrough** (`?mode=demo`) — the seeded toy fixtures (YourCo).
+- **MVP — SeatGeek dataset** (`?mode=mvp`) — the same close run against the
+  standalone SeatGeek dataset (`datasets/seatgeek/`): NetSuite-shaped chart of
+  accounts, real vendor archetypes, Zip commitments, and ad-platform actuals.
+
+Both load from checked-in snapshots (`src/data/{demo,mvp}-data.json`) selected
+by the `mode` query param; switch anytime from the header. Everything below is
+identical between the two — only the books underneath differ.
 
 ## What's in the demo
 
@@ -31,12 +45,14 @@ npm run build      # production build (what Vercel runs)
 
 ## Regenerating the demo data
 
-`src/data/demo-data.json` is generated from the Python agent's scripted demo
-and checked in so web builds need no Python. To refresh it after changing the
-mock scenarios (from the repository root):
+`src/data/demo-data.json` and `src/data/mvp-data.json` are generated from the
+Python agent's scripted demo and checked in so web builds need no Python. To
+refresh them after changing the mock scenarios (from the repository root):
 
 ```bash
-uv run accrual-agent export-web
+uv run accrual-agent export-web --profile demo    # -> web/src/data/demo-data.json
+uv run accrual-agent export-web --profile mvp     # -> web/src/data/mvp-data.json
+make export-web                                    # both at once
 ```
 
 Note: audit timestamps in the export use real wall-clock time (the agent's

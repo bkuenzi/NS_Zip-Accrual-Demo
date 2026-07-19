@@ -43,6 +43,32 @@ LLM-fallback-parsed European reply, disputed amounts held for review, human
 approval posting JEs, invoice matching/clearing, and team-lead escalations.
 It ends with `output/dashboard_2026-06.html` and a checkpoint exception report.
 
+## Two run modes: Demo vs MVP
+
+The agent runs the identical close engine against one of two credential-free
+datasets — a deliberate choice made **at initiation** in both the CLI and the
+UI:
+
+| Mode | Dataset | Company | Config |
+|---|---|---|---|
+| **demo** | seeded toy fixtures (Acme, Beta, Zeta…) | YourCo | `config/` |
+| **mvp** | the standalone **SeatGeek dataset** (`datasets/seatgeek/`) | SeatGeek, Inc. | `config/seatgeek/` |
+
+The MVP dataset is kept **deliberately separate** — `datasets/seatgeek/` is a
+self-contained accounting dataset, and the `mvp` profile is the only bridge to
+it (via dataset-backed adapters). Demo mode is untouched.
+
+```bash
+make demo            # accrual-agent demo --profile demo   (default)
+make mvp             # accrual-agent demo --profile mvp     (SeatGeek)
+accrual-agent demo --profile mvp
+accrual-agent run-cycle          # honors ACCRUAL_PROFILE (demo|mvp)
+```
+
+In the web UI the choice is a **launch screen** — pick *Demo walkthrough* or
+*MVP — SeatGeek dataset* to begin (`?mode=demo|mvp`), switch anytime from the
+header. Regenerate both snapshots with `make export-web`.
+
 ## Web demo UI (Vercel-deployable)
 
 `web/` contains an interactive Next.js demo that replays the scripted close

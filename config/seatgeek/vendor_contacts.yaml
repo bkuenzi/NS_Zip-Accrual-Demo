@@ -1,0 +1,43 @@
+# Verified vendor contacts for the SeatGeek dataset (mvp profile). Domains are
+# cross-checked against the dataset vendor master before any send is allowed.
+# RXR Realty and Apex Staffing are deliberately absent:
+#   - RXR has a GL mapping but no verified contact  -> blocked send
+#   - Apex has no GL mapping (and no contact)        -> unmapped-vendor escalation
+contacts:
+  V-AWS:
+    name: AWS Billing
+    email: ap@aws.amazon.com
+    verified: true
+  V-TTD:
+    name: The Trade Desk Billing
+    email: billing@thetradedesk.com
+    verified: true
+  V-IHEART:
+    name: iHeartMedia AR
+    email: ar@iheartmedia.com
+    verified: true
+  V-IMPACT:
+    name: impact.com Finance
+    email: finance@impact.com
+    verified: true
+  V-STORMFACT:
+    name: Stormfactory Accounts
+    email: accounts@stormfactory.example
+    verified: true
+  V-SNOWFLAKE:
+    name: Snowflake Billing
+    email: billing@snowflake.com
+    verified: true
+  V-BSE:
+    name: Brooklyn Sports Finance
+    email: finance@brooklynse.com
+    verified: true
+  V-CONTENTSQ:
+    name: Contentsquare Billing
+    email: billing@contentsquare.com
+    verified: true
+  V-STRIPE:
+    name: Stripe Accounts
+    email: accounts@stripe.com
+    verified: true
+allowed_domains: {}

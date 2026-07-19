@@ -8,12 +8,23 @@ import {
   useMemo,
   useState,
 } from "react";
-import { changedLineIds, computeKpis, finalStep, steps } from "@/lib/data";
-import type { DemoStep, JournalEntry } from "@/lib/types";
+import {
+  changedLineIds,
+  computeKpis,
+  datasets,
+  type DatasetKey,
+} from "@/lib/data";
+import type { DemoData, DemoStep, JournalEntry } from "@/lib/types";
 
 export type ReviewDecision = "approved" | "rejected";
 
 interface DemoContextValue {
+  /** Which dataset is active (demo | mvp). */
+  datasetKey: DatasetKey;
+  /** The whole active dataset (period, company, finalCloseDay, …). */
+  data: DemoData;
+  /** Steps for the active dataset. */
+  steps: DemoStep[];
   /** Index into steps[] (0..5). */
   index: number;
   setIndex: (i: number) => void;
@@ -40,7 +51,8 @@ const DemoContext = createContext<DemoContextValue | null>(null);
  *  data — status posted, JE included); rejected lines get status "rejected". */
 function applyDecisions(
   raw: DemoStep,
-  decisions: Record<string, ReviewDecision>
+  decisions: Record<string, ReviewDecision>,
+  finalStep: DemoStep
 ): DemoStep {
   const decided = Object.keys(decisions);
   if (raw.id !== "day-10" || decided.length === 0) return raw;
@@ -78,10 +90,20 @@ function applyDecisions(
   };
 }
 
-export function DemoProvider({ children }: { children: React.ReactNode }) {
+export function DemoProvider({
+  datasetKey,
+  children,
+}: {
+  datasetKey: DatasetKey;
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+
+  const data = datasets[datasetKey];
+  const steps = data.steps;
+  const finalStep = steps[steps.length - 1];
 
   const fromUrl = steps.findIndex((s) => s.id === params.get("day"));
   const index = fromUrl >= 0 ? fromUrl : 0;
@@ -93,7 +115,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       q.set("day", steps[clamped].id);
       router.replace(`${pathname}?${q.toString()}`, { scroll: false });
     },
-    [params, pathname, router]
+    [params, pathname, router, steps]
   );
 
   const [decisions, setDecisions] = useState<Record<string, ReviewDecision>>({});
@@ -104,8 +126,14 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const resetReview = useCallback(() => setDecisions({}), []);
 
   const raw = steps[index];
-  const step = useMemo(() => applyDecisions(raw, decisions), [raw, decisions]);
-  const changed = useMemo(() => changedLineIds(index, raw.lines), [index, raw]);
+  const step = useMemo(
+    () => applyDecisions(raw, decisions, finalStep),
+    [raw, decisions, finalStep]
+  );
+  const changed = useMemo(
+    () => changedLineIds(steps, index, raw.lines),
+    [steps, index, raw]
+  );
 
   const pendingReview = useMemo(
     () =>
@@ -118,6 +146,9 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value: DemoContextValue = {
+    datasetKey,
+    data,
+    steps,
     index,
     setIndex,
     raw,
