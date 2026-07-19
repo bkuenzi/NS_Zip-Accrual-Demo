@@ -39,6 +39,13 @@ class Settings(BaseSettings):
         Decimal("5.0"), alias="ACCRUAL_VARIANCE_THRESHOLD_PCT"
     )
     materiality_floor: Decimal = Field(Decimal("250.00"), alias="ACCRUAL_MATERIALITY_FLOOR")
+    subfloor_aggregate_threshold: Decimal = Field(
+        Decimal("1000.00"), alias="ACCRUAL_SUBFLOOR_AGGREGATE_THRESHOLD"
+    )
+    trust_streak_periods: int = Field(3, alias="ACCRUAL_TRUST_STREAK_PERIODS")
+    trust_tolerance_pct: Decimal = Field(
+        Decimal("3.0"), alias="ACCRUAL_TRUST_TOLERANCE_PCT"
+    )
     reminder_days: list[int] = Field([3, 7, 10], alias="ACCRUAL_REMINDER_DAYS")
     checkpoint_days: list[int] = Field([5, 10], alias="ACCRUAL_CHECKPOINT_DAYS")
     ad_settle_hours: int = Field(72, alias="ACCRUAL_AD_SETTLE_HOURS")
@@ -106,6 +113,11 @@ class Settings(BaseSettings):
     def escalation_channel_list(self) -> list[str]:
         return [c.strip() for c in self.escalation_channels.split(",") if c.strip()]
 
+    @property
+    def company_domain(self) -> str:
+        """Domain internal-owner contacts must belong to (from the mailbox)."""
+        return self.mailbox_address.rsplit("@", 1)[-1].lower()
+
     def require(self, names_by_env: dict[str, str], purpose: str) -> None:
         """Fail fast with a labeled list of the missing env vars a command needs."""
         missing = [env for env, value in names_by_env.items() if not value]
@@ -136,6 +148,14 @@ class GLMapping:
 
 
 @dataclass
+class InternalOwner:
+    """Internal budget owner a confirmation request routes to instead of the vendor."""
+
+    name: str
+    email: str
+
+
+@dataclass
 class GLMappingStore:
     """config/gl_mappings.yaml — vendor coding, subsidiary maps, threshold overrides."""
 
@@ -145,12 +165,19 @@ class GLMappingStore:
     ad_accounts: dict[str, dict[str, str]]
     vendor_variance_overrides: dict[str, Decimal]
     gl_variance_overrides: dict[str, Decimal]
+    confirmation_default: str = "vendor"
+    confirmation_overrides: dict[str, str] = field(default_factory=dict)
+    internal_owners: dict[str, InternalOwner] = field(default_factory=dict)
+    sundry_coding: dict[str, str] = field(default_factory=dict)
+    trust_revoked: set[str] = field(default_factory=set)
 
     @classmethod
     def load(cls, path: Path | None = None) -> GLMappingStore:
         path = path or CONFIG_DIR / "gl_mappings.yaml"
         raw = yaml.safe_load(path.read_text()) or {}
         overrides = raw.get("variance_overrides") or {}
+        routing = raw.get("confirmation_routing") or {}
+        trust = raw.get("trust_ladder") or {}
         return cls(
             accrued_liability_account=str(raw.get("accrued_liability_account", "2150")),
             vendors={
@@ -170,10 +197,29 @@ class GLMappingStore:
             gl_variance_overrides={
                 str(k): Decimal(str(v)) for k, v in (overrides.get("gl_accounts") or {}).items()
             },
+            confirmation_default=str(routing.get("default", "vendor")),
+            confirmation_overrides={
+                str(k): str(v) for k, v in (routing.get("vendors") or {}).items()
+            },
+            internal_owners={
+                vid: InternalOwner(str(o.get("name", "")), str(o.get("email", "")))
+                for vid, o in (raw.get("internal_owners") or {}).items()
+            },
+            sundry_coding={
+                str(k): str(v) for k, v in (raw.get("sundry") or {}).items()
+            },
+            trust_revoked={str(v) for v in (trust.get("revoked") or [])},
         )
 
     def coding_for(self, vendor_id: str) -> GLMapping | None:
         return self.vendors.get(vendor_id)
+
+    def routing_for(self, vendor_id: str) -> str:
+        """'vendor' or 'internal' — who the confirmation request goes to."""
+        return self.confirmation_overrides.get(vendor_id, self.confirmation_default)
+
+    def internal_owner_for(self, vendor_id: str) -> InternalOwner | None:
+        return self.internal_owners.get(vendor_id)
 
     def variance_threshold_for(
         self, vendor_id: str, gl_account: str | None, default: Decimal

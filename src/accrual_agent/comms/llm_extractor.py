@@ -36,9 +36,31 @@ Vendor email:
 {body}
 ---"""
 
+VERIFICATION_PROMPT = """You are double-checking a colleague's extraction from \
+a vendor's email reply to an accounting team. Read the email independently and \
+decide whether the extraction below is faithful to it.
+
+Extraction under review:
+  confirmed_amount: {amount}
+  currency: {currency}
+
+Reply with ONLY a JSON object: {{"agrees": true}} if the email genuinely states \
+that amount (and currency, if given) as the confirmed/incurred figure, \
+{{"agrees": false}} otherwise. When unsure, answer false.
+
+Vendor email:
+---
+{body}
+---"""
+
 
 class LLMExtractor(Protocol):
     def extract(self, body: str) -> ParsedVendorReply | None: ...
+
+    def verify(self, body: str, parsed: ParsedVendorReply) -> bool:
+        """Independent second pass: does the extraction match the email?
+        Must fail closed — any doubt or error returns False."""
+        ...
 
 
 class AnthropicExtractor:
@@ -69,6 +91,31 @@ class AnthropicExtractor:
             log.warning("llm_extractor.bad_json", raw=text[:200])
             return None
         return _payload_to_reply(payload, body)
+
+    def verify(self, body: str, parsed: ParsedVendorReply) -> bool:
+        try:
+            response = self.client.messages.create(
+                model=self.model,
+                max_tokens=50,
+                messages=[{
+                    "role": "user",
+                    "content": VERIFICATION_PROMPT.format(
+                        amount=parsed.confirmed_amount,
+                        currency=parsed.currency or "unspecified",
+                        body=body[:4000],
+                    ),
+                }],
+            )
+            text = "".join(
+                block.text for block in response.content if block.type == "text"
+            ).strip()
+            payload = json.loads(_strip_fences(text))
+            agrees = payload.get("agrees") is True
+        except Exception as exc:  # noqa: BLE001 — verification must fail closed
+            log.warning("llm_extractor.verify_failed", error=str(exc))
+            return False
+        log.info("llm_extractor.verified", agrees=agrees)
+        return agrees
 
 
 class MockLLMExtractor:
@@ -101,6 +148,15 @@ class MockLLMExtractor:
             confidence=0.9,
             method="llm",
             raw_excerpt=body[:160],
+        )
+
+    def verify(self, body: str, parsed: ParsedVendorReply) -> bool:
+        """Second pass in mock mode: re-extract and require agreement."""
+        second = self.extract(body)
+        return (
+            second is not None
+            and second.confirmed_amount == parsed.confirmed_amount
+            and (second.currency or None) == (parsed.currency or None)
         )
 
 

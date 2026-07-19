@@ -5,7 +5,7 @@
 // final-step state (posted, JE included) — no invented data.
 
 import { Check, ClipboardCheck, X } from "lucide-react";
-import { useDemo } from "./demo-context";
+import { isReviewable, useDemo } from "./demo-context";
 import { Button } from "./ui/button";
 import { Card, CardHeader } from "./ui/card";
 import { StatusBadge } from "./ui/badge";
@@ -15,7 +15,7 @@ export function ReviewQueue() {
   const { raw, step, isReviewStep, decisions, decide } = useDemo();
   if (!isReviewStep) return null;
 
-  const held = raw.lines.filter((l) => l.status === "held_for_review");
+  const held = raw.lines.filter(isReviewable);
   if (held.length === 0) return null;
 
   return (
@@ -27,7 +27,7 @@ export function ReviewQueue() {
             Controller review — your decision needed
           </span>
         }
-        subtitle="These accruals breached the variance gate and will not post without a human decision. Approve to post the vendor-confirmed amount; reject to drop the accrual."
+        subtitle="Nothing here posts without a human decision: variance-gate breaches post at the confirmed amount on approval, and the sundry sub-floor aggregate posts as an explicitly estimate-based JE. Reject drops the accrual."
       />
       <ul className="px-5 pb-4">
         {held.map((l) => {
@@ -44,13 +44,25 @@ export function ReviewQueue() {
                   <StatusBadge status={current.status} />
                 </div>
                 <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted">
-                  {l.hold_reason}
+                  {l.hold_reason ?? l.estimate_basis}
                 </p>
                 <p className="mt-0.5 text-xs text-muted">
-                  estimate {money(l.amount, l.currency)} → vendor confirmed{" "}
-                  <b className="text-foreground">
-                    {money(l.confirmed_amount ?? l.amount, l.currency)}
-                  </b>
+                  {l.confirmed_amount ? (
+                    <>
+                      estimate {money(l.amount, l.currency)} → confirmed{" "}
+                      <b className="text-foreground">
+                        {money(l.confirmed_amount, l.currency)}
+                      </b>
+                    </>
+                  ) : (
+                    <>
+                      estimate-based{" "}
+                      <b className="text-foreground">
+                        {money(l.amount, l.currency)}
+                      </b>{" "}
+                      — no confirmation source
+                    </>
+                  )}
                   {l.invoice_number ? ` · invoice ${l.invoice_number}` : ""}
                 </p>
               </div>

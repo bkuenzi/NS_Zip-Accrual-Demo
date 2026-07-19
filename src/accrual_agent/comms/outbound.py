@@ -1,16 +1,19 @@
-"""Outbound vendor communications with the verified-contact hard gate.
+"""Outbound confirmation requests with the verified-contact hard gate.
 
 A line only ever receives the next unsent due stage per cycle (initial, then
-escalating reminders). No verified contact on file — or a contact whose domain
-fails the vendor-master cross-check — blocks the send entirely, flags the
-line, and raises a MISSING_CONTACT escalation for human input.
+escalating reminders). Requests route per `confirmation_routing` in
+gl_mappings.yaml: `vendor` goes to the verified vendor contact (domain
+cross-checked against the vendor master), `internal` goes to the named
+internal budget owner (whose address must be on the company's own domain).
+Either gate failing blocks the send entirely, flags the line, and raises a
+MISSING_CONTACT escalation for human input.
 """
 
 from __future__ import annotations
 
 import datetime as dt
 
-from ..config import Settings, VendorContactStore
+from ..config import ContactRecord, GLMappingStore, Settings, VendorContactStore
 from ..logging_setup import get_logger
 from ..models import (
     AccrualLine,
@@ -38,6 +41,7 @@ class OutboundService:
         cadence: Cadence,
         contacts: VendorContactStore,
         vendor_domains: dict[str, list[str]],       # from the NetSuite vendor master
+        gl_store: GLMappingStore,
     ) -> None:
         self.settings = settings
         self.repo = repo
@@ -47,6 +51,7 @@ class OutboundService:
         self.cadence = cadence
         self.contacts = contacts
         self.vendor_domains = vendor_domains
+        self.gl_store = gl_store
 
     def process(self, close_day: int) -> tuple[int, list[EscalationReason]]:
         """Send due outreach for every line still awaiting confirmation.
@@ -85,14 +90,14 @@ class OutboundService:
                 )
             return False
 
-        contact, block_reason = self.contacts.verified_contact(
-            line.vendor_id, self.vendor_domains.get(line.vendor_id, [])
-        )
+        routing = self.gl_store.routing_for(line.vendor_id)
+        contact, block_reason = self._resolve_contact(line, routing)
         if contact is None:
             if line.thread_status != ThreadStatus.BLOCKED_NO_CONTACT:
                 log.warning(
                     "outbound.blocked_no_contact",
-                    line_id=line.line_id, vendor=line.vendor_id, reason=block_reason,
+                    line_id=line.line_id, vendor=line.vendor_id,
+                    routing=routing, reason=block_reason,
                 )
                 self.register.update_fields(
                     line.line_id, source="outbound",
@@ -103,6 +108,7 @@ class OutboundService:
 
         subject, body = self.templates.render_stage_email(
             stage,
+            routing=routing,
             vendor_name=line.vendor_name,
             contact_name=contact.name or "there",
             period=line.period,
@@ -141,6 +147,28 @@ class OutboundService:
             urgency=self.cadence.urgency(stage), delivery=delivery,
         )
         return True
+
+    def _resolve_contact(
+        self, line: AccrualLine, routing: str
+    ) -> tuple[ContactRecord | None, str | None]:
+        """Resolve the request recipient for the line's configured route."""
+        if routing == "internal":
+            owner = self.gl_store.internal_owner_for(line.vendor_id)
+            if owner is None or not owner.email:
+                return None, "internal routing configured but no internal owner on file"
+            domain = owner.email.rsplit("@", 1)[-1].lower()
+            if domain != self.settings.company_domain:
+                return None, (
+                    f"internal owner domain {domain} is not the company domain "
+                    f"{self.settings.company_domain}"
+                )
+            return ContactRecord(
+                vendor_id=line.vendor_id, name=owner.name,
+                email=owner.email, verified=True,
+            ), None
+        return self.contacts.verified_contact(
+            line.vendor_id, self.vendor_domains.get(line.vendor_id, [])
+        )
 
     def flag_close_risk(self, close_day: int) -> list[AccrualLine]:
         """Mark unconfirmed lines as close-risk once the deadline approaches."""

@@ -1,9 +1,11 @@
 """Inbound vendor-reply processing.
 
 Pipeline per message: dedupe -> thread-match (reference token, then
-In-Reply-To header) -> save attachments -> heuristic extraction -> LLM
-fallback when confidence is low -> hand the parsed reply to the confirmation
-engine. A reply nothing can parse never auto-confirms; it escalates instead.
+In-Reply-To header) -> save attachments -> templated-reply parse (the
+fill-in block our outbound email asks for) -> heuristic extraction -> LLM
+fallback when confidence is low, second-pass verified -> hand the parsed
+reply to the confirmation engine. A reply nothing can parse never
+auto-confirms; it escalates instead.
 """
 
 from __future__ import annotations
@@ -39,6 +41,56 @@ CURRENCY_SYMBOLS = {"$": "USD", "€": "EUR", "£": "GBP"}
 EU_FORMAT_RE = re.compile(r"\d{1,3}(?:\.\d{3})+,\d{2}")
 
 HEURISTIC_CONFIDENCE_THRESHOLD = 0.6
+
+# Fields of the fill-in reply block embedded in outbound confirmation emails.
+TEMPLATE_FIELD_RE = re.compile(
+    r"^[>\s]*(?P<label>AMOUNT|CURRENCY|DELIVERED PERCENT|INVOICE NUMBER|"
+    r"EXPECTED INVOICE DATE)\b[^:\n]*:[ \t]*(?P<value>\S[^\n]*)$",
+    re.MULTILINE | re.IGNORECASE,
+)
+
+
+def parse_reply_template(body: str) -> ParsedVendorReply | None:
+    """Deterministic parse of the fill-in block; None when absent/unusable."""
+    fields: dict[str, str] = {}
+    for m in TEMPLATE_FIELD_RE.finditer(body):
+        fields.setdefault(m.group("label").upper(), m.group("value").strip())
+    raw_amount = fields.get("AMOUNT")
+    if raw_amount is None:
+        return None
+    try:
+        amount = Decimal(re.sub(r"[^\d.]", "", raw_amount))
+    except ArithmeticError:
+        return None
+    currency = None
+    if cur := fields.get("CURRENCY"):
+        if m := re.search(r"\b([A-Z]{3})\b", cur.upper()):
+            currency = m.group(1)
+    delivered_pct = None
+    if pct := fields.get("DELIVERED PERCENT"):
+        try:
+            delivered_pct = Decimal(re.sub(r"[^\d.]", "", pct))
+        except ArithmeticError:
+            pass
+    invoice = None
+    if inv := fields.get("INVOICE NUMBER"):
+        if m := re.search(r"([A-Z]{2,4}-?\d{3,}[A-Z0-9-]*)", inv.upper()):
+            invoice = m.group(1)
+    eta = None
+    if raw_eta := fields.get("EXPECTED INVOICE DATE"):
+        if m := ISO_DATE_RE.search(raw_eta):
+            eta = dt.date.fromisoformat(m.group(1))
+    return ParsedVendorReply(
+        confirmed_amount=amount,
+        currency=currency,
+        invoice_number=invoice,
+        expected_invoice_date=eta,
+        delivered_pct=delivered_pct,
+        confirms_estimate=True,
+        confidence=0.95,
+        method="template",
+        raw_excerpt=body[:160],
+    )
 
 
 def parse_reply_heuristic(body: str) -> ParsedVendorReply:
@@ -181,6 +233,14 @@ class InboundService:
     def _parse(
         self, message: InboundEmail, attachment_paths: list[Path]
     ) -> ParsedVendorReply:
+        if templated := parse_reply_template(message.body):
+            log.info(
+                "inbound.template_parsed",
+                amount=str(templated.confirmed_amount),
+                delivered_pct=str(templated.delivered_pct),
+            )
+            return templated
+
         parsed = parse_reply_heuristic(message.body)
         if parsed.confidence >= HEURISTIC_CONFIDENCE_THRESHOLD:
             return parsed
@@ -188,10 +248,16 @@ class InboundService:
         if self.llm_extractor is not None:
             llm_parsed = self.llm_extractor.extract(message.body)
             if llm_parsed is not None:
+                # An LLM extraction only auto-confirms if an independent
+                # second pass agrees with it; otherwise it's held for review.
+                llm_parsed.verified = bool(
+                    self.llm_extractor.verify(message.body, llm_parsed)
+                )
                 log.info(
                     "inbound.llm_fallback_used",
                     heuristic_confidence=parsed.confidence,
                     llm_amount=str(llm_parsed.confirmed_amount),
+                    verified=llm_parsed.verified,
                 )
                 return llm_parsed
 

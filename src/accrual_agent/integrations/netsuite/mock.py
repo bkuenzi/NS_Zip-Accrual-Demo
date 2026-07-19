@@ -158,7 +158,7 @@ class MockNetSuite:
                        po_number="PO-1007", amount=D("33500.00"),
                        bill_date=dt.date(2026, 7, 9), service_period="2026-06"),
         ]
-        # period-end spot rates to base currency (USD)
+        # NetSuite currency-rate table (period-end effective rows), to base USD
         self.exchange_rates = {"USD": D("1"), "EUR": D("1.09")}
         self.posted_journal_entries: dict[str, JournalEntry] = {}   # by external_id
 

@@ -12,13 +12,17 @@ Our records show the following incurred-but-uninvoiced amount:
     Service period:   {{ period }}
     Estimated amount: {{ amount }} {{ currency }}
 
-Could you please reply with:
-  1. Confirmation of the amount above (or the correct amount),
-  2. The invoice number if one has been issued, and
-  3. The expected invoice date if not yet issued.
+Could you confirm the amount above (or give us the correct one)? The quickest
+way is to fill in this block in your reply:
 
-A short reply to this email is all we need — please keep {{ ref_token }} in the
-subject line so it routes correctly.
+    AMOUNT:
+    CURRENCY: {{ currency }}
+    DELIVERED PERCENT (services only — share of the work delivered):
+    INVOICE NUMBER (if issued):
+    EXPECTED INVOICE DATE (YYYY-MM-DD):
+
+A short free-text reply works too — please keep {{ ref_token }} in the subject
+line so it routes correctly.
 
 Thank you,
 {{ company_name }} Accounting
