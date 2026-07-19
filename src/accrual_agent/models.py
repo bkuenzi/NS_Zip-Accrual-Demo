@@ -31,6 +31,7 @@ class SourceType(StrEnum):
     ZIP_REQUISITION = "zip_requisition"        # approved non-PO committed spend
     GOOGLE_ADS = "google_ads"                  # ad-platform actuals
     META_ADS = "meta_ads"
+    SUNDRY_AGGREGATE = "sundry_aggregate"      # bulked sub-floor gaps for one period
 
 
 API_SOURCE_TYPES = {SourceType.GOOGLE_ADS, SourceType.META_ADS}
@@ -62,6 +63,7 @@ class EscalationReason(StrEnum):
     UNRESOLVED_SUBSIDIARY = "unresolved_subsidiary"
     STALE_ACCRUAL = "stale_accrual"
     UNPARSEABLE_REPLY = "unparseable_reply"
+    UNVERIFIED_EXTRACTION = "unverified_extraction"
     AMBIGUOUS_INVOICE_MATCH = "ambiguous_invoice_match"
     CLOSE_RISK = "close_risk"
 
@@ -76,6 +78,8 @@ ESCALATION_LABELS: dict[EscalationReason, str] = {
     EscalationReason.UNRESOLVED_SUBSIDIARY: "Subsidiary could not be resolved",
     EscalationReason.STALE_ACCRUAL: "Posted accrual unmatched beyond lookback window",
     EscalationReason.UNPARSEABLE_REPLY: "Vendor reply could not be parsed",
+    EscalationReason.UNVERIFIED_EXTRACTION:
+        "LLM-extracted reply failed second-pass verification — held for review",
     EscalationReason.AMBIGUOUS_INVOICE_MATCH: "Ambiguous invoice-to-accrual match",
     EscalationReason.CLOSE_RISK: "Unconfirmed accrual at close deadline",
 }
@@ -195,7 +199,7 @@ class AccrualLine(BaseModel):
     estimate_basis: str                      # human-readable derivation of the estimate
     amount: Decimal                          # current best accrual amount (txn currency)
     currency: str = "USD"
-    exchange_rate: Decimal = Decimal("1")    # period-end spot rate to base currency
+    exchange_rate: Decimal = Decimal("1")    # NetSuite currency-rate table, period-end effective
     base_amount: Decimal = Decimal("0")      # amount * exchange_rate, base currency
     gl_account: str | None = None
     cost_center: str | None = None
@@ -210,6 +214,7 @@ class AccrualLine(BaseModel):
     confirmed_source: str | None = None      # "vendor_reply" / "google_ads" / ...
     invoice_number: str | None = None
     invoice_eta: date | None = None
+    cleared_invoice_amount: Decimal | None = None  # invoice amount recorded at clearing
     hold_reason: str | None = None           # populated when HELD_FOR_REVIEW
     notes: str | None = None
     created_at: datetime | None = None
@@ -275,9 +280,11 @@ class ParsedVendorReply(BaseModel):
     currency: str | None = None
     invoice_number: str | None = None
     expected_invoice_date: date | None = None
+    delivered_pct: Decimal | None = None     # vendor-stated share of the work delivered
     confirms_estimate: bool | None = None    # explicit "confirmed"/"correct" language
     confidence: float = 0.0                  # 0..1
-    method: str = "heuristic"                # heuristic | llm | attachment
+    method: str = "heuristic"                # template | heuristic | llm | attachment
+    verified: bool | None = None             # llm only: second-pass verification result
     raw_excerpt: str = ""
 
 

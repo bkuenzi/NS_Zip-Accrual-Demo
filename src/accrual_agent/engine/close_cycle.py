@@ -7,9 +7,10 @@ Stage order (each isolated — one dead integration never stalls the close):
   4. outbound        initial requests + escalating reminders (contact-gated)
   5. reconcile       arriving invoices confirm/clear accruals
   6. close_risk      flag unconfirmed threads near the deadline
-  7. post            write eligible JEs back to NetSuite
-  8. escalate        dedupe/dispatch team-lead escalations
-  9. report          exception report + dashboard (pushed on checkpoint days)
+  7. trust_ladder    final day: auto-post estimates of accuracy-streak vendors
+  8. post            write eligible JEs back to NetSuite
+  9. escalate        dedupe/dispatch team-lead escalations
+ 10. report          exception report + dashboard (pushed on checkpoint days)
 """
 
 from __future__ import annotations
@@ -78,6 +79,9 @@ class CloseCycleRunner:
             flags.extend(rec_flags)
 
         stage("close_risk", lambda: rt.outbound.flag_close_risk(day))
+
+        if day >= rt.calendar.final_close_day:
+            stage("trust_ladder", lambda: rt.trust.promote(period.name))
 
         if posted := stage("post", lambda: rt.writeback.post_eligible(period, day)):
             count, post_flags = posted

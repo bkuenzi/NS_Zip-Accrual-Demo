@@ -6,9 +6,12 @@ Three estimate bases, in order of evidence strength:
      period's share of the service window
   3. Zip committed spend — approved non-PO engagements with no NetSuite bill
 
-Below-materiality gaps are logged, never accrued or emailed. Lines whose
-vendor has no GL mapping (and none on the source document) are still created
-so they're visible, but can't post until a human maps them.
+Below-materiality gaps are logged, never accrued or emailed individually —
+but when their base-currency total crosses the aggregate threshold they raise
+a single comm-suppressed "sundry accruals" line that a human must approve
+(one bulk estimate-based JE; the per-line posting gate is never bypassed).
+Lines whose vendor has no GL mapping (and none on the source document) are
+still created so they're visible, but can't post until a human maps them.
 """
 
 from __future__ import annotations
@@ -39,6 +42,7 @@ class IdentificationService:
         self.adapters = adapters
         self.register = register
         self.gl_store = gl_store
+        self._subfloor: list[tuple[str, str, Decimal]] = []
 
     def run(self, period: Period) -> tuple[int, int]:
         """Identify uninvoiced gaps for `period`; returns (created, updated)."""
@@ -57,6 +61,7 @@ class IdentificationService:
         }
 
         created = updated = 0
+        self._subfloor: list[tuple[str, str, Decimal]] = []  # (ref, vendor, base amt)
 
         # 1. receipts-not-billed, aggregated per PO
         receipts_by_po: dict[str, Decimal] = {}
@@ -129,6 +134,9 @@ class IdentificationService:
             c, u = self._upsert_zip(period, req, vendors.get(req.vendor_id), gap, bills)
             created, updated = created + c, updated + u
 
+        c, u = self._upsert_sundry(period)
+        created, updated = created + c, updated + u
+
         log.info("identification.done", period=period.name, created=created, updated=updated)
         return created, updated
 
@@ -137,8 +145,11 @@ class IdentificationService:
     def _fx(self, currency: str, period: Period) -> Decimal:
         return self.adapters.netsuite.get_exchange_rate(currency, period.end)
 
-    def _below_floor(self, amount: Decimal, currency: str, period: Period, ref: str) -> bool:
-        base = amount * self._fx(currency, period)
+    def _below_floor(
+        self, amount: Decimal, currency: str, period: Period, ref: str,
+        vendor_name: str = "",
+    ) -> bool:
+        base = (amount * self._fx(currency, period)).quantize(TWO_PLACES)
         if base < self.settings.materiality_floor:
             log.info(
                 "identification.below_materiality",
@@ -149,8 +160,51 @@ class IdentificationService:
                 None, "accrual-agent", "identification", "below_materiality",
                 None, f"{ref}: {amount} {currency}",
             )
+            self._subfloor.append((ref, vendor_name or ref, base))
             return True
         return False
+
+    def _upsert_sundry(self, period: Period) -> tuple[int, int]:
+        """Aggregate check: sub-floor gaps can still sum to a material amount.
+
+        Crossing the threshold raises ONE comm-suppressed sundry line that
+        lands in the review queue — a human approving it posts the bulk
+        estimate-based JE.
+        """
+        total = sum((base for _, _, base in self._subfloor), Decimal("0"))
+        if not self._subfloor or total < self.settings.subfloor_aggregate_threshold:
+            return 0, 0
+        contributors = ", ".join(
+            f"{vendor} {ref} {base:,.2f}" for ref, vendor, base in self._subfloor[:6]
+        )
+        if len(self._subfloor) > 6:
+            contributors += f", +{len(self._subfloor) - 6} more"
+        coding = self.gl_store.sundry_coding
+        _, created = self.register.upsert_line(
+            vendor_id="SUNDRY",
+            vendor_name="Sundry sub-floor accruals",
+            period=period.name,
+            source_type=SourceType.SUNDRY_AGGREGATE,
+            source_ref=f"SUNDRY-{period.name}",
+            estimate_basis=(
+                f"{len(self._subfloor)} gaps below the "
+                f"{self.settings.materiality_floor:,.2f} floor total "
+                f"{total:,.2f} {self.settings.base_currency} (aggregate threshold "
+                f"{self.settings.subfloor_aggregate_threshold:,.2f}): {contributors}"
+            ),
+            amount=total,
+            currency=self.settings.base_currency,
+            exchange_rate=Decimal("1"),
+            gl_account=coding.get("gl_account"),
+            cost_center=coding.get("cost_center"),
+            subsidiary_id=coding.get("subsidiary_id"),
+            comm_suppressed=True,
+        )
+        log.info(
+            "identification.sundry_aggregate", period=period.name,
+            total=str(total), gaps=len(self._subfloor),
+        )
+        return (1, 0) if created else (0, 1)
 
     def _upsert(
         self,
@@ -162,7 +216,10 @@ class IdentificationService:
         amount: Decimal,
         basis: str,
     ) -> tuple[int, int]:
-        if self._below_floor(amount, po.currency, period, source_ref):
+        if self._below_floor(
+            amount, po.currency, period, source_ref,
+            vendor_name=vendor.name if vendor else po.vendor_id,
+        ):
             return 0, 0
         po_line = po.lines[0] if po.lines else None
         mapping = self.gl_store.coding_for(po.vendor_id)
@@ -196,7 +253,10 @@ class IdentificationService:
         amount: Decimal,
         bills: list[VendorBill],
     ) -> tuple[int, int]:
-        if self._below_floor(amount, req.currency, period, req.requisition_id):
+        if self._below_floor(
+            amount, req.currency, period, req.requisition_id,
+            vendor_name=req.vendor_name,
+        ):
             return 0, 0
         mapping = self.gl_store.coding_for(req.vendor_id)
         subsidiary = self.gl_store.zip_business_units.get(req.business_unit)

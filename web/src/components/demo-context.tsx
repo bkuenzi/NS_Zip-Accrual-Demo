@@ -9,9 +9,19 @@ import {
   useState,
 } from "react";
 import { changedLineIds, computeKpis, finalStep, steps } from "@/lib/data";
-import type { DemoStep, JournalEntry } from "@/lib/types";
+import type { AccrualLine, DemoStep, JournalEntry } from "@/lib/types";
 
 export type ReviewDecision = "approved" | "rejected";
+
+/** Lines the day-10 controller decides on: held variances plus the
+ *  estimate-based sundry aggregate awaiting explicit approval. */
+export function isReviewable(l: AccrualLine): boolean {
+  return (
+    l.status === "held_for_review" ||
+    (l.source_type === "sundry_aggregate" &&
+      l.status === "estimated_pending_confirmation")
+  );
+}
 
 interface DemoContextValue {
   /** Index into steps[] (0..5). */
@@ -48,7 +58,7 @@ function applyDecisions(
   const finalLines = new Map(finalStep.lines.map((l) => [l.line_id, l]));
   const lines = raw.lines.map((l) => {
     const d = decisions[l.line_id];
-    if (!d || l.status !== "held_for_review") return l;
+    if (!d || !isReviewable(l)) return l;
     if (d === "rejected") return { ...l, status: "rejected" as const };
     return finalLines.get(l.line_id) ?? l;
   });
@@ -64,7 +74,7 @@ function applyDecisions(
       !(
         e.line_id &&
         decisions[e.line_id] &&
-        e.reason === "variance_breach"
+        (e.reason === "variance_breach" || e.reason === "close_risk")
       )
   );
 
@@ -111,7 +121,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     () =>
       raw.id === "day-10"
         ? raw.lines
-            .filter((l) => l.status === "held_for_review" && !decisions[l.line_id])
+            .filter((l) => isReviewable(l) && !decisions[l.line_id])
             .map((l) => l.line_id)
         : [],
     [raw, decisions]

@@ -1,0 +1,28 @@
+Subject: Accrual check — {{ vendor_name }} — {{ period }} {{ ref_token }}
+
+Hi {{ contact_name }},
+
+Quick month-end check for the {{ period }} close: as the budget owner for the
+{{ vendor_name }} engagement, can you confirm what we actually received from
+them this period that hasn't been invoiced yet?
+
+Our current estimate:
+
+    Reference:        {{ source_ref }}
+    Service period:   {{ period }}
+    Estimated amount: {{ amount }} {{ currency }}
+
+The quickest way is to fill in this block in your reply:
+
+    AMOUNT:
+    CURRENCY: {{ currency }}
+    DELIVERED PERCENT (services only — share of the work delivered):
+    INVOICE NUMBER (if you've seen one):
+    EXPECTED INVOICE DATE (YYYY-MM-DD):
+
+A short free-text reply works too — please keep {{ ref_token }} in the subject
+line so it routes correctly. Nothing goes to the vendor.
+
+Thanks,
+{{ company_name }} Accounting
+{{ mailbox_address }}

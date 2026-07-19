@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS accrual_lines (
     confirmed_source TEXT,
     invoice_number  TEXT,
     invoice_eta     TEXT,
+    cleared_invoice_amount TEXT,
     hold_reason     TEXT,
     notes           TEXT,
     created_at      TEXT NOT NULL,
@@ -138,7 +139,19 @@ class Repository:
         self.conn.execute("PRAGMA journal_mode=WAL")
         self.conn.execute("PRAGMA foreign_keys=ON")
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        # Additive columns for registers created by earlier versions.
+        existing = {
+            row["name"]
+            for row in self.conn.execute("PRAGMA table_info(accrual_lines)")
+        }
+        if "cleared_invoice_amount" not in existing:
+            self.conn.execute(
+                "ALTER TABLE accrual_lines ADD COLUMN cleared_invoice_amount TEXT"
+            )
 
     def close(self) -> None:
         self.conn.close()
@@ -185,8 +198,8 @@ class Repository:
                 base_amount, gl_account, cost_center, subsidiary_id, status,
                 provisional, comm_suppressed, ref_token, thread_status, close_risk,
                 confirmed_amount, confirmed_source, invoice_number, invoice_eta,
-                hold_reason, notes, created_at, updated_at
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                cleared_invoice_amount, hold_reason, notes, created_at, updated_at
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 line.line_id,
                 self.natural_key(line.source_type, line.source_ref, line.period),
@@ -197,7 +210,8 @@ class Repository:
                 int(line.provisional), int(line.comm_suppressed), line.ref_token,
                 line.thread_status.value, int(line.close_risk),
                 _opt_str(line.confirmed_amount), line.confirmed_source,
-                line.invoice_number, _opt_iso(line.invoice_eta), line.hold_reason,
+                line.invoice_number, _opt_iso(line.invoice_eta),
+                _opt_str(line.cleared_invoice_amount), line.hold_reason,
                 line.notes, now, now,
             ),
         )
@@ -498,6 +512,9 @@ def _row_to_line(row: sqlite3.Row) -> AccrualLine:
         confirmed_source=row["confirmed_source"],
         invoice_number=row["invoice_number"],
         invoice_eta=dt.date.fromisoformat(row["invoice_eta"]) if row["invoice_eta"] else None,
+        cleared_invoice_amount=(
+            Decimal(row["cleared_invoice_amount"]) if row["cleared_invoice_amount"] else None
+        ),
         hold_reason=row["hold_reason"],
         notes=row["notes"],
         created_at=dt.datetime.fromisoformat(row["created_at"]),

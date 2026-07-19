@@ -44,6 +44,7 @@ SEVERITY: dict[EscalationReason, str] = {
     EscalationReason.UNRESOLVED_SUBSIDIARY: "medium",
     EscalationReason.STALE_ACCRUAL: "high",
     EscalationReason.UNPARSEABLE_REPLY: "low",
+    EscalationReason.UNVERIFIED_EXTRACTION: "medium",
     EscalationReason.AMBIGUOUS_INVOICE_MATCH: "medium",
     EscalationReason.CLOSE_RISK: "high",
 }
@@ -68,6 +69,9 @@ SUGGESTED_ACTIONS: dict[EscalationReason, str] = {
         "Chase the invoice with the vendor or reverse the accrual manually.",
     EscalationReason.UNPARSEABLE_REPLY:
         "Read the vendor's reply in the comm log and enter the confirmation manually.",
+    EscalationReason.UNVERIFIED_EXTRACTION:
+        "Read the raw reply in the comm log; the LLM's extraction and its "
+        "second-pass check disagreed, so confirm the amount by hand.",
     EscalationReason.AMBIGUOUS_INVOICE_MATCH:
         "Pick the correct bill and clear the line manually.",
     EscalationReason.CLOSE_RISK:

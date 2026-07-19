@@ -57,3 +57,27 @@ variance_overrides:
     V-META: 2.0
   gl_accounts:
     "6620": 10.0      # small professional-services engagements: looser gate
+
+# Who the confirmation request goes to, per vendor. `vendor` emails the
+# verified vendor contact; `internal` emails the internal budget owner below
+# (owner email must be on the company domain — enforced at send time).
+confirmation_routing:
+  default: vendor
+  vendors:
+    V-GAMMA: internal   # professional services: the engagement owner knows burn best
+internal_owners:
+  V-GAMMA:
+    name: Morgan Patel
+    email: morgan.patel@yourco.example
+
+# Coding for the aggregated sub-floor ("sundry accruals") line raised when
+# below-floor gaps sum past ACCRUAL_SUBFLOOR_AGGREGATE_THRESHOLD.
+sundry:
+  gl_account: "6890"        # Miscellaneous Expense
+  cost_center: "CC-FIN"
+  subsidiary_id: "1"
+
+# Trust ladder: vendors whose earned estimate-auto-posting has been revoked by
+# a controller. (Eligibility itself is computed from cleared-invoice accuracy.)
+trust_ladder:
+  revoked: []

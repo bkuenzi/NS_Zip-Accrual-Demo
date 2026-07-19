@@ -5,6 +5,7 @@ import { CloseTrend } from "@/components/charts/close-trend";
 import { StatusBar } from "@/components/charts/status-bar";
 import { KpiCards } from "@/components/kpi-cards";
 import { ReviewQueue } from "@/components/review-queue";
+import { TrustLadder } from "@/components/trust-ladder";
 
 export default function OverviewPage() {
   return (
@@ -15,6 +16,7 @@ export default function OverviewPage() {
         <StatusBar />
         <CloseTrend />
       </div>
+      <TrustLadder />
       <AttentionList limit={6} />
     </div>
   );

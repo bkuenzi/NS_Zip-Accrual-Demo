@@ -16,7 +16,8 @@ export type SourceType =
   | "netsuite_po"
   | "zip_requisition"
   | "google_ads"
-  | "meta_ads";
+  | "meta_ads"
+  | "sundry_aggregate";
 
 export type ThreadStatus =
   | "not_started"
@@ -51,6 +52,7 @@ export interface AccrualLine {
   confirmed_source: string | null;
   invoice_number: string | null;
   invoice_eta: string | null;
+  cleared_invoice_amount: string | null;
   hold_reason: string | null;
   notes: string | null;
   created_at: string | null;
@@ -159,6 +161,22 @@ export interface Approval {
   note: string;
 }
 
+export interface TrustPeriod {
+  period: string;
+  maxVariancePct: string;
+  accurate: boolean;
+}
+
+export interface TrustStreak {
+  vendorId: string;
+  vendorName: string;
+  streak: number;
+  required: number;
+  eligible: boolean;
+  revoked: boolean;
+  periods: TrustPeriod[];
+}
+
 export interface DemoStep {
   id: string;
   closeDay: number;
@@ -174,6 +192,7 @@ export interface DemoStep {
   audit: AuditRow[];
   reviewQueue: string[];
   approvals: Approval[];
+  trustLadder: TrustStreak[];
 }
 
 export interface DemoData {

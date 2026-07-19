@@ -86,6 +86,7 @@ export const SOURCE_LABELS: Record<SourceType, string> = {
   zip_requisition: "Zip requisition",
   google_ads: "Google Ads",
   meta_ads: "Meta Ads",
+  sundry_aggregate: "Sundry (sub-floor)",
 };
 
 export const SEVERITY_BADGE: Record<string, string> = {

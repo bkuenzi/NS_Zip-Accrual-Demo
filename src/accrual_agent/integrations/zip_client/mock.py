@@ -38,19 +38,31 @@ class MockZip:
                 service_end=dt.date(2026, 6, 30),
                 po_number="PO-1001",
             ),
-            # Below the materiality floor: logged, never accrued or emailed
-            ZipRequisition(
-                requisition_id="ZR-2101",
-                vendor_id="V-IOTA",
-                vendor_name="Iota Snacks",
-                business_unit="BU-US",
-                committed_amount=D("180.00"),
-                approved_date=dt.date(2026, 6, 12),
-                service_start=dt.date(2026, 6, 1),
-                service_end=dt.date(2026, 6, 30),
-                gl_account="6800",
-                cost_center="CC-OPS",
-            ),
+            # Below the materiality floor individually — but together these
+            # sub-floor gaps cross the aggregate threshold and raise one
+            # "sundry accruals" line for controller review.
+            *[
+                ZipRequisition(
+                    requisition_id=rid,
+                    vendor_id=vid,
+                    vendor_name=name,
+                    business_unit="BU-US",
+                    committed_amount=D(amount),
+                    approved_date=dt.date(2026, 6, 12),
+                    service_start=dt.date(2026, 6, 1),
+                    service_end=dt.date(2026, 6, 30),
+                    gl_account="6800",
+                    cost_center="CC-OPS",
+                )
+                for rid, vid, name, amount in [
+                    ("ZR-2101", "V-IOTA", "Iota Snacks", "180.00"),
+                    ("ZR-2102", "V-KAPPA", "Kappa Office Plants", "210.00"),
+                    ("ZR-2103", "V-LAMBDA", "Lambda Water Coolers", "145.00"),
+                    ("ZR-2104", "V-MU", "Mu Courier Service", "95.00"),
+                    ("ZR-2105", "V-NU", "Nu Stock Photos", "230.00"),
+                    ("ZR-2106", "V-XI", "Xi Domain Renewals", "160.00"),
+                ]
+            ],
         ]
 
     def get_approved_requisitions(
