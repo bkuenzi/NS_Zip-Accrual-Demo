@@ -1,0 +1,5 @@
+subsidiary_id,name,parent,country,currency,is_elimination
+1,"SeatGeek, Inc. (Consolidated)",,US,USD,false
+2,"SeatGeek US, Inc.",1,US,USD,false
+3,"SeatGeek Enterprise, LLC",1,US,USD,false
+4,SeatGeek UK Ltd,1,GB,GBP,false

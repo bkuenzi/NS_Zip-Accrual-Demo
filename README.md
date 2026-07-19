@@ -59,6 +59,25 @@ uv run accrual-agent export-web        # regenerate web/src/data/demo-data.json
 To deploy: import the repo in Vercel and set **Root Directory** to `web`
 (everything else is auto-detected). Details in [`web/README.md`](web/README.md).
 
+## SeatGeek accounting dataset
+
+[`datasets/seatgeek/`](datasets/seatgeek/) is a standalone, robust accounting
+dataset for a **SeatGeek-shaped ticketing marketplace on NetSuite OneWorld**: a
+111-account **NetSuite chart of accounts**, segment dimensions (subsidiaries,
+departments, classes, locations), a 20-vendor master, six months of **balanced**
+FY2026 general-ledger activity, and the procurement subledger (POs, item
+receipts, vendor bills) plus Zip requisitions and ad-platform actuals that drive
+the 2026-06 accrual scenarios. It ships as per-record CSVs and a combined JSON
+bundle.
+
+```bash
+make dataset          # regenerate + validate (trial balance prints, nets to zero)
+```
+
+The data is generated deterministically and validated end to end — every
+journal entry balances, the trial balance nets to zero, and every foreign key
+resolves. See [`datasets/seatgeek/README.md`](datasets/seatgeek/README.md).
+
 ## How it works
 
 ### 1. Identification (`engine/identification.py`)

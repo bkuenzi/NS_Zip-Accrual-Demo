@@ -1,4 +1,4 @@
-.PHONY: install lint test demo clean
+.PHONY: install lint test demo dataset clean
 
 install:
 	uv sync --extra dev
@@ -11,6 +11,10 @@ test:
 
 demo:
 	uv run accrual-agent demo
+
+dataset:
+	python scripts/generate_seatgeek_dataset.py
+	python scripts/validate_seatgeek_dataset.py
 
 clean:
 	rm -rf data output .pytest_cache .ruff_cache
