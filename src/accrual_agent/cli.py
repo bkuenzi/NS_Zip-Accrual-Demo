@@ -456,78 +456,17 @@ def demo(
     keep: bool = typer.Option(False, help="Keep existing demo register instead of resetting"),
 ):
     """Scripted end-to-end walkthrough of the 2026-06 close in mock mode."""
-    from .engine.close_cycle import CloseCycleRunner
+    from .demo_runner import run_scripted_demo
 
     settings = get_settings()
     if settings.mode != "mock":
         console.print("[red]demo requires ACCRUAL_MODE=mock[/red]")
         raise typer.Exit(1)
     configure_logging(settings.output_dir)
-    if not keep:
-        for suffix in ("", "-wal", "-shm"):
-            Path(str(settings.db_path) + suffix).unlink(missing_ok=True)
 
-    period_end = dt.date(2026, 6, 30)
-
-    def simulated_now(day: int) -> dt.datetime:
-        from zoneinfo import ZoneInfo
-
-        rt_probe = Runtime(settings)
-        run_date = rt_probe.calendar.add_business_days(period_end, day)
-        return dt.datetime.combine(
-            run_date, dt.time(9, 0), tzinfo=ZoneInfo(settings.close_timezone)
-        )
-
-    def banner(text: str) -> None:
-        console.rule(f"[bold cyan]{text}")
-
-    narration = {
-        1: "Day 1 — identify uninvoiced spend; ad-platform actuals land as provisional "
-           "auto-confirms; initial vendor requests go out (blocked where no contact).",
-        3: "Day 3 — Acme confirms by email; first reminders fire for silent vendors; "
-           "ad spend still inside the 72h settle window.",
-        5: "Day 5 checkpoint — Zeta's German-format reply routes through the LLM "
-           "fallback; Eta confirms; settled ad figures post; exception report goes out.",
-        7: "Day 7 — Gamma disputes ($17.8k vs $15k) and Theta true-up breaches the "
-           "±5% gate: both held for review; second reminders fire.",
-        10: "Day 10 (final) — Beta exhausted the ladder: non-responsive escalation + "
-            "close-risk flags; arriving invoices clear posted accruals.",
-    }
-
-    with advisory_lock(settings.db_path):
-        for day in (1, 3, 5, 7, 10):
-            banner(f"Close day {day} — {simulated_now(day).date()}")
-            console.print(narration[day], style="dim")
-            rt = Runtime(settings, now_provider=lambda d=day: simulated_now(d))
-            result = CloseCycleRunner(rt).run(close_day=day)
-            _print_run_summary(result)
-
-        banner("Human review (controller steps in)")
-        rt = Runtime(settings, now_provider=lambda: simulated_now(10))
-        queue = rt.register.review_queue()
-        console.print(f"{len(queue)} item(s) in the review queue:")
-        for ln in queue:
-            console.print(f"  * {ln.line_id} {ln.vendor_name}: "
-                          f"{ln.hold_reason or ln.thread_status.value}")
-        for ln in queue:
-            if ln.status == AccrualStatus.HELD_FOR_REVIEW:
-                line = rt.register.transition(
-                    ln, AccrualStatus.CONFIRMED, actor="demo-controller",
-                    source="review", hold_reason=None,
-                    notes="demo: variance reviewed and approved",
-                )
-                je_id = rt.writeback.post_single(
-                    line, rt.calendar.period_by_name(line.period)
-                )
-                console.print(
-                    f"  [green]approved[/green] {line.line_id} → JE {je_id} "
-                    f"({line.postable_amount:,.2f} {line.currency})"
-                )
-
-        banner("Final cycle after approvals")
-        rt = Runtime(settings, now_provider=lambda: simulated_now(10))
-        result = CloseCycleRunner(rt).run(close_day=10)
-        _print_run_summary(result)
+    result = run_scripted_demo(
+        settings, console, keep=keep, print_summary=_print_run_summary
+    )
 
     console.print()
     console.print("[bold green]Demo complete.[/bold green] Inspect:")
@@ -535,6 +474,26 @@ def demo(
     console.print(f"  * report:    {result.checkpoint_report_path}")
     console.print("  * register:  accrual-agent status --period 2026-06 --full")
     console.print("  * queue:     accrual-agent review list")
+
+
+@app.command("export-web")
+def export_web(
+    out: str = typer.Option(
+        "web/src/data/demo-data.json",
+        help="Output path for the web demo data snapshot",
+    ),
+):
+    """Run the scripted demo and export per-day JSON snapshots for the web UI."""
+    from .reporting.web_export import export_demo_data
+
+    settings = get_settings()
+    if settings.mode != "mock":
+        console.print("[red]export-web requires ACCRUAL_MODE=mock[/red]")
+        raise typer.Exit(1)
+    configure_logging(settings.output_dir)
+
+    path = export_demo_data(settings, console, Path(out))
+    console.print(f"[bold green]Web demo data written:[/bold green] {path}")
 
 
 def main() -> None:

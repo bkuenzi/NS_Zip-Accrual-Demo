@@ -17,3 +17,22 @@ jobs:
         run: uv run ruff check .
       - name: Tests
         run: uv run pytest
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        run: npm ci
+        working-directory: web
+      - name: Lint
+        run: npm run lint
+        working-directory: web
+      - name: Build
+        run: npm run build
+        working-directory: web

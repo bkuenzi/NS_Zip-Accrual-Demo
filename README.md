@@ -43,6 +43,22 @@ LLM-fallback-parsed European reply, disputed amounts held for review, human
 approval posting JEs, invoice matching/clearing, and team-lead escalations.
 It ends with `output/dashboard_2026-06.html` and a checkpoint exception report.
 
+## Web demo UI (Vercel-deployable)
+
+`web/` contains an interactive Next.js demo that replays the scripted close
+from a checked-in JSON snapshot — day stepper with narration, KPI tiles and
+charts, drill-in accrual register (vendor threads, audit trail), journal
+entries, and a live controller-review step where you approve the held
+variances in the browser. No backend or credentials required.
+
+```bash
+cd web && npm install && npm run dev   # local
+uv run accrual-agent export-web        # regenerate web/src/data/demo-data.json
+```
+
+To deploy: import the repo in Vercel and set **Root Directory** to `web`
+(everything else is auto-detected). Details in [`web/README.md`](web/README.md).
+
 ## How it works
 
 ### 1. Identification (`engine/identification.py`)
