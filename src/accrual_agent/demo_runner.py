@@ -9,10 +9,9 @@ from __future__ import annotations
 
 import datetime as dt
 from collections.abc import Callable
+from decimal import Decimal
 from pathlib import Path
 from typing import Protocol
-
-from decimal import Decimal
 
 from .config import Settings
 from .locking import advisory_lock

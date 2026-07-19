@@ -22,7 +22,6 @@ from accrual_agent.models import (
     ZipRequisition,
 )
 
-
 # ── templated reply parsing ──────────────────────────────────────────────────
 
 
