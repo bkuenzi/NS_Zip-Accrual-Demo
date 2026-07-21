@@ -1,0 +1,110 @@
+document_number,tran_date,period,subsidiary_id,currency,entry_type,reversal_date,source,memo,total_debit,total_credit
+JE-202512-0001,2025-12-31,2025-12,1,USD,Opening Balance,,opening,Opening balance sheet — FY2026 carry-in,342730000.00,342730000.00
+JE-202601-0002,2026-01-31,2026-01,1,USD,Standard,,revenue,Revenue recognition — 2026-01,37891400.00,37891400.00
+JE-202601-0003,2026-01-31,2026-01,1,USD,Standard,,revenue,Advance ticket sales deferred — 2026-01,4546968.00,4546968.00
+JE-202601-0004,2026-01-31,2026-01,1,USD,Standard,,revenue,Deferred ticket revenue earned — 2026-01,3864922.80,3864922.80
+JE-202601-0005,2026-01-31,2026-01,1,USD,Standard,,revenue,Refunds & chargebacks — 2026-01,1193800.00,1193800.00
+JE-202601-0006,2026-01-31,2026-01,1,USD,Standard,,cogs,Cost of revenue — 2026-01,12798100.00,12798100.00
+JE-202601-0007,2026-01-31,2026-01,1,USD,Standard,,opex,Sales & marketing expense — 2026-01,11923900.00,11923900.00
+JE-202601-0008,2026-01-31,2026-01,1,USD,Standard,,opex,Technology expense — 2026-01,2807780.00,2807780.00
+JE-202601-0009,2026-01-31,2026-01,1,USD,Standard,,payroll,Payroll & benefits — 2026-01,6739800.00,6739800.00
+JE-202601-0010,2026-01-31,2026-01,1,USD,Standard,,payroll,Bonus & commission accrual — 2026-01,1137400.00,1137400.00
+JE-202601-0011,2026-01-31,2026-01,1,USD,Standard,,payroll,Stock-based compensation — 2026-01,1128000.00,1128000.00
+JE-202601-0012,2026-01-31,2026-01,1,USD,Standard,,payroll,"Recruiting, temp labor & training — 2026-01",631680.00,631680.00
+JE-202601-0013,2026-01-31,2026-01,1,USD,Standard,,opex,General & administrative expense — 2026-01,2242840.00,2242840.00
+JE-202601-0014,2026-01-31,2026-01,1,USD,Standard,,close,Depreciation & amortization — 2026-01,608180.00,608180.00
+JE-202601-0015,2026-01-31,2026-01,1,USD,Standard,,treasury,Interest income — 2026-01,171080.00,171080.00
+JE-202601-0016,2026-01-31,2026-01,1,USD,Standard,,treasury,Interest expense — 2026-01,207740.00,207740.00
+JE-202601-0017,2026-01-31,2026-01,1,USD,Standard,,tax,Income tax provision — 2026-01,131600.00,131600.00
+JE-202601-0018,2026-01-31,2026-01,1,USD,Standard,,treasury,Merchant settlement sweep to operating cash — 2026-01,41244568.00,41244568.00
+JE-202601-0019,2026-01-31,2026-01,1,USD,Standard,,treasury,Vendor & payroll disbursements — 2026-01,34640316.00,34640316.00
+JE-202602-0020,2026-02-28,2026-02,1,USD,Standard,,revenue,Revenue recognition — 2026-02,39100700.00,39100700.00
+JE-202602-0021,2026-02-28,2026-02,1,USD,Standard,,revenue,Advance ticket sales deferred — 2026-02,4692084.00,4692084.00
+JE-202602-0022,2026-02-28,2026-02,1,USD,Standard,,revenue,Deferred ticket revenue earned — 2026-02,3988271.40,3988271.40
+JE-202602-0023,2026-02-28,2026-02,1,USD,Standard,,revenue,Refunds & chargebacks — 2026-02,1231900.00,1231900.00
+JE-202602-0024,2026-02-28,2026-02,1,USD,Standard,,cogs,Cost of revenue — 2026-02,13206550.00,13206550.00
+JE-202602-0025,2026-02-28,2026-02,1,USD,Standard,,opex,Sales & marketing expense — 2026-02,12304450.00,12304450.00
+JE-202602-0026,2026-02-28,2026-02,1,USD,Standard,,opex,Technology expense — 2026-02,2897390.00,2897390.00
+JE-202602-0027,2026-02-28,2026-02,1,USD,Standard,,payroll,Payroll & benefits — 2026-02,6954900.00,6954900.00
+JE-202602-0028,2026-02-28,2026-02,1,USD,Standard,,payroll,Bonus & commission accrual — 2026-02,1173700.00,1173700.00
+JE-202602-0029,2026-02-28,2026-02,1,USD,Standard,,payroll,Stock-based compensation — 2026-02,1164000.00,1164000.00
+JE-202602-0030,2026-02-28,2026-02,1,USD,Standard,,payroll,"Recruiting, temp labor & training — 2026-02",651840.00,651840.00
+JE-202602-0031,2026-02-28,2026-02,1,USD,Standard,,opex,General & administrative expense — 2026-02,2314420.00,2314420.00
+JE-202602-0032,2026-02-28,2026-02,1,USD,Standard,,close,Depreciation & amortization — 2026-02,627590.00,627590.00
+JE-202602-0033,2026-02-28,2026-02,1,USD,Standard,,treasury,Interest income — 2026-02,176540.00,176540.00
+JE-202602-0034,2026-02-28,2026-02,1,USD,Standard,,treasury,Interest expense — 2026-02,214370.00,214370.00
+JE-202602-0035,2026-02-28,2026-02,1,USD,Standard,,tax,Income tax provision — 2026-02,135800.00,135800.00
+JE-202602-0036,2026-02-28,2026-02,1,USD,Standard,,treasury,Merchant settlement sweep to operating cash — 2026-02,42560884.00,42560884.00
+JE-202602-0037,2026-02-28,2026-02,1,USD,Standard,,treasury,Vendor & payroll disbursements — 2026-02,35745858.00,35745858.00
+JE-202603-0038,2026-03-31,2026-03,1,USD,Standard,,revenue,Revenue recognition — 2026-03,40310000.00,40310000.00
+JE-202603-0039,2026-03-31,2026-03,1,USD,Standard,,revenue,Advance ticket sales deferred — 2026-03,4837200.00,4837200.00
+JE-202603-0040,2026-03-31,2026-03,1,USD,Standard,,revenue,Deferred ticket revenue earned — 2026-03,4111620.00,4111620.00
+JE-202603-0041,2026-03-31,2026-03,1,USD,Standard,,revenue,Refunds & chargebacks — 2026-03,1270000.00,1270000.00
+JE-202603-0042,2026-03-31,2026-03,1,USD,Standard,,cogs,Cost of revenue — 2026-03,13615000.00,13615000.00
+JE-202603-0043,2026-03-31,2026-03,1,USD,Standard,,opex,Sales & marketing expense — 2026-03,12685000.00,12685000.00
+JE-202603-0044,2026-03-31,2026-03,1,USD,Standard,,opex,Technology expense — 2026-03,2987000.00,2987000.00
+JE-202603-0045,2026-03-31,2026-03,1,USD,Standard,,payroll,Payroll & benefits — 2026-03,7170000.00,7170000.00
+JE-202603-0046,2026-03-31,2026-03,1,USD,Standard,,payroll,Bonus & commission accrual — 2026-03,1210000.00,1210000.00
+JE-202603-0047,2026-03-31,2026-03,1,USD,Standard,,payroll,Stock-based compensation — 2026-03,1200000.00,1200000.00
+JE-202603-0048,2026-03-31,2026-03,1,USD,Standard,,payroll,"Recruiting, temp labor & training — 2026-03",672000.00,672000.00
+JE-202603-0049,2026-03-31,2026-03,1,USD,Standard,,opex,General & administrative expense — 2026-03,2386000.00,2386000.00
+JE-202603-0050,2026-03-31,2026-03,1,USD,Standard,,close,Depreciation & amortization — 2026-03,647000.00,647000.00
+JE-202603-0051,2026-03-31,2026-03,1,USD,Standard,,treasury,Interest income — 2026-03,182000.00,182000.00
+JE-202603-0052,2026-03-31,2026-03,1,USD,Standard,,treasury,Interest expense — 2026-03,221000.00,221000.00
+JE-202603-0053,2026-03-31,2026-03,1,USD,Standard,,tax,Income tax provision — 2026-03,140000.00,140000.00
+JE-202603-0054,2026-03-31,2026-03,1,USD,Standard,,treasury,Merchant settlement sweep to operating cash — 2026-03,43877200.00,43877200.00
+JE-202603-0055,2026-03-31,2026-03,1,USD,Standard,,treasury,Vendor & payroll disbursements — 2026-03,36851400.00,36851400.00
+JE-202604-0056,2026-04-30,2026-04,1,USD,Standard,,revenue,Revenue recognition — 2026-04,41519300.00,41519300.00
+JE-202604-0057,2026-04-30,2026-04,1,USD,Standard,,revenue,Advance ticket sales deferred — 2026-04,4982316.00,4982316.00
+JE-202604-0058,2026-04-30,2026-04,1,USD,Standard,,revenue,Deferred ticket revenue earned — 2026-04,4234968.60,4234968.60
+JE-202604-0059,2026-04-30,2026-04,1,USD,Standard,,revenue,Refunds & chargebacks — 2026-04,1308100.00,1308100.00
+JE-202604-0060,2026-04-30,2026-04,1,USD,Standard,,cogs,Cost of revenue — 2026-04,14023450.00,14023450.00
+JE-202604-0061,2026-04-30,2026-04,1,USD,Standard,,opex,Sales & marketing expense — 2026-04,13065550.00,13065550.00
+JE-202604-0062,2026-04-30,2026-04,1,USD,Standard,,opex,Technology expense — 2026-04,3076610.00,3076610.00
+JE-202604-0063,2026-04-30,2026-04,1,USD,Standard,,payroll,Payroll & benefits — 2026-04,7385100.00,7385100.00
+JE-202604-0064,2026-04-30,2026-04,1,USD,Standard,,payroll,Bonus & commission accrual — 2026-04,1246300.00,1246300.00
+JE-202604-0065,2026-04-30,2026-04,1,USD,Standard,,payroll,Stock-based compensation — 2026-04,1236000.00,1236000.00
+JE-202604-0066,2026-04-30,2026-04,1,USD,Standard,,payroll,"Recruiting, temp labor & training — 2026-04",692160.00,692160.00
+JE-202604-0067,2026-04-30,2026-04,1,USD,Standard,,opex,General & administrative expense — 2026-04,2457580.00,2457580.00
+JE-202604-0068,2026-04-30,2026-04,1,USD,Standard,,close,Depreciation & amortization — 2026-04,666410.00,666410.00
+JE-202604-0069,2026-04-30,2026-04,1,USD,Standard,,treasury,Interest income — 2026-04,187460.00,187460.00
+JE-202604-0070,2026-04-30,2026-04,1,USD,Standard,,treasury,Interest expense — 2026-04,227630.00,227630.00
+JE-202604-0071,2026-04-30,2026-04,1,USD,Standard,,tax,Income tax provision — 2026-04,144200.00,144200.00
+JE-202604-0072,2026-04-30,2026-04,1,USD,Standard,,treasury,Merchant settlement sweep to operating cash — 2026-04,45193516.00,45193516.00
+JE-202604-0073,2026-04-30,2026-04,1,USD,Standard,,treasury,Vendor & payroll disbursements — 2026-04,37956942.00,37956942.00
+JE-202605-0074,2026-05-31,2026-05,1,USD,Standard,,revenue,Revenue recognition — 2026-05,42728600.00,42728600.00
+JE-202605-0075,2026-05-31,2026-05,1,USD,Standard,,revenue,Advance ticket sales deferred — 2026-05,5127432.00,5127432.00
+JE-202605-0076,2026-05-31,2026-05,1,USD,Standard,,revenue,Deferred ticket revenue earned — 2026-05,4358317.20,4358317.20
+JE-202605-0077,2026-05-31,2026-05,1,USD,Standard,,revenue,Refunds & chargebacks — 2026-05,1346200.00,1346200.00
+JE-202605-0078,2026-05-31,2026-05,1,USD,Standard,,cogs,Cost of revenue — 2026-05,14431900.00,14431900.00
+JE-202605-0079,2026-05-31,2026-05,1,USD,Standard,,opex,Sales & marketing expense — 2026-05,13446100.00,13446100.00
+JE-202605-0080,2026-05-31,2026-05,1,USD,Standard,,opex,Technology expense — 2026-05,3166220.00,3166220.00
+JE-202605-0081,2026-05-31,2026-05,1,USD,Standard,,payroll,Payroll & benefits — 2026-05,7600200.00,7600200.00
+JE-202605-0082,2026-05-31,2026-05,1,USD,Standard,,payroll,Bonus & commission accrual — 2026-05,1282600.00,1282600.00
+JE-202605-0083,2026-05-31,2026-05,1,USD,Standard,,payroll,Stock-based compensation — 2026-05,1272000.00,1272000.00
+JE-202605-0084,2026-05-31,2026-05,1,USD,Standard,,payroll,"Recruiting, temp labor & training — 2026-05",712320.00,712320.00
+JE-202605-0085,2026-05-31,2026-05,1,USD,Standard,,opex,General & administrative expense — 2026-05,2529160.00,2529160.00
+JE-202605-0086,2026-05-31,2026-05,1,USD,Standard,,close,Depreciation & amortization — 2026-05,685820.00,685820.00
+JE-202605-0087,2026-05-31,2026-05,1,USD,Standard,,treasury,Interest income — 2026-05,192920.00,192920.00
+JE-202605-0088,2026-05-31,2026-05,1,USD,Standard,,treasury,Interest expense — 2026-05,234260.00,234260.00
+JE-202605-0089,2026-05-31,2026-05,1,USD,Standard,,tax,Income tax provision — 2026-05,148400.00,148400.00
+JE-202605-0090,2026-05-31,2026-05,1,USD,Standard,,treasury,Merchant settlement sweep to operating cash — 2026-05,46509832.00,46509832.00
+JE-202605-0091,2026-05-31,2026-05,1,USD,Standard,,treasury,Vendor & payroll disbursements — 2026-05,39062484.00,39062484.00
+JE-202606-0092,2026-06-30,2026-06,1,USD,Standard,,revenue,Revenue recognition — 2026-06,44341000.00,44341000.00
+JE-202606-0093,2026-06-30,2026-06,1,USD,Standard,,revenue,Advance ticket sales deferred — 2026-06,5320920.00,5320920.00
+JE-202606-0094,2026-06-30,2026-06,1,USD,Standard,,revenue,Deferred ticket revenue earned — 2026-06,4522782.00,4522782.00
+JE-202606-0095,2026-06-30,2026-06,1,USD,Standard,,revenue,Refunds & chargebacks — 2026-06,1397000.00,1397000.00
+JE-202606-0096,2026-06-30,2026-06,1,USD,Standard,,cogs,Cost of revenue — 2026-06,14976500.00,14976500.00
+JE-202606-0097,2026-06-30,2026-06,1,USD,Standard,,opex,Sales & marketing expense — 2026-06,13953500.00,13953500.00
+JE-202606-0098,2026-06-30,2026-06,1,USD,Standard,,opex,Technology expense — 2026-06,3285700.00,3285700.00
+JE-202606-0099,2026-06-30,2026-06,1,USD,Standard,,payroll,Payroll & benefits — 2026-06,7887000.00,7887000.00
+JE-202606-0100,2026-06-30,2026-06,1,USD,Standard,,payroll,Bonus & commission accrual — 2026-06,1331000.00,1331000.00
+JE-202606-0101,2026-06-30,2026-06,1,USD,Standard,,payroll,Stock-based compensation — 2026-06,1320000.00,1320000.00
+JE-202606-0102,2026-06-30,2026-06,1,USD,Standard,,payroll,"Recruiting, temp labor & training — 2026-06",739200.00,739200.00
+JE-202606-0103,2026-06-30,2026-06,1,USD,Standard,,opex,General & administrative expense — 2026-06,2624600.00,2624600.00
+JE-202606-0104,2026-06-30,2026-06,1,USD,Standard,,close,Depreciation & amortization — 2026-06,711700.00,711700.00
+JE-202606-0105,2026-06-30,2026-06,1,USD,Standard,,treasury,Interest income — 2026-06,200200.00,200200.00
+JE-202606-0106,2026-06-30,2026-06,1,USD,Standard,,treasury,Interest expense — 2026-06,243100.00,243100.00
+JE-202606-0107,2026-06-30,2026-06,1,USD,Standard,,tax,Income tax provision — 2026-06,154000.00,154000.00
+JE-202606-0108,2026-06-30,2026-06,1,USD,Standard,,treasury,Merchant settlement sweep to operating cash — 2026-06,48264920.00,48264920.00
+JE-202606-0109,2026-06-30,2026-06,1,USD,Standard,,treasury,Vendor & payroll disbursements — 2026-06,40536540.00,40536540.00

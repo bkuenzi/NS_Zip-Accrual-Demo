@@ -1,0 +1,5 @@
+location_id,name,subsidiary_id
+LOC-NYC,New York HQ,2
+LOC-DAL,Dallas Enterprise Office,3
+LOC-LON,London Office,4
+LOC-REMOTE,Remote / Distributed,2

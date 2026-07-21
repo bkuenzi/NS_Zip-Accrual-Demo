@@ -1,0 +1,9 @@
+po_number,line_id,description,gl_account,department,class_id,amount,billed_amount,received_amount,service_start,service_end
+PO-2101,1,Production cloud infrastructure — Jun 2026,50400,DEP-ENG,CLS-CORP,612000.00,0.00,487500.00,,
+PO-2102,1,Payment processing overage — Jun 2026,50000,DEP-FIN,CLS-CORP,268000.00,0.00,268000.00,,
+PO-2103,1,UEFA campaign creative — Jun 2026,60700,DEP-MKT,CLS-MKT,96000.00,0.00,72000.00,,
+PO-2104,1,National audio brand campaign — flight,60300,DEP-MKT,CLS-MKT,1800000.00,600000.00,0.00,2026-05-01,2026-07-31
+PO-2105,1,Seasonal support staffing — Jun 2026,,,,148000.00,0.00,148000.00,,
+PO-2106,1,Office CAM & operating charges — Jun 2026,64000,DEP-GA,CLS-CORP,82500.00,0.00,82500.00,,
+PO-2107,1,Data warehouse consumption — Jun 2026,61200,DEP-ENG,CLS-CORP,210000.00,0.00,185000.00,,
+PO-2108,1,Barclays Center marketing sponsorship — Q3,60500,DEP-SALES,CLS-MKT,900000.00,0.00,0.00,2026-06-01,2026-08-31

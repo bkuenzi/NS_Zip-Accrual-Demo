@@ -16,8 +16,8 @@ from pathlib import Path
 from ..config import Settings
 from ..demo_runner import (
     DEMO_DAYS,
-    FINAL_NARRATION,
-    NARRATION,
+    final_narration_for,
+    narration_for,
     run_scripted_demo,
     simulated_now,
 )
@@ -75,7 +75,10 @@ def snapshot_state(
         "closeDay": close_day,
         "label": "Final" if step_id == FINAL_CLOSE_STEP else f"Day {close_day}",
         "date": simulated_now(rt.settings, close_day).date().isoformat(),
-        "narration": FINAL_NARRATION if step_id == FINAL_CLOSE_STEP else NARRATION[close_day],
+        "narration": (
+            final_narration_for(rt.settings.profile) if step_id == FINAL_CLOSE_STEP
+            else narration_for(rt.settings.profile)[close_day]
+        ),
         "runResult": run_result,
         "kpis": {
             "lineCount": len(lines),
@@ -132,6 +135,8 @@ def export_demo_data(settings: Settings, console, out: Path) -> Path:
 
     payload = {
         "generatedAt": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
+        "profile": settings.profile,
+        "company": settings.effective_company_name,
         "period": steps[-1]["runResult"]["period"],
         "baseCurrency": settings.base_currency,
         "finalCloseDay": Runtime(settings).calendar.final_close_day,

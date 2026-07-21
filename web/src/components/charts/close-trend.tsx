@@ -16,7 +16,6 @@ import {
 } from "recharts";
 import { useDemo } from "./../demo-context";
 import { Card, CardHeader } from "../ui/card";
-import { demoData, steps } from "@/lib/data";
 import { money, moneyCompact } from "@/lib/format";
 import { useMounted } from "@/lib/use-mounted";
 
@@ -25,14 +24,13 @@ const SERIES = {
   posted: { label: "Posted", light: "#1d4ed8", dark: "#60a5fa" },
 };
 
-const data = steps.map((s) => ({
-  label: s.label,
-  total: Number(s.kpis.baseTotal),
-  posted: Number(s.kpis.postedTotal),
-}));
-
 export function CloseTrend() {
-  const { raw } = useDemo();
+  const { raw, steps, data: dataset } = useDemo();
+  const data = steps.map((s) => ({
+    label: s.label,
+    total: Number(s.kpis.baseTotal),
+    posted: Number(s.kpis.postedTotal),
+  }));
   const { resolvedTheme } = useTheme();
   const mounted = useMounted();
   const mode = mounted && resolvedTheme === "dark" ? "dark" : "light";
@@ -42,7 +40,7 @@ export function CloseTrend() {
   return (
     <Card>
       <CardHeader
-        title={`Accrued vs posted (${demoData.baseCurrency})`}
+        title={`Accrued vs posted (${dataset.baseCurrency})`}
         subtitle="Base-currency totals across the close cycle"
         action={
           <ul className="flex gap-3 pt-0.5">
@@ -85,7 +83,7 @@ export function CloseTrend() {
                   fontSize: 12,
                 }}
                 formatter={(value, name) => [
-                  money(Number(value), demoData.baseCurrency),
+                  money(Number(value), dataset.baseCurrency),
                   name === "total" ? SERIES.total.label : SERIES.posted.label,
                 ]}
               />

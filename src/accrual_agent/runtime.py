@@ -14,7 +14,12 @@ from functools import cached_property
 from .comms.cadence import Cadence
 from .comms.inbound import InboundService
 from .comms.llm_extractor import build_extractor
-from .comms.mailer import DEMO_REPLY_FIXTURES, MockMailer, SmtpImapMailer
+from .comms.mailer import (
+    DEMO_REPLY_FIXTURES,
+    MVP_REPLY_FIXTURES,
+    MockMailer,
+    SmtpImapMailer,
+)
 from .comms.outbound import OutboundService
 from .comms.templates import TemplateEngine
 from .config import GLMappingStore, Settings, VendorContactStore
@@ -58,11 +63,11 @@ class Runtime:
 
     @cached_property
     def gl_store(self) -> GLMappingStore:
-        return GLMappingStore.load()
+        return GLMappingStore.load(self.settings.config_dir / "gl_mappings.yaml")
 
     @cached_property
     def contacts(self) -> VendorContactStore:
-        return VendorContactStore.load()
+        return VendorContactStore.load(self.settings.config_dir / "vendor_contacts.yaml")
 
     @cached_property
     def templates(self) -> TemplateEngine:
@@ -80,7 +85,11 @@ class Runtime:
     def mailer(self):
         if self.settings.mode == "mock":
             mailer = MockMailer(self.settings)
-            mailer.reply_fixtures = dict(DEMO_REPLY_FIXTURES)
+            fixtures = (
+                MVP_REPLY_FIXTURES if self.settings.profile == "mvp"
+                else DEMO_REPLY_FIXTURES
+            )
+            mailer.reply_fixtures = dict(fixtures)
             mailer.hydrate(self._prior_sends())
             return mailer
         return SmtpImapMailer(self.settings)

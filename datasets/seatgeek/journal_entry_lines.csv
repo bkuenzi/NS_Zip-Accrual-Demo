@@ -1,0 +1,563 @@
+document_number,line,account_number,debit,credit,memo,subsidiary_id
+JE-202512-0001,1,10100,58200000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,2,10300,24000000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,3,10400,9600000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,4,11000,6400000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,5,11500,-450000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,6,12100,3100000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,7,12300,5200000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,8,15000,7300000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,9,15300,21500000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,10,15900,-9800000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,11,16000,18400000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,12,17000,42000000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,13,17100,15600000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,14,17200,-6200000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,15,20000,,11800000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,16,21000,,4300000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,17,21200,,6900000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,18,22000,,2100000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,19,23000,,31500000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,20,23100,,7400000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,21,24100,,14200000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,22,26000,,3600000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,23,26100,,15900000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,24,28000,,40000000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,25,30000,,12000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,26,30100,,18000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,27,31000,,205000000.00,Opening balance sheet — FY2026 carry-in,1
+JE-202512-0001,28,32000,147880000.00,,Opening balance sheet — FY2026 carry-in,1
+JE-202601-0002,1,10400,37891400.00,,Revenue recognition — 2026-01,1
+JE-202601-0002,2,40000,,27260000.00,Revenue recognition — 2026-01,1
+JE-202601-0002,3,40100,,2679000.00,Revenue recognition — 2026-01,1
+JE-202601-0002,4,40200,,4700000.00,Revenue recognition — 2026-01,1
+JE-202601-0002,5,40300,,1804800.00,Revenue recognition — 2026-01,1
+JE-202601-0002,6,40400,,714400.00,Revenue recognition — 2026-01,1
+JE-202601-0002,7,40500,,601600.00,Revenue recognition — 2026-01,1
+JE-202601-0002,8,40900,,131600.00,Revenue recognition — 2026-01,1
+JE-202601-0003,1,10400,4546968.00,,Advance ticket sales deferred — 2026-01,1
+JE-202601-0003,2,23000,,4546968.00,Advance ticket sales deferred — 2026-01,1
+JE-202601-0004,1,23000,3864922.80,,Deferred ticket revenue earned — 2026-01,1
+JE-202601-0004,2,40000,,3864922.80,Deferred ticket revenue earned — 2026-01,1
+JE-202601-0005,1,49000,855400.00,,Refunds & chargebacks — 2026-01,1
+JE-202601-0005,2,49100,338400.00,,Refunds & chargebacks — 2026-01,1
+JE-202601-0005,3,10400,,1193800.00,Refunds & chargebacks — 2026-01,1
+JE-202601-0006,1,50000,5781000.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,2,50100,1184400.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,3,50200,455900.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,4,50300,897700.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,5,50400,1334800.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,6,50500,211500.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,7,50600,2932800.00,,Cost of revenue — 2026-01,1
+JE-202601-0006,8,21500,,639905.00,Cost of revenue — 2026-01,1
+JE-202601-0006,9,20000,,12158195.00,Cost of revenue — 2026-01,1
+JE-202601-0007,1,60000,2632000.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,2,60100,2068000.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,3,60200,850700.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,4,60300,1419400.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,5,60400,672100.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,6,60500,2274800.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,7,60600,1052800.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,8,60700,427700.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,9,60800,286700.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,10,60900,239700.00,,Sales & marketing expense — 2026-01,1
+JE-202601-0007,11,21100,,1788585.00,Sales & marketing expense — 2026-01,1
+JE-202601-0007,12,20000,,10135315.00,Sales & marketing expense — 2026-01,1
+JE-202601-0008,1,61000,991700.00,,Technology expense — 2026-01,1
+JE-202601-0008,2,61100,737900.00,,Technology expense — 2026-01,1
+JE-202601-0008,3,61200,305500.00,,Technology expense — 2026-01,1
+JE-202601-0008,4,61300,173900.00,,Technology expense — 2026-01,1
+JE-202601-0008,5,61400,86480.00,,Technology expense — 2026-01,1
+JE-202601-0008,6,61500,512300.00,,Technology expense — 2026-01,1
+JE-202601-0008,7,20000,,2807780.00,Technology expense — 2026-01,1
+JE-202601-0009,1,62000,5264000.00,,Payroll & benefits — 2026-01,1
+JE-202601-0009,2,62200,587500.00,,Payroll & benefits — 2026-01,1
+JE-202601-0009,3,62300,888300.00,,Payroll & benefits — 2026-01,1
+JE-202601-0009,4,21200,,6739800.00,Payroll & benefits — 2026-01,1
+JE-202601-0010,1,62100,1137400.00,,Bonus & commission accrual — 2026-01,1
+JE-202601-0010,2,21200,,1137400.00,Bonus & commission accrual — 2026-01,1
+JE-202601-0011,1,62400,1128000.00,,Stock-based compensation — 2026-01,1
+JE-202601-0011,2,31000,,1128000.00,Stock-based compensation — 2026-01,1
+JE-202601-0012,1,62500,202100.00,,"Recruiting, temp labor & training — 2026-01",1
+JE-202601-0012,2,62600,361900.00,,"Recruiting, temp labor & training — 2026-01",1
+JE-202601-0012,3,62700,67680.00,,"Recruiting, temp labor & training — 2026-01",1
+JE-202601-0012,4,20000,,631680.00,"Recruiting, temp labor & training — 2026-01",1
+JE-202601-0013,1,63000,324300.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,2,63100,171080.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,3,63200,399500.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,4,63300,86480.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,5,64000,493500.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,6,64100,57340.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,7,64200,33840.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,8,64300,38540.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,9,65000,246280.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,10,65100,142880.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,11,65200,66740.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,12,65300,43240.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,13,65400,86480.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,14,65500,52640.00,,General & administrative expense — 2026-01,1
+JE-202601-0013,15,21400,,269140.80,General & administrative expense — 2026-01,1
+JE-202601-0013,16,20000,,1973699.20,General & administrative expense — 2026-01,1
+JE-202601-0014,1,64400,267900.00,,Depreciation & amortization — 2026-01,1
+JE-202601-0014,2,64500,340280.00,,Depreciation & amortization — 2026-01,1
+JE-202601-0014,3,15900,,267900.00,Depreciation & amortization — 2026-01,1
+JE-202601-0014,4,17200,,340280.00,Depreciation & amortization — 2026-01,1
+JE-202601-0015,1,10300,171080.00,,Interest income — 2026-01,1
+JE-202601-0015,2,80000,,171080.00,Interest income — 2026-01,1
+JE-202601-0016,1,81000,207740.00,,Interest expense — 2026-01,1
+JE-202601-0016,2,20000,,207740.00,Interest expense — 2026-01,1
+JE-202601-0017,1,90000,131600.00,,Income tax provision — 2026-01,1
+JE-202601-0017,2,27000,,131600.00,Income tax provision — 2026-01,1
+JE-202601-0018,1,10100,41244568.00,,Merchant settlement sweep to operating cash — 2026-01,1
+JE-202601-0018,2,10400,,41244568.00,Merchant settlement sweep to operating cash — 2026-01,1
+JE-202601-0019,1,20000,25122968.28,,Vendor & payroll disbursements — 2026-01,1
+JE-202601-0019,2,21100,1609726.50,,Vendor & payroll disbursements — 2026-01,1
+JE-202601-0019,3,21200,7089480.00,,Vendor & payroll disbursements — 2026-01,1
+JE-202601-0019,4,21400,242226.72,,Vendor & payroll disbursements — 2026-01,1
+JE-202601-0019,5,21500,575914.50,,Vendor & payroll disbursements — 2026-01,1
+JE-202601-0019,6,10100,,34640316.00,Vendor & payroll disbursements — 2026-01,1
+JE-202602-0020,1,10400,39100700.00,,Revenue recognition — 2026-02,1
+JE-202602-0020,2,40000,,28130000.00,Revenue recognition — 2026-02,1
+JE-202602-0020,3,40100,,2764500.00,Revenue recognition — 2026-02,1
+JE-202602-0020,4,40200,,4850000.00,Revenue recognition — 2026-02,1
+JE-202602-0020,5,40300,,1862400.00,Revenue recognition — 2026-02,1
+JE-202602-0020,6,40400,,737200.00,Revenue recognition — 2026-02,1
+JE-202602-0020,7,40500,,620800.00,Revenue recognition — 2026-02,1
+JE-202602-0020,8,40900,,135800.00,Revenue recognition — 2026-02,1
+JE-202602-0021,1,10400,4692084.00,,Advance ticket sales deferred — 2026-02,1
+JE-202602-0021,2,23000,,4692084.00,Advance ticket sales deferred — 2026-02,1
+JE-202602-0022,1,23000,3988271.40,,Deferred ticket revenue earned — 2026-02,1
+JE-202602-0022,2,40000,,3988271.40,Deferred ticket revenue earned — 2026-02,1
+JE-202602-0023,1,49000,882700.00,,Refunds & chargebacks — 2026-02,1
+JE-202602-0023,2,49100,349200.00,,Refunds & chargebacks — 2026-02,1
+JE-202602-0023,3,10400,,1231900.00,Refunds & chargebacks — 2026-02,1
+JE-202602-0024,1,50000,5965500.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,2,50100,1222200.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,3,50200,470450.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,4,50300,926350.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,5,50400,1377400.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,6,50500,218250.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,7,50600,3026400.00,,Cost of revenue — 2026-02,1
+JE-202602-0024,8,21500,,660327.50,Cost of revenue — 2026-02,1
+JE-202602-0024,9,20000,,12546222.50,Cost of revenue — 2026-02,1
+JE-202602-0025,1,60000,2716000.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,2,60100,2134000.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,3,60200,877850.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,4,60300,1464700.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,5,60400,693550.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,6,60500,2347400.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,7,60600,1086400.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,8,60700,441350.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,9,60800,295850.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,10,60900,247350.00,,Sales & marketing expense — 2026-02,1
+JE-202602-0025,11,21100,,1845667.50,Sales & marketing expense — 2026-02,1
+JE-202602-0025,12,20000,,10458782.50,Sales & marketing expense — 2026-02,1
+JE-202602-0026,1,61000,1023350.00,,Technology expense — 2026-02,1
+JE-202602-0026,2,61100,761450.00,,Technology expense — 2026-02,1
+JE-202602-0026,3,61200,315250.00,,Technology expense — 2026-02,1
+JE-202602-0026,4,61300,179450.00,,Technology expense — 2026-02,1
+JE-202602-0026,5,61400,89240.00,,Technology expense — 2026-02,1
+JE-202602-0026,6,61500,528650.00,,Technology expense — 2026-02,1
+JE-202602-0026,7,20000,,2897390.00,Technology expense — 2026-02,1
+JE-202602-0027,1,62000,5432000.00,,Payroll & benefits — 2026-02,1
+JE-202602-0027,2,62200,606250.00,,Payroll & benefits — 2026-02,1
+JE-202602-0027,3,62300,916650.00,,Payroll & benefits — 2026-02,1
+JE-202602-0027,4,21200,,6954900.00,Payroll & benefits — 2026-02,1
+JE-202602-0028,1,62100,1173700.00,,Bonus & commission accrual — 2026-02,1
+JE-202602-0028,2,21200,,1173700.00,Bonus & commission accrual — 2026-02,1
+JE-202602-0029,1,62400,1164000.00,,Stock-based compensation — 2026-02,1
+JE-202602-0029,2,31000,,1164000.00,Stock-based compensation — 2026-02,1
+JE-202602-0030,1,62500,208550.00,,"Recruiting, temp labor & training — 2026-02",1
+JE-202602-0030,2,62600,373450.00,,"Recruiting, temp labor & training — 2026-02",1
+JE-202602-0030,3,62700,69840.00,,"Recruiting, temp labor & training — 2026-02",1
+JE-202602-0030,4,20000,,651840.00,"Recruiting, temp labor & training — 2026-02",1
+JE-202602-0031,1,63000,334650.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,2,63100,176540.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,3,63200,412250.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,4,63300,89240.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,5,64000,509250.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,6,64100,59170.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,7,64200,34920.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,8,64300,39770.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,9,65000,254140.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,10,65100,147440.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,11,65200,68870.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,12,65300,44620.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,13,65400,89240.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,14,65500,54320.00,,General & administrative expense — 2026-02,1
+JE-202602-0031,15,21400,,277730.40,General & administrative expense — 2026-02,1
+JE-202602-0031,16,20000,,2036689.60,General & administrative expense — 2026-02,1
+JE-202602-0032,1,64400,276450.00,,Depreciation & amortization — 2026-02,1
+JE-202602-0032,2,64500,351140.00,,Depreciation & amortization — 2026-02,1
+JE-202602-0032,3,15900,,276450.00,Depreciation & amortization — 2026-02,1
+JE-202602-0032,4,17200,,351140.00,Depreciation & amortization — 2026-02,1
+JE-202602-0033,1,10300,176540.00,,Interest income — 2026-02,1
+JE-202602-0033,2,80000,,176540.00,Interest income — 2026-02,1
+JE-202602-0034,1,81000,214370.00,,Interest expense — 2026-02,1
+JE-202602-0034,2,20000,,214370.00,Interest expense — 2026-02,1
+JE-202602-0035,1,90000,135800.00,,Income tax provision — 2026-02,1
+JE-202602-0035,2,27000,,135800.00,Income tax provision — 2026-02,1
+JE-202602-0036,1,10100,42560884.00,,Merchant settlement sweep to operating cash — 2026-02,1
+JE-202602-0036,2,10400,,42560884.00,Merchant settlement sweep to operating cash — 2026-02,1
+JE-202602-0037,1,20000,25924765.14,,Vendor & payroll disbursements — 2026-02,1
+JE-202602-0037,2,21100,1661100.75,,Vendor & payroll disbursements — 2026-02,1
+JE-202602-0037,3,21200,7315740.00,,Vendor & payroll disbursements — 2026-02,1
+JE-202602-0037,4,21400,249957.36,,Vendor & payroll disbursements — 2026-02,1
+JE-202602-0037,5,21500,594294.75,,Vendor & payroll disbursements — 2026-02,1
+JE-202602-0037,6,10100,,35745858.00,Vendor & payroll disbursements — 2026-02,1
+JE-202603-0038,1,10400,40310000.00,,Revenue recognition — 2026-03,1
+JE-202603-0038,2,40000,,29000000.00,Revenue recognition — 2026-03,1
+JE-202603-0038,3,40100,,2850000.00,Revenue recognition — 2026-03,1
+JE-202603-0038,4,40200,,5000000.00,Revenue recognition — 2026-03,1
+JE-202603-0038,5,40300,,1920000.00,Revenue recognition — 2026-03,1
+JE-202603-0038,6,40400,,760000.00,Revenue recognition — 2026-03,1
+JE-202603-0038,7,40500,,640000.00,Revenue recognition — 2026-03,1
+JE-202603-0038,8,40900,,140000.00,Revenue recognition — 2026-03,1
+JE-202603-0039,1,10400,4837200.00,,Advance ticket sales deferred — 2026-03,1
+JE-202603-0039,2,23000,,4837200.00,Advance ticket sales deferred — 2026-03,1
+JE-202603-0040,1,23000,4111620.00,,Deferred ticket revenue earned — 2026-03,1
+JE-202603-0040,2,40000,,4111620.00,Deferred ticket revenue earned — 2026-03,1
+JE-202603-0041,1,49000,910000.00,,Refunds & chargebacks — 2026-03,1
+JE-202603-0041,2,49100,360000.00,,Refunds & chargebacks — 2026-03,1
+JE-202603-0041,3,10400,,1270000.00,Refunds & chargebacks — 2026-03,1
+JE-202603-0042,1,50000,6150000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,2,50100,1260000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,3,50200,485000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,4,50300,955000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,5,50400,1420000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,6,50500,225000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,7,50600,3120000.00,,Cost of revenue — 2026-03,1
+JE-202603-0042,8,21500,,680750.00,Cost of revenue — 2026-03,1
+JE-202603-0042,9,20000,,12934250.00,Cost of revenue — 2026-03,1
+JE-202603-0043,1,60000,2800000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,2,60100,2200000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,3,60200,905000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,4,60300,1510000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,5,60400,715000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,6,60500,2420000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,7,60600,1120000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,8,60700,455000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,9,60800,305000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,10,60900,255000.00,,Sales & marketing expense — 2026-03,1
+JE-202603-0043,11,21100,,1902750.00,Sales & marketing expense — 2026-03,1
+JE-202603-0043,12,20000,,10782250.00,Sales & marketing expense — 2026-03,1
+JE-202603-0044,1,61000,1055000.00,,Technology expense — 2026-03,1
+JE-202603-0044,2,61100,785000.00,,Technology expense — 2026-03,1
+JE-202603-0044,3,61200,325000.00,,Technology expense — 2026-03,1
+JE-202603-0044,4,61300,185000.00,,Technology expense — 2026-03,1
+JE-202603-0044,5,61400,92000.00,,Technology expense — 2026-03,1
+JE-202603-0044,6,61500,545000.00,,Technology expense — 2026-03,1
+JE-202603-0044,7,20000,,2987000.00,Technology expense — 2026-03,1
+JE-202603-0045,1,62000,5600000.00,,Payroll & benefits — 2026-03,1
+JE-202603-0045,2,62200,625000.00,,Payroll & benefits — 2026-03,1
+JE-202603-0045,3,62300,945000.00,,Payroll & benefits — 2026-03,1
+JE-202603-0045,4,21200,,7170000.00,Payroll & benefits — 2026-03,1
+JE-202603-0046,1,62100,1210000.00,,Bonus & commission accrual — 2026-03,1
+JE-202603-0046,2,21200,,1210000.00,Bonus & commission accrual — 2026-03,1
+JE-202603-0047,1,62400,1200000.00,,Stock-based compensation — 2026-03,1
+JE-202603-0047,2,31000,,1200000.00,Stock-based compensation — 2026-03,1
+JE-202603-0048,1,62500,215000.00,,"Recruiting, temp labor & training — 2026-03",1
+JE-202603-0048,2,62600,385000.00,,"Recruiting, temp labor & training — 2026-03",1
+JE-202603-0048,3,62700,72000.00,,"Recruiting, temp labor & training — 2026-03",1
+JE-202603-0048,4,20000,,672000.00,"Recruiting, temp labor & training — 2026-03",1
+JE-202603-0049,1,63000,345000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,2,63100,182000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,3,63200,425000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,4,63300,92000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,5,64000,525000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,6,64100,61000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,7,64200,36000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,8,64300,41000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,9,65000,262000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,10,65100,152000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,11,65200,71000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,12,65300,46000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,13,65400,92000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,14,65500,56000.00,,General & administrative expense — 2026-03,1
+JE-202603-0049,15,21400,,286320.00,General & administrative expense — 2026-03,1
+JE-202603-0049,16,20000,,2099680.00,General & administrative expense — 2026-03,1
+JE-202603-0050,1,64400,285000.00,,Depreciation & amortization — 2026-03,1
+JE-202603-0050,2,64500,362000.00,,Depreciation & amortization — 2026-03,1
+JE-202603-0050,3,15900,,285000.00,Depreciation & amortization — 2026-03,1
+JE-202603-0050,4,17200,,362000.00,Depreciation & amortization — 2026-03,1
+JE-202603-0051,1,10300,182000.00,,Interest income — 2026-03,1
+JE-202603-0051,2,80000,,182000.00,Interest income — 2026-03,1
+JE-202603-0052,1,81000,221000.00,,Interest expense — 2026-03,1
+JE-202603-0052,2,20000,,221000.00,Interest expense — 2026-03,1
+JE-202603-0053,1,90000,140000.00,,Income tax provision — 2026-03,1
+JE-202603-0053,2,27000,,140000.00,Income tax provision — 2026-03,1
+JE-202603-0054,1,10100,43877200.00,,Merchant settlement sweep to operating cash — 2026-03,1
+JE-202603-0054,2,10400,,43877200.00,Merchant settlement sweep to operating cash — 2026-03,1
+JE-202603-0055,1,20000,26726562.00,,Vendor & payroll disbursements — 2026-03,1
+JE-202603-0055,2,21100,1712475.00,,Vendor & payroll disbursements — 2026-03,1
+JE-202603-0055,3,21200,7542000.00,,Vendor & payroll disbursements — 2026-03,1
+JE-202603-0055,4,21400,257688.00,,Vendor & payroll disbursements — 2026-03,1
+JE-202603-0055,5,21500,612675.00,,Vendor & payroll disbursements — 2026-03,1
+JE-202603-0055,6,10100,,36851400.00,Vendor & payroll disbursements — 2026-03,1
+JE-202604-0056,1,10400,41519300.00,,Revenue recognition — 2026-04,1
+JE-202604-0056,2,40000,,29870000.00,Revenue recognition — 2026-04,1
+JE-202604-0056,3,40100,,2935500.00,Revenue recognition — 2026-04,1
+JE-202604-0056,4,40200,,5150000.00,Revenue recognition — 2026-04,1
+JE-202604-0056,5,40300,,1977600.00,Revenue recognition — 2026-04,1
+JE-202604-0056,6,40400,,782800.00,Revenue recognition — 2026-04,1
+JE-202604-0056,7,40500,,659200.00,Revenue recognition — 2026-04,1
+JE-202604-0056,8,40900,,144200.00,Revenue recognition — 2026-04,1
+JE-202604-0057,1,10400,4982316.00,,Advance ticket sales deferred — 2026-04,1
+JE-202604-0057,2,23000,,4982316.00,Advance ticket sales deferred — 2026-04,1
+JE-202604-0058,1,23000,4234968.60,,Deferred ticket revenue earned — 2026-04,1
+JE-202604-0058,2,40000,,4234968.60,Deferred ticket revenue earned — 2026-04,1
+JE-202604-0059,1,49000,937300.00,,Refunds & chargebacks — 2026-04,1
+JE-202604-0059,2,49100,370800.00,,Refunds & chargebacks — 2026-04,1
+JE-202604-0059,3,10400,,1308100.00,Refunds & chargebacks — 2026-04,1
+JE-202604-0060,1,50000,6334500.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,2,50100,1297800.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,3,50200,499550.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,4,50300,983650.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,5,50400,1462600.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,6,50500,231750.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,7,50600,3213600.00,,Cost of revenue — 2026-04,1
+JE-202604-0060,8,21500,,701172.50,Cost of revenue — 2026-04,1
+JE-202604-0060,9,20000,,13322277.50,Cost of revenue — 2026-04,1
+JE-202604-0061,1,60000,2884000.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,2,60100,2266000.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,3,60200,932150.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,4,60300,1555300.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,5,60400,736450.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,6,60500,2492600.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,7,60600,1153600.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,8,60700,468650.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,9,60800,314150.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,10,60900,262650.00,,Sales & marketing expense — 2026-04,1
+JE-202604-0061,11,21100,,1959832.50,Sales & marketing expense — 2026-04,1
+JE-202604-0061,12,20000,,11105717.50,Sales & marketing expense — 2026-04,1
+JE-202604-0062,1,61000,1086650.00,,Technology expense — 2026-04,1
+JE-202604-0062,2,61100,808550.00,,Technology expense — 2026-04,1
+JE-202604-0062,3,61200,334750.00,,Technology expense — 2026-04,1
+JE-202604-0062,4,61300,190550.00,,Technology expense — 2026-04,1
+JE-202604-0062,5,61400,94760.00,,Technology expense — 2026-04,1
+JE-202604-0062,6,61500,561350.00,,Technology expense — 2026-04,1
+JE-202604-0062,7,20000,,3076610.00,Technology expense — 2026-04,1
+JE-202604-0063,1,62000,5768000.00,,Payroll & benefits — 2026-04,1
+JE-202604-0063,2,62200,643750.00,,Payroll & benefits — 2026-04,1
+JE-202604-0063,3,62300,973350.00,,Payroll & benefits — 2026-04,1
+JE-202604-0063,4,21200,,7385100.00,Payroll & benefits — 2026-04,1
+JE-202604-0064,1,62100,1246300.00,,Bonus & commission accrual — 2026-04,1
+JE-202604-0064,2,21200,,1246300.00,Bonus & commission accrual — 2026-04,1
+JE-202604-0065,1,62400,1236000.00,,Stock-based compensation — 2026-04,1
+JE-202604-0065,2,31000,,1236000.00,Stock-based compensation — 2026-04,1
+JE-202604-0066,1,62500,221450.00,,"Recruiting, temp labor & training — 2026-04",1
+JE-202604-0066,2,62600,396550.00,,"Recruiting, temp labor & training — 2026-04",1
+JE-202604-0066,3,62700,74160.00,,"Recruiting, temp labor & training — 2026-04",1
+JE-202604-0066,4,20000,,692160.00,"Recruiting, temp labor & training — 2026-04",1
+JE-202604-0067,1,63000,355350.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,2,63100,187460.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,3,63200,437750.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,4,63300,94760.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,5,64000,540750.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,6,64100,62830.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,7,64200,37080.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,8,64300,42230.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,9,65000,269860.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,10,65100,156560.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,11,65200,73130.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,12,65300,47380.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,13,65400,94760.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,14,65500,57680.00,,General & administrative expense — 2026-04,1
+JE-202604-0067,15,21400,,294909.60,General & administrative expense — 2026-04,1
+JE-202604-0067,16,20000,,2162670.40,General & administrative expense — 2026-04,1
+JE-202604-0068,1,64400,293550.00,,Depreciation & amortization — 2026-04,1
+JE-202604-0068,2,64500,372860.00,,Depreciation & amortization — 2026-04,1
+JE-202604-0068,3,15900,,293550.00,Depreciation & amortization — 2026-04,1
+JE-202604-0068,4,17200,,372860.00,Depreciation & amortization — 2026-04,1
+JE-202604-0069,1,10300,187460.00,,Interest income — 2026-04,1
+JE-202604-0069,2,80000,,187460.00,Interest income — 2026-04,1
+JE-202604-0070,1,81000,227630.00,,Interest expense — 2026-04,1
+JE-202604-0070,2,20000,,227630.00,Interest expense — 2026-04,1
+JE-202604-0071,1,90000,144200.00,,Income tax provision — 2026-04,1
+JE-202604-0071,2,27000,,144200.00,Income tax provision — 2026-04,1
+JE-202604-0072,1,10100,45193516.00,,Merchant settlement sweep to operating cash — 2026-04,1
+JE-202604-0072,2,10400,,45193516.00,Merchant settlement sweep to operating cash — 2026-04,1
+JE-202604-0073,1,20000,27528358.86,,Vendor & payroll disbursements — 2026-04,1
+JE-202604-0073,2,21100,1763849.25,,Vendor & payroll disbursements — 2026-04,1
+JE-202604-0073,3,21200,7768260.00,,Vendor & payroll disbursements — 2026-04,1
+JE-202604-0073,4,21400,265418.64,,Vendor & payroll disbursements — 2026-04,1
+JE-202604-0073,5,21500,631055.25,,Vendor & payroll disbursements — 2026-04,1
+JE-202604-0073,6,10100,,37956942.00,Vendor & payroll disbursements — 2026-04,1
+JE-202605-0074,1,10400,42728600.00,,Revenue recognition — 2026-05,1
+JE-202605-0074,2,40000,,30740000.00,Revenue recognition — 2026-05,1
+JE-202605-0074,3,40100,,3021000.00,Revenue recognition — 2026-05,1
+JE-202605-0074,4,40200,,5300000.00,Revenue recognition — 2026-05,1
+JE-202605-0074,5,40300,,2035200.00,Revenue recognition — 2026-05,1
+JE-202605-0074,6,40400,,805600.00,Revenue recognition — 2026-05,1
+JE-202605-0074,7,40500,,678400.00,Revenue recognition — 2026-05,1
+JE-202605-0074,8,40900,,148400.00,Revenue recognition — 2026-05,1
+JE-202605-0075,1,10400,5127432.00,,Advance ticket sales deferred — 2026-05,1
+JE-202605-0075,2,23000,,5127432.00,Advance ticket sales deferred — 2026-05,1
+JE-202605-0076,1,23000,4358317.20,,Deferred ticket revenue earned — 2026-05,1
+JE-202605-0076,2,40000,,4358317.20,Deferred ticket revenue earned — 2026-05,1
+JE-202605-0077,1,49000,964600.00,,Refunds & chargebacks — 2026-05,1
+JE-202605-0077,2,49100,381600.00,,Refunds & chargebacks — 2026-05,1
+JE-202605-0077,3,10400,,1346200.00,Refunds & chargebacks — 2026-05,1
+JE-202605-0078,1,50000,6519000.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,2,50100,1335600.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,3,50200,514100.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,4,50300,1012300.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,5,50400,1505200.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,6,50500,238500.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,7,50600,3307200.00,,Cost of revenue — 2026-05,1
+JE-202605-0078,8,21500,,721595.00,Cost of revenue — 2026-05,1
+JE-202605-0078,9,20000,,13710305.00,Cost of revenue — 2026-05,1
+JE-202605-0079,1,60000,2968000.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,2,60100,2332000.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,3,60200,959300.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,4,60300,1600600.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,5,60400,757900.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,6,60500,2565200.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,7,60600,1187200.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,8,60700,482300.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,9,60800,323300.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,10,60900,270300.00,,Sales & marketing expense — 2026-05,1
+JE-202605-0079,11,21100,,2016915.00,Sales & marketing expense — 2026-05,1
+JE-202605-0079,12,20000,,11429185.00,Sales & marketing expense — 2026-05,1
+JE-202605-0080,1,61000,1118300.00,,Technology expense — 2026-05,1
+JE-202605-0080,2,61100,832100.00,,Technology expense — 2026-05,1
+JE-202605-0080,3,61200,344500.00,,Technology expense — 2026-05,1
+JE-202605-0080,4,61300,196100.00,,Technology expense — 2026-05,1
+JE-202605-0080,5,61400,97520.00,,Technology expense — 2026-05,1
+JE-202605-0080,6,61500,577700.00,,Technology expense — 2026-05,1
+JE-202605-0080,7,20000,,3166220.00,Technology expense — 2026-05,1
+JE-202605-0081,1,62000,5936000.00,,Payroll & benefits — 2026-05,1
+JE-202605-0081,2,62200,662500.00,,Payroll & benefits — 2026-05,1
+JE-202605-0081,3,62300,1001700.00,,Payroll & benefits — 2026-05,1
+JE-202605-0081,4,21200,,7600200.00,Payroll & benefits — 2026-05,1
+JE-202605-0082,1,62100,1282600.00,,Bonus & commission accrual — 2026-05,1
+JE-202605-0082,2,21200,,1282600.00,Bonus & commission accrual — 2026-05,1
+JE-202605-0083,1,62400,1272000.00,,Stock-based compensation — 2026-05,1
+JE-202605-0083,2,31000,,1272000.00,Stock-based compensation — 2026-05,1
+JE-202605-0084,1,62500,227900.00,,"Recruiting, temp labor & training — 2026-05",1
+JE-202605-0084,2,62600,408100.00,,"Recruiting, temp labor & training — 2026-05",1
+JE-202605-0084,3,62700,76320.00,,"Recruiting, temp labor & training — 2026-05",1
+JE-202605-0084,4,20000,,712320.00,"Recruiting, temp labor & training — 2026-05",1
+JE-202605-0085,1,63000,365700.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,2,63100,192920.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,3,63200,450500.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,4,63300,97520.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,5,64000,556500.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,6,64100,64660.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,7,64200,38160.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,8,64300,43460.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,9,65000,277720.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,10,65100,161120.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,11,65200,75260.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,12,65300,48760.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,13,65400,97520.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,14,65500,59360.00,,General & administrative expense — 2026-05,1
+JE-202605-0085,15,21400,,303499.20,General & administrative expense — 2026-05,1
+JE-202605-0085,16,20000,,2225660.80,General & administrative expense — 2026-05,1
+JE-202605-0086,1,64400,302100.00,,Depreciation & amortization — 2026-05,1
+JE-202605-0086,2,64500,383720.00,,Depreciation & amortization — 2026-05,1
+JE-202605-0086,3,15900,,302100.00,Depreciation & amortization — 2026-05,1
+JE-202605-0086,4,17200,,383720.00,Depreciation & amortization — 2026-05,1
+JE-202605-0087,1,10300,192920.00,,Interest income — 2026-05,1
+JE-202605-0087,2,80000,,192920.00,Interest income — 2026-05,1
+JE-202605-0088,1,81000,234260.00,,Interest expense — 2026-05,1
+JE-202605-0088,2,20000,,234260.00,Interest expense — 2026-05,1
+JE-202605-0089,1,90000,148400.00,,Income tax provision — 2026-05,1
+JE-202605-0089,2,27000,,148400.00,Income tax provision — 2026-05,1
+JE-202605-0090,1,10100,46509832.00,,Merchant settlement sweep to operating cash — 2026-05,1
+JE-202605-0090,2,10400,,46509832.00,Merchant settlement sweep to operating cash — 2026-05,1
+JE-202605-0091,1,20000,28330155.72,,Vendor & payroll disbursements — 2026-05,1
+JE-202605-0091,2,21100,1815223.50,,Vendor & payroll disbursements — 2026-05,1
+JE-202605-0091,3,21200,7994520.00,,Vendor & payroll disbursements — 2026-05,1
+JE-202605-0091,4,21400,273149.28,,Vendor & payroll disbursements — 2026-05,1
+JE-202605-0091,5,21500,649435.50,,Vendor & payroll disbursements — 2026-05,1
+JE-202605-0091,6,10100,,39062484.00,Vendor & payroll disbursements — 2026-05,1
+JE-202606-0092,1,10400,44341000.00,,Revenue recognition — 2026-06,1
+JE-202606-0092,2,40000,,31900000.00,Revenue recognition — 2026-06,1
+JE-202606-0092,3,40100,,3135000.00,Revenue recognition — 2026-06,1
+JE-202606-0092,4,40200,,5500000.00,Revenue recognition — 2026-06,1
+JE-202606-0092,5,40300,,2112000.00,Revenue recognition — 2026-06,1
+JE-202606-0092,6,40400,,836000.00,Revenue recognition — 2026-06,1
+JE-202606-0092,7,40500,,704000.00,Revenue recognition — 2026-06,1
+JE-202606-0092,8,40900,,154000.00,Revenue recognition — 2026-06,1
+JE-202606-0093,1,10400,5320920.00,,Advance ticket sales deferred — 2026-06,1
+JE-202606-0093,2,23000,,5320920.00,Advance ticket sales deferred — 2026-06,1
+JE-202606-0094,1,23000,4522782.00,,Deferred ticket revenue earned — 2026-06,1
+JE-202606-0094,2,40000,,4522782.00,Deferred ticket revenue earned — 2026-06,1
+JE-202606-0095,1,49000,1001000.00,,Refunds & chargebacks — 2026-06,1
+JE-202606-0095,2,49100,396000.00,,Refunds & chargebacks — 2026-06,1
+JE-202606-0095,3,10400,,1397000.00,Refunds & chargebacks — 2026-06,1
+JE-202606-0096,1,50000,6765000.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,2,50100,1386000.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,3,50200,533500.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,4,50300,1050500.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,5,50400,1562000.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,6,50500,247500.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,7,50600,3432000.00,,Cost of revenue — 2026-06,1
+JE-202606-0096,8,21500,,748825.00,Cost of revenue — 2026-06,1
+JE-202606-0096,9,20000,,14227675.00,Cost of revenue — 2026-06,1
+JE-202606-0097,1,60000,3080000.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,2,60100,2420000.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,3,60200,995500.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,4,60300,1661000.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,5,60400,786500.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,6,60500,2662000.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,7,60600,1232000.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,8,60700,500500.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,9,60800,335500.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,10,60900,280500.00,,Sales & marketing expense — 2026-06,1
+JE-202606-0097,11,21100,,2093025.00,Sales & marketing expense — 2026-06,1
+JE-202606-0097,12,20000,,11860475.00,Sales & marketing expense — 2026-06,1
+JE-202606-0098,1,61000,1160500.00,,Technology expense — 2026-06,1
+JE-202606-0098,2,61100,863500.00,,Technology expense — 2026-06,1
+JE-202606-0098,3,61200,357500.00,,Technology expense — 2026-06,1
+JE-202606-0098,4,61300,203500.00,,Technology expense — 2026-06,1
+JE-202606-0098,5,61400,101200.00,,Technology expense — 2026-06,1
+JE-202606-0098,6,61500,599500.00,,Technology expense — 2026-06,1
+JE-202606-0098,7,20000,,3285700.00,Technology expense — 2026-06,1
+JE-202606-0099,1,62000,6160000.00,,Payroll & benefits — 2026-06,1
+JE-202606-0099,2,62200,687500.00,,Payroll & benefits — 2026-06,1
+JE-202606-0099,3,62300,1039500.00,,Payroll & benefits — 2026-06,1
+JE-202606-0099,4,21200,,7887000.00,Payroll & benefits — 2026-06,1
+JE-202606-0100,1,62100,1331000.00,,Bonus & commission accrual — 2026-06,1
+JE-202606-0100,2,21200,,1331000.00,Bonus & commission accrual — 2026-06,1
+JE-202606-0101,1,62400,1320000.00,,Stock-based compensation — 2026-06,1
+JE-202606-0101,2,31000,,1320000.00,Stock-based compensation — 2026-06,1
+JE-202606-0102,1,62500,236500.00,,"Recruiting, temp labor & training — 2026-06",1
+JE-202606-0102,2,62600,423500.00,,"Recruiting, temp labor & training — 2026-06",1
+JE-202606-0102,3,62700,79200.00,,"Recruiting, temp labor & training — 2026-06",1
+JE-202606-0102,4,20000,,739200.00,"Recruiting, temp labor & training — 2026-06",1
+JE-202606-0103,1,63000,379500.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,2,63100,200200.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,3,63200,467500.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,4,63300,101200.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,5,64000,577500.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,6,64100,67100.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,7,64200,39600.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,8,64300,45100.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,9,65000,288200.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,10,65100,167200.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,11,65200,78100.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,12,65300,50600.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,13,65400,101200.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,14,65500,61600.00,,General & administrative expense — 2026-06,1
+JE-202606-0103,15,21400,,314952.00,General & administrative expense — 2026-06,1
+JE-202606-0103,16,20000,,2309648.00,General & administrative expense — 2026-06,1
+JE-202606-0104,1,64400,313500.00,,Depreciation & amortization — 2026-06,1
+JE-202606-0104,2,64500,398200.00,,Depreciation & amortization — 2026-06,1
+JE-202606-0104,3,15900,,313500.00,Depreciation & amortization — 2026-06,1
+JE-202606-0104,4,17200,,398200.00,Depreciation & amortization — 2026-06,1
+JE-202606-0105,1,10300,200200.00,,Interest income — 2026-06,1
+JE-202606-0105,2,80000,,200200.00,Interest income — 2026-06,1
+JE-202606-0106,1,81000,243100.00,,Interest expense — 2026-06,1
+JE-202606-0106,2,20000,,243100.00,Interest expense — 2026-06,1
+JE-202606-0107,1,90000,154000.00,,Income tax provision — 2026-06,1
+JE-202606-0107,2,27000,,154000.00,Income tax provision — 2026-06,1
+JE-202606-0108,1,10100,48264920.00,,Merchant settlement sweep to operating cash — 2026-06,1
+JE-202606-0108,2,10400,,48264920.00,Merchant settlement sweep to operating cash — 2026-06,1
+JE-202606-0109,1,20000,29399218.20,,Vendor & payroll disbursements — 2026-06,1
+JE-202606-0109,2,21100,1883722.50,,Vendor & payroll disbursements — 2026-06,1
+JE-202606-0109,3,21200,8296200.00,,Vendor & payroll disbursements — 2026-06,1
+JE-202606-0109,4,21400,283456.80,,Vendor & payroll disbursements — 2026-06,1
+JE-202606-0109,5,21500,673942.50,,Vendor & payroll disbursements — 2026-06,1
+JE-202606-0109,6,10100,,40536540.00,Vendor & payroll disbursements — 2026-06,1

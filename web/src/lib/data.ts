@@ -1,12 +1,45 @@
-import raw from "@/data/demo-data.json";
+import demoRaw from "@/data/demo-data.json";
+import mvpRaw from "@/data/mvp-data.json";
 import type { AccrualLine, AccrualStatus, DemoData, DemoStep, Kpis } from "./types";
 
-export const demoData = raw as unknown as DemoData;
+export type DatasetKey = "demo" | "mvp";
 
-export const steps = demoData.steps;
-export const finalStep = steps[steps.length - 1];
-export const day10Index = steps.findIndex((s) => s.id === "day-10");
-export const finalIndex = steps.length - 1;
+export const datasets: Record<DatasetKey, DemoData> = {
+  demo: demoRaw as unknown as DemoData,
+  mvp: mvpRaw as unknown as DemoData,
+};
+
+export const DATASET_KEYS: DatasetKey[] = ["demo", "mvp"];
+
+/** Static presentation copy for the launch chooser and header badge. */
+export const DATASET_META: Record<
+  DatasetKey,
+  { label: string; company: string; tagline: string; blurb: string }
+> = {
+  demo: {
+    label: "Demo walkthrough",
+    company: "YourCo",
+    tagline: "Guided sample dataset",
+    blurb:
+      "A compact, narrated 2026-06 close over seeded sample vendors — the fastest way to see every path the agent can take.",
+  },
+  mvp: {
+    label: "MVP — SeatGeek dataset",
+    company: "SeatGeek, Inc.",
+    tagline: "Realistic NetSuite dataset",
+    blurb:
+      "The same close, run against the standalone SeatGeek accounting dataset: a NetSuite-shaped chart of accounts, real vendor archetypes (AWS, Google, Meta, Stripe, Snowflake…), Zip commitments, and ad-platform actuals.",
+  },
+};
+
+export function isDatasetKey(value: string | null): value is DatasetKey {
+  return value === "demo" || value === "mvp";
+}
+
+/** Company label for a dataset (falls back to the static meta). */
+export function datasetCompany(key: DatasetKey): string {
+  return datasets[key].company ?? DATASET_META[key].company;
+}
 
 const POSTED_STATUSES: AccrualStatus[] = ["posted", "cleared"];
 
@@ -15,7 +48,11 @@ export function isPosted(status: AccrualStatus): boolean {
 }
 
 /** Lines whose status changed relative to the previous step (for row highlights). */
-export function changedLineIds(index: number, lines: AccrualLine[]): Set<string> {
+export function changedLineIds(
+  steps: DemoStep[],
+  index: number,
+  lines: AccrualLine[]
+): Set<string> {
   if (index <= 0) return new Set(lines.map((l) => l.line_id));
   const prev = new Map(steps[index - 1].lines.map((l) => [l.line_id, l.status]));
   return new Set(
@@ -39,6 +76,6 @@ export function computeKpis(lines: AccrualLine[], openEscalations: number): Kpis
   };
 }
 
-export function stepByIndex(index: number): DemoStep {
+export function stepByIndex(steps: DemoStep[], index: number): DemoStep {
   return steps[Math.min(Math.max(index, 0), steps.length - 1)];
 }

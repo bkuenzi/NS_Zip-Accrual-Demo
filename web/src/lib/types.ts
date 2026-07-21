@@ -197,6 +197,8 @@ export interface DemoStep {
 
 export interface DemoData {
   generatedAt: string;
+  profile?: string;
+  company?: string;
   period: string;
   baseCurrency: string;
   finalCloseDay: number;
