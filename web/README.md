@@ -31,9 +31,13 @@ identical between the two — only the books underneath differ.
   reversal dates.
 - **Needs attention** — escalations with suggested actions, agent activity
   per run, and the immutable audit trail.
+- **Trust ladder** — per-vendor estimate-vs-invoice accuracy streaks; a full
+  streak earns estimate auto-posting (Acme completes its third accurate
+  period on the final day).
 - **Interactive controller review** — on Day 10, approve or reject the two
-  held-for-review variances and watch the journal entries post. Approvals
-  reveal the line's real final-cycle state (nothing is invented client-side).
+  held-for-review variances and the sundry sub-floor aggregate, and watch the
+  journal entries post. Approvals reveal the line's real final-cycle state
+  (nothing is invented client-side).
 
 ## Local development
 

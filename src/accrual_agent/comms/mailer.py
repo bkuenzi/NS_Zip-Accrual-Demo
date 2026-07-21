@@ -224,12 +224,14 @@ DEMO_REPLY_FIXTURES: dict[str, tuple[int, str, list[tuple[str, bytes]]]] = {
         "Mit freundlichen Gruessen\nJonas Keller\nZeta GmbH",
         [("RE-2211-vorschau.pdf", b"%PDF-1.4 placeholder preview")],
     ),
-    # Dispute beyond the (10% for GL 6620) threshold -> held for review
+    # Internal budget owner (routing: internal for V-GAMMA) disputes beyond
+    # the (10% for GL 6620) threshold -> held for review — "the catch"
     "V-GAMMA": (
         7,
-        "Hello,\n\nOur records show $17,800.00 incurred for the June engagement, "
-        "not the estimate you quoted. The final invoice will follow next week.\n\n"
-        "Sofia Reyes\nGamma Consulting",
+        "Hi,\n\nChecked with the project team — Gamma has actually burned "
+        "$17,800.00 of the June engagement, not the $15,000.00 committed on the "
+        "req. Scope grew mid-month; their final invoice should land next week.\n\n"
+        "Morgan Patel\nEngagement owner, Gamma Consulting account",
         [],
     ),
     # Confirms a higher true-up -> variance breach at the default 5% -> held
@@ -239,12 +241,17 @@ DEMO_REPLY_FIXTURES: dict[str, tuple[int, str, list[tuple[str, bytes]]]] = {
         "was issued on July 9, 2026 and is on its way.\n\nAde Okafor\nTheta Software",
         [],
     ),
-    # Straightforward agreement with a prorated service-PO estimate
+    # Fills in the structured reply block (deterministic template parse) and
+    # states the delivered share — replaces straight-line proration as basis
     "V-ETA": (
         5,
-        "Hi,\n\nThat matches our side — we confirm $19,565.22 for June production "
-        "services. Invoicing monthly per the SOW; June's invoice lands mid-July.\n\n"
-        "Dana Whitfield\nEta Media Production",
+        "Hi,\n\nFilled in below — this matches our side.\n\n"
+        "    AMOUNT: 19,565.22\n"
+        "    CURRENCY: USD\n"
+        "    DELIVERED PERCENT (services only — share of the work delivered): 32.6\n"
+        "    INVOICE NUMBER (if issued):\n"
+        "    EXPECTED INVOICE DATE (YYYY-MM-DD): 2026-07-15\n\n"
+        "Invoicing monthly per the SOW.\n\nDana Whitfield\nEta Media Production",
         [],
     ),
     # V-BETA intentionally never replies -> full reminder ladder + escalation

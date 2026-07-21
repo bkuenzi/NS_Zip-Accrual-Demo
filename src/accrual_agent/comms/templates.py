@@ -26,6 +26,7 @@ STAGE_TEMPLATES: dict[CommStage, str] = {
 
 REQUIRED_VARS: dict[str, set[str]] = {
     "initial_request.j2": {"vendor_name", "amount", "currency", "ref_token", "period"},
+    "internal_request.j2": {"vendor_name", "amount", "currency", "ref_token", "period"},
     "reminder_day3.j2": {"vendor_name", "amount", "ref_token"},
     "reminder_day7.j2": {"vendor_name", "amount", "ref_token"},
     "reminder_day10.j2": {"vendor_name", "amount", "ref_token"},
@@ -76,5 +77,12 @@ class TemplateEngine:
             )
         return first_line.removeprefix("Subject:").strip(), rest.lstrip("\n")
 
-    def render_stage_email(self, stage: CommStage, **context: object) -> tuple[str, str]:
-        return self.render_email(STAGE_TEMPLATES[stage], **context)
+    def render_stage_email(
+        self, stage: CommStage, *, routing: str = "vendor", **context: object
+    ) -> tuple[str, str]:
+        name = (
+            "internal_request.j2"
+            if routing == "internal" and stage == CommStage.INITIAL
+            else STAGE_TEMPLATES[stage]
+        )
+        return self.render_email(name, **context)

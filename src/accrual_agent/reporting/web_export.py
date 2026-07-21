@@ -99,6 +99,25 @@ def snapshot_state(
         "audit": audit,
         "reviewQueue": [ln.line_id for ln in rt.register.review_queue()],
         "approvals": list(approvals),
+        "trustLadder": [
+            {
+                "vendorId": s.vendor_id,
+                "vendorName": s.vendor_name,
+                "streak": s.streak,
+                "required": s.required,
+                "eligible": s.eligible,
+                "revoked": s.revoked,
+                "periods": [
+                    {
+                        "period": p.period,
+                        "maxVariancePct": str(p.max_variance_pct),
+                        "accurate": p.accurate,
+                    }
+                    for p in s.periods
+                ],
+            }
+            for s in rt.trust.streaks()
+        ],
     }
 
 

@@ -17,6 +17,7 @@ from ..models import (
     AccrualStatus,
     EscalationReason,
     ParsedVendorReply,
+    SourceType,
     ThreadStatus,
 )
 from ..register.service import RegisterService
@@ -45,6 +46,13 @@ class ConfirmationService:
             line.vendor_id, line.gl_account, self.settings.variance_threshold_pct
         )
 
+    def _reply_source(self, line: AccrualLine) -> str:
+        return (
+            "internal_reply"
+            if self.gl_store.routing_for(line.vendor_id) == "internal"
+            else "vendor_reply"
+        )
+
     # ── vendor replies ───────────────────────────────────────────────────
 
     def apply_reply(
@@ -57,6 +65,13 @@ class ConfirmationService:
             metadata["invoice_number"] = parsed.invoice_number
         if parsed.expected_invoice_date:
             metadata["invoice_eta"] = parsed.expected_invoice_date
+        if parsed.delivered_pct is not None and line.source_type == SourceType.NETSUITE_PO:
+            # The respondent stated how much of the service is delivered — that
+            # replaces straight-line proration as the line's estimate basis.
+            metadata["estimate_basis"] = (
+                f"respondent-stated {parsed.delivered_pct}% of {line.source_ref} "
+                f"delivered through period end (replaces straight-line proration)"
+            )
 
         if parsed.confirmed_amount is None or parsed.confidence < MIN_ACTIONABLE_CONFIDENCE:
             self.register.update_fields(
@@ -77,6 +92,27 @@ class ConfirmationService:
             self.register.update_fields(line.line_id, source="inbound", **metadata)
             return flags
 
+        if parsed.method == "llm" and parsed.verified is not True:
+            # An LLM-extracted amount with no independent second-pass agreement
+            # never auto-confirms — a human reads the raw email instead.
+            self.register.transition(
+                line, AccrualStatus.HELD_FOR_REVIEW, source="inbound",
+                confirmed_amount=parsed.confirmed_amount,
+                confirmed_source=self._reply_source(line),
+                hold_reason=(
+                    f"LLM extracted {parsed.confirmed_amount:,.2f} "
+                    f"{parsed.currency or line.currency} but the second-pass "
+                    f"verification did not agree — read the reply before acting"
+                ),
+                **metadata,
+            )
+            flags.append((
+                EscalationReason.UNVERIFIED_EXTRACTION,
+                f"{line.line_id}: LLM-extracted amount failed second-pass "
+                f"verification; manual read required",
+            ))
+            return flags
+
         if parsed.currency and parsed.currency != line.currency:
             self.register.transition(
                 line, AccrualStatus.HELD_FOR_REVIEW, source="inbound",
@@ -94,12 +130,14 @@ class ConfirmationService:
 
         threshold = self.threshold_for(line)
         variance = variance_pct(line.amount, parsed.confirmed_amount)
+        if parsed.method == "llm":
+            metadata["notes"] = "LLM extraction independently verified (second pass agreed)"
         if variance <= threshold:
             if line.status == AccrualStatus.ESTIMATED:
                 self.register.transition(
                     line, AccrualStatus.CONFIRMED, source="inbound",
                     confirmed_amount=parsed.confirmed_amount,
-                    confirmed_source="vendor_reply",
+                    confirmed_source=self._reply_source(line),
                     **metadata,
                 )
             else:
@@ -116,9 +154,9 @@ class ConfirmationService:
             self.register.transition(
                 line, AccrualStatus.HELD_FOR_REVIEW, source="inbound",
                 confirmed_amount=parsed.confirmed_amount,
-                confirmed_source="vendor_reply",
+                confirmed_source=self._reply_source(line),
                 hold_reason=(
-                    f"vendor confirmed {parsed.confirmed_amount:,.2f} {line.currency} "
+                    f"respondent confirmed {parsed.confirmed_amount:,.2f} {line.currency} "
                     f"vs estimate {line.amount:,.2f} — variance {variance}% exceeds "
                     f"±{threshold}% threshold"
                 ),

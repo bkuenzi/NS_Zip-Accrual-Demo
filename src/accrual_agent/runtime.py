@@ -27,6 +27,7 @@ from .engine.api_accruals import ApiAccrualService
 from .engine.confirmation import ConfirmationService
 from .engine.escalation import EscalationService
 from .engine.identification import IdentificationService
+from .engine.trust import TrustLadderService
 from .engine.writeback import WritebackService
 from .fiscal import FiscalCalendar
 from .integrations.factory import AdapterSet, build_adapters
@@ -125,7 +126,7 @@ class Runtime:
     def outbound(self) -> OutboundService:
         return OutboundService(
             self.settings, self.repo, self.register, self.mailer, self.templates,
-            self.cadence, self.contacts, self.vendor_domains,
+            self.cadence, self.contacts, self.vendor_domains, self.gl_store,
         )
 
     @cached_property
@@ -134,6 +135,10 @@ class Runtime:
             self.repo, self.mailer, build_extractor(self.settings),
             self.settings.artifacts_dir,
         )
+
+    @cached_property
+    def trust(self) -> TrustLadderService:
+        return TrustLadderService(self.settings, self.register, self.gl_store)
 
     @cached_property
     def writeback(self) -> WritebackService:

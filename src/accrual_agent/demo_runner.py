@@ -9,33 +9,46 @@ from __future__ import annotations
 
 import datetime as dt
 from collections.abc import Callable
+from decimal import Decimal
 from pathlib import Path
 from typing import Protocol
 
 from .config import Settings
 from .locking import advisory_lock
-from .models import AccrualStatus, RunResult
+from .models import AccrualStatus, RunResult, SourceType
 from .runtime import Runtime
 
 DEMO_PERIOD_END = dt.date(2026, 6, 30)
 DEMO_DAYS = (1, 3, 5, 7, 10)
 
 NARRATION = {
-    1: "Day 1 — identify uninvoiced spend; ad-platform actuals land as provisional "
-       "auto-confirms; initial vendor requests go out (blocked where no contact).",
-    3: "Day 3 — Acme confirms by email; first reminders fire for silent vendors; "
-       "ad spend still inside the 72h settle window.",
-    5: "Day 5 checkpoint — Zeta's German-format reply routes through the LLM "
-       "fallback; Eta confirms; settled ad figures post; exception report goes out.",
-    7: "Day 7 — Gamma disputes ($17.8k vs $15k) and Theta true-up breaches the "
-       "±5% gate: both held for review; second reminders fire.",
-    10: "Day 10 (final) — Beta exhausted the ladder: non-responsive escalation + "
-        "close-risk flags; arriving invoices clear posted accruals.",
+    1: "Day 1 — the agent maps every uninvoiced dollar: receipts-not-billed, "
+       "prorated service POs, Zip committed spend, ad-platform actuals. Six "
+       "sub-floor gaps aggregate into one sundry line, and confirmation "
+       "requests go out — to the vendor, or to the internal budget owner where "
+       "that's the configured route.",
+    3: "Day 3 — Acme confirms by email (clean heuristic parse). First reminders "
+       "fire for the silent; ad spend stays provisional inside the 72h settle "
+       "window.",
+    5: "Day 5 checkpoint — Eta returns the structured reply block stating 32.6% "
+       "delivered, which replaces straight-line proration as the estimate "
+       "basis. Zeta's German-format reply routes through the LLM fallback and "
+       "passes second-pass verification. Settled ad figures post.",
+    7: "Day 7 — the catch: Gamma's internal engagement owner reports $17.8k "
+       "burned vs the $15k estimate, and Theta's usage true-up breaches the "
+       "±5% gate. The agent refuses to post either — both held with the "
+       "amounts side by side.",
+    10: "Day 10 (final) — Beta exhausted the reminder ladder: non-responsive "
+        "escalation + close-risk flags. July invoices clear posted accruals, "
+        "completing Acme's 3-period accuracy streak — it has now earned "
+        "estimate auto-posting on the trust ladder.",
 }
 
 FINAL_NARRATION = (
-    "Controller review — the held variances (Gamma dispute, Theta true-up) are "
-    "reviewed and approved; their journal entries post and the close completes."
+    "Controller review — the two held variances and the sundry aggregate are "
+    "approved; each click posts a correctly-formed auto-reversing JE to "
+    "NetSuite. The agent did the chasing and the typing; the controller made "
+    "the three calls that needed judgment."
 )
 
 # MVP profile narration — same close mechanics against the SeatGeek dataset.
@@ -70,6 +83,41 @@ def narration_for(profile: str) -> dict[int, str]:
 
 def final_narration_for(profile: str) -> str:
     return MVP_FINAL_NARRATION if profile == "mvp" else FINAL_NARRATION
+
+
+# Cleared-and-invoiced accruals from prior closes (May/April) so the demo's
+# trust ladder has real history to measure Acme's accuracy streak against.
+TRUST_HISTORY = (
+    ("2026-04", "PO-0901", Decimal("26400.00"), Decimal("26580.00")),
+    ("2026-05", "PO-0952", Decimal("27900.00"), Decimal("27750.00")),
+)
+
+
+def seed_trust_history(rt: Runtime) -> None:
+    for period, po, estimate, invoice in TRUST_HISTORY:
+        line, created = rt.register.upsert_line(
+            vendor_id="V-ACME", vendor_name="Acme Cloud Services",
+            period=period, source_type=SourceType.NETSUITE_RECEIPT,
+            source_ref=po,
+            estimate_basis=f"goods receipts less bills on {po} (prior close)",
+            amount=estimate, currency="USD", exchange_rate=Decimal("1"),
+            gl_account="6210", cost_center="CC-ENG", subsidiary_id="1",
+            actor="history-seed", source="seed",
+        )
+        if not created:
+            continue
+        line = rt.register.transition(
+            line, AccrualStatus.CONFIRMED, actor="history-seed", source="seed",
+            confirmed_amount=estimate, confirmed_source="vendor_reply",
+        )
+        line = rt.register.transition(
+            line, AccrualStatus.POSTED, actor="history-seed", source="seed",
+        )
+        rt.register.transition(
+            line, AccrualStatus.CLEARED, actor="history-seed", source="seed",
+            cleared_invoice_amount=invoice,
+            notes=f"prior-close accrual cleared by invoice ({invoice:,.2f} USD)",
+        )
 
 # on_snapshot(step_id, close_day, rt, result, approvals) — fired after each
 # day's cycle and once more after the post-review final cycle. ``approvals``
@@ -117,6 +165,12 @@ def run_scripted_demo(
     approvals: list[dict] = []
 
     with advisory_lock(settings.db_path):
+        if settings.profile != "mvp":
+            # Trust-ladder history is a demo-narrative device keyed to the demo
+            # vendor master; the SeatGeek (mvp) dataset drives its own scenarios.
+            seed_trust_history(
+                Runtime(settings, now_provider=lambda: simulated_now(settings, 1))
+            )
         for day in DEMO_DAYS:
             banner(f"Close day {day} — {simulated_now(settings, day).date()}")
             console.print(narration[day], style="dim")
@@ -135,27 +189,38 @@ def run_scripted_demo(
                           f"{ln.hold_reason or ln.thread_status.value}")
         for ln in queue:
             if ln.status == AccrualStatus.HELD_FOR_REVIEW:
+                note = "demo: variance reviewed and approved"
                 line = rt.register.transition(
                     ln, AccrualStatus.CONFIRMED, actor="demo-controller",
-                    source="review", hold_reason=None,
-                    notes="demo: variance reviewed and approved",
+                    source="review", hold_reason=None, notes=note,
                 )
-                je_id = rt.writeback.post_single(
-                    line, rt.calendar.period_by_name(line.period)
+            elif ln.source_type == SourceType.SUNDRY_AGGREGATE:
+                # The bulked sub-floor gaps: a human explicitly books the
+                # estimate — one sundry JE, per-line gate intact.
+                note = "demo: sundry sub-floor aggregate approved for posting"
+                line = rt.register.transition(
+                    ln, AccrualStatus.CONFIRMED, actor="demo-controller",
+                    source="review", confirmed_source="human_estimate_approval",
+                    notes=note,
                 )
-                approvals.append({
-                    "line_id": line.line_id,
-                    "je_id": je_id,
-                    "vendor_name": line.vendor_name,
-                    "amount": str(line.postable_amount),
-                    "currency": line.currency,
-                    "actor": "demo-controller",
-                    "note": "variance reviewed and approved",
-                })
-                console.print(
-                    f"  [green]approved[/green] {line.line_id} → JE {je_id} "
-                    f"({line.postable_amount:,.2f} {line.currency})"
-                )
+            else:
+                continue
+            je_id = rt.writeback.post_single(
+                line, rt.calendar.period_by_name(line.period)
+            )
+            approvals.append({
+                "line_id": line.line_id,
+                "je_id": je_id,
+                "vendor_name": line.vendor_name,
+                "amount": str(line.postable_amount),
+                "currency": line.currency,
+                "actor": "demo-controller",
+                "note": note,
+            })
+            console.print(
+                f"  [green]approved[/green] {line.line_id} → JE {je_id} "
+                f"({line.postable_amount:,.2f} {line.currency})"
+            )
 
         banner("Final cycle after approvals")
         rt = Runtime(settings, now_provider=lambda: simulated_now(settings, 10))

@@ -111,10 +111,16 @@ class WritebackService:
                 self.register.transition(line, AccrualStatus.POSTED, source="writeback")
             return False
 
-        estimate_based = line.confirmed_source == "human_estimate_approval"
+        estimate_based = line.confirmed_source in (
+            "human_estimate_approval", "trust_ladder"
+        )
+        estimate_tag = {
+            "human_estimate_approval": " | ESTIMATE-BASED (approved unconfirmed)",
+            "trust_ladder": " | ESTIMATE-BASED (trust-ladder auto-post)",
+        }.get(line.confirmed_source or "", "")
         memo = (
             f"Accrual {line.period} | {line.vendor_name} | {line.source_ref} | "
-            f"{line.line_id}" + (" | ESTIMATE-BASED (approved unconfirmed)" if estimate_based else "")
+            f"{line.line_id}" + estimate_tag
         )
         je = JournalEntry(
             line_id=line.line_id,
@@ -201,6 +207,7 @@ class WritebackService:
                 self.register.transition(
                     line, AccrualStatus.CLEARED, source="reconcile",
                     invoice_number=match.invoice_number,
+                    cleared_invoice_amount=match.amount,   # feeds the trust ladder
                     notes=(
                         f"invoice {match.invoice_number} ({match.amount:,.2f} "
                         f"{match.currency}) matched; NetSuite auto-reversal on "

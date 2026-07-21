@@ -38,10 +38,14 @@ make test             # pytest suite
 
 The demo runs entirely against seeded mock adapters and walks every path:
 receipt-based and prorated estimates, Zip non-PO spend, ad-platform
-auto-confirmation with 72h restatement, escalating reminders, an
-LLM-fallback-parsed European reply, disputed amounts held for review, human
-approval posting JEs, invoice matching/clearing, and team-lead escalations.
-It ends with `output/dashboard_2026-06.html` and a checkpoint exception report.
+auto-confirmation with 72h restatement, escalating reminders, a structured
+reply block with a vendor-stated delivery basis, an LLM-fallback-parsed
+European reply with second-pass verification, an internal-budget-owner
+confirmation route, sub-floor gaps aggregating into a sundry accrual, a
+disputed amount held for review, human approval posting JEs, invoice
+matching/clearing that feeds per-vendor trust-ladder accuracy streaks, and
+team-lead escalations. It ends with `output/dashboard_2026-06.html` and a
+checkpoint exception report.
 
 ## Two run modes: Demo vs MVP
 
@@ -117,21 +121,33 @@ Every cycle, uninvoiced gaps become register lines with a stated estimate basis:
 | Google Ads / Meta APIs | platform actuals − posted NetSuite invoices |
 
 Gaps below the materiality floor (default $250 base-currency) are logged, never
-accrued or emailed. Zip is **read from only** — the adapter has no write surface.
+accrued or emailed individually — but when they sum past
+`ACCRUAL_SUBFLOOR_AGGREGATE_THRESHOLD` (default $1,000) they raise one
+comm-suppressed **sundry accruals** line that a human must approve into a
+single bulk estimate-based JE. Zip is **read from only** — the adapter has no
+write surface.
 
 ### 2. Confirmation
 - **API-sourced lines** are `auto_confirmed` from data and vendor email is
   suppressed. Inside the platform's settle window (default 72h) they stay
   `provisional`: re-pulled and adjusted each cycle, posted once settled (or
   forced with the latest number on the final close day).
-- **Everything else** gets an outbound confirmation request, then escalating
-  reminders on close days 3 / 7 / 10 (configurable). Replies are matched by a
-  `[ACR-…]` reference token + `In-Reply-To` headers, parsed by deterministic
-  heuristics, with a Claude fallback (`ACCRUAL_LLM_MODEL`, default
-  `claude-haiku-4-5`) when confidence is low. PDF attachments are saved and
-  text-extracted as corroboration — they never solely auto-confirm.
-- A vendor-confirmed amount within the variance threshold (global ±5%, with
-  per-vendor / per-GL overrides) confirms the line at the vendor's number;
+- **Everything else** gets an outbound confirmation request — routed per
+  `confirmation_routing` in `gl_mappings.yaml` to either the **verified vendor
+  contact** or an **internal budget owner** (whose address must be on the
+  company domain) — then escalating reminders on close days 3 / 7 / 10
+  (configurable). The email embeds a fill-in reply block (amount, currency,
+  delivered %, invoice number/date); a stated delivered % on a service PO
+  replaces straight-line proration as the estimate basis.
+- Replies are matched by a `[ACR-…]` reference token + `In-Reply-To` headers
+  and parsed template-first, then by deterministic heuristics, with a Claude
+  fallback (`ACCRUAL_LLM_MODEL`, default `claude-haiku-4-5`) when confidence
+  is low. An **LLM extraction never auto-confirms alone** — an independent
+  second verification pass must agree, or the line is held for review. PDF
+  attachments are saved and text-extracted as corroboration — they never
+  solely auto-confirm.
+- A confirmed amount within the variance threshold (global ±5%, with
+  per-vendor / per-GL overrides) confirms the line at the respondent's number;
   beyond it, the line is **held for review** with both amounts shown.
 
 ### 3. Hard gates (enforced in code, tested)
@@ -139,6 +155,12 @@ accrued or emailed. Zip is **read from only** — the adapter has no write surfa
   `estimated — pending confirmation` can never post. On the final close day an
   unconfirmed line goes to the review queue; a human approving it posts an
   explicitly ESTIMATE-BASED JE.
+- **Autonomy is earned, per vendor**: when every cleared accrual lands within
+  `ACCRUAL_TRUST_TOLERANCE_PCT` (±3%) of the actual invoice for
+  `ACCRUAL_TRUST_STREAK_PERIODS` (3) consecutive periods, that vendor's
+  unconfirmed estimates auto-post on the final close day (memo-tagged
+  `ESTIMATE-BASED (trust-ladder auto-post)`). Any miss resets the streak;
+  controllers revoke via `trust_ladder.revoked` in `gl_mappings.yaml`.
 - Outbound email is **blocked** unless a contact is `verified: true` **and**
   its domain cross-checks against the NetSuite vendor master (managed via
   `accrual-agent contacts add|verify`, audit-logged).
@@ -149,8 +171,9 @@ accrued or emailed. Zip is **read from only** — the adapter has no write surfa
 
 ### 4. Write-back & reversal (`engine/writeback.py`)
 JEs debit the expense GL and credit accrued liabilities (memo: vendor, period,
-PO/req, line id), posted in transaction currency at the period-end spot rate,
-to the subsidiary inherited from the source document. Each JE carries
+PO/req, line id), posted in transaction currency at the rate from **NetSuite's
+own currency-rate table** (period-end effective — the ledger stays
+self-consistent), to the subsidiary inherited from the source document. Each JE carries
 `reversalDate` = day 1 of the next period (NetSuite auto-reversal). The
 reconcile pass matches arriving invoices (exact PO reference; tolerant
 vendor+period+amount for non-PO; ambiguous matches go to a human) and marks
@@ -194,6 +217,8 @@ Copy `.env.example` to `.env`. Highlights:
 | `ACCRUAL_REMINDER_DAYS` | reminder cadence, default `[3,7,10]` |
 | `ACCRUAL_VARIANCE_THRESHOLD_PCT` | global gate, default ±5% (overrides in `config/gl_mappings.yaml`) |
 | `ACCRUAL_MATERIALITY_FLOOR` | default 250.00 base currency |
+| `ACCRUAL_SUBFLOOR_AGGREGATE_THRESHOLD` | sub-floor gaps summing past this raise one sundry line (default 1000.00) |
+| `ACCRUAL_TRUST_STREAK_PERIODS` / `ACCRUAL_TRUST_TOLERANCE_PCT` | trust-ladder streak length (3) and accuracy tolerance (±3%) |
 | `ACCRUAL_AD_SETTLE_HOURS` | ad restatement window, default 72 |
 | `ACCRUAL_ESCALATION_CHANNELS` | `email`, `slack`, or `email,slack` |
 | `NETSUITE_*` | Token-Based Auth (OAuth 1.0a): account id, consumer + token key/secret |
@@ -203,7 +228,9 @@ Copy `.env.example` to `.env`. Highlights:
 
 Files under `config/`:
 - `gl_mappings.yaml` — vendor → GL/cost center, Zip BU → subsidiary,
-  ad account → vendor/subsidiary, variance overrides
+  ad account → vendor/subsidiary, variance overrides, confirmation routing
+  (vendor vs internal owner) + internal owners, sundry coding, trust-ladder
+  revocations
 - `vendor_contacts.yaml` — verified contacts (managed by the CLI)
 - `close_calendar.yaml` — fiscal calendar (calendar-month default; custom 4-4-5
   periods supported), business-day close-day derivation, final close day
@@ -220,7 +247,7 @@ src/accrual_agent/
   comms/          mailer.py outbound.py inbound.py llm_extractor.py
                   cadence.py templates.py
   engine/         identification.py api_accruals.py confirmation.py
-                  writeback.py escalation.py close_cycle.py
+                  writeback.py escalation.py close_cycle.py trust.py
   reporting/      exception_report.py dashboard.py
   cli.py
 tests/            invariants, parsers, cadence, gates, respx-mocked HTTP

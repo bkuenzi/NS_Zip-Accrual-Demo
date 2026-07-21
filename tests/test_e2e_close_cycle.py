@@ -27,11 +27,13 @@ def test_full_close_cycle(settings):
     rt, result = run_day(settings, 1)
     assert result.ok
     lines = by_vendor(rt)
-    assert len(lines) == 10
+    assert len(lines) == 11
 
     assert lines["V-ACME"].amount == Decimal("28500.00")        # receipts-not-billed
     assert lines["V-ETA"].amount == Decimal("19565.22")         # prorated service PO
     assert lines["V-GAMMA"].amount == Decimal("15000.00")       # Zip committed spend
+    assert lines["SUNDRY"].amount == Decimal("1020.00")         # aggregated sub-floor gaps
+    assert lines["SUNDRY"].comm_suppressed
     assert lines["V-GOOGLE"].confirmed_amount == Decimal("47910.22")  # provisional − billed
     assert lines["V-GOOGLE"].status == AccrualStatus.AUTO_CONFIRMED
     assert lines["V-GOOGLE"].provisional and lines["V-GOOGLE"].comm_suppressed
@@ -121,8 +123,8 @@ def test_full_close_cycle(settings):
     assert len({j.external_id for j in jes}) == 7
     assert len({j.netsuite_id for j in jes}) == 7
 
-    # Estimates never posted: Beta/Delta/Epsilon have no JEs
-    for line_id in (beta, delta, epsilon):
+    # Estimates never posted: Beta/Delta/Epsilon/sundry have no JEs
+    for line_id in (beta, delta, epsilon, lines["SUNDRY"].line_id):
         assert rt.repo.je_for_line(line_id) is None
 
     # Reports + dashboard produced
@@ -156,7 +158,7 @@ def test_api_failure_isolates_and_escalates(settings):
         platform.fail_next_pull = True
     result = CloseCycleRunner(rt).run(close_day=1)
     lines = by_vendor(rt)
-    assert len(lines) == 8                       # NetSuite/Zip paths unaffected
+    assert len(lines) == 9                       # NetSuite/Zip paths unaffected
     assert "V-GOOGLE" not in lines
     open_reasons = {e.reason for e in rt.repo.open_escalations()}
     assert EscalationReason.API_FAILURE in open_reasons
