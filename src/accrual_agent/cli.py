@@ -544,7 +544,7 @@ def export_db(
         console.print(f"  [cyan]Journal entries:[/cyan] {je_count}")
     except FileNotFoundError as exc:
         console.print(f"[red]Error: {exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
 
 @app.command("import-db")
@@ -579,7 +579,7 @@ def import_db(
             console.print(f"  [cyan]Periods:[/cyan] {', '.join(periods)}")
     except Exception as exc:
         console.print(f"[red]Error: {exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
 
 @app.command("list-snapshots")
