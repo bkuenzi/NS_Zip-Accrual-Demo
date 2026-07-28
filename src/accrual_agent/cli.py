@@ -7,6 +7,7 @@ needs attention leads, drill-down (register, threads, audit) is opt-in.
 from __future__ import annotations
 
 import datetime as dt
+import sqlite3
 import sys
 from decimal import Decimal
 from pathlib import Path
@@ -494,6 +495,128 @@ def export_web(
 
     path = export_demo_data(settings, console, Path(out))
     console.print(f"[bold green]Web demo data written:[/bold green] {path}")
+
+
+@app.command("export-db")
+def export_db(
+    out: str = typer.Option(
+        "snapshots/accruals-export.db",
+        help="Output path for the standalone database",
+    ),
+    period: str = typer.Option(
+        None,
+        help="Optional period filter (e.g., 2026-06); if omitted, exports all",
+    ),
+    no_audit: bool = typer.Option(
+        False,
+        help="Exclude audit trail logs from export",
+    ),
+    no_comms: bool = typer.Option(
+        False,
+        help="Exclude communication logs from export",
+    ),
+):
+    """Export accounting data to a standalone SQLite database for testing."""
+    from .register.db_export import export_database
+
+    settings = get_settings()
+    configure_logging(settings.output_dir)
+
+    try:
+        path = export_database(
+            settings,
+            Path(out),
+            include_audit=not no_audit,
+            include_comms=not no_comms,
+            period=period,
+        )
+        console.print(f"[bold green]Database exported:[/bold green] {path}")
+
+        conn = sqlite3.connect(path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM accrual_lines")
+        line_count = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) FROM journal_entries")
+        je_count = cursor.fetchone()[0]
+        conn.close()
+
+        console.print(f"  [cyan]Accrual lines:[/cyan] {line_count}")
+        console.print(f"  [cyan]Journal entries:[/cyan] {je_count}")
+    except FileNotFoundError as exc:
+        console.print(f"[red]Error: {exc}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command("import-db")
+def import_db(
+    source: str = typer.Argument(..., help="Path to the database file to import"),
+):
+    """Import a standalone database snapshot into the runtime."""
+    from .register.db_export import import_database
+
+    settings = get_settings()
+    configure_logging(settings.output_dir)
+
+    source_path = Path(source)
+    if not source_path.exists():
+        console.print(f"[red]Error: Source database not found: {source_path}[/red]")
+        raise typer.Exit(1)
+
+    try:
+        dest = import_database(source_path, settings)
+        console.print(f"[bold green]Database imported:[/bold green] {dest}")
+
+        conn = sqlite3.connect(dest)
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM accrual_lines")
+        line_count = cursor.fetchone()[0]
+        cursor.execute("SELECT DISTINCT period FROM accrual_lines ORDER BY period")
+        periods = [row[0] for row in cursor.fetchall()]
+        conn.close()
+
+        console.print(f"  [cyan]Accrual lines:[/cyan] {line_count}")
+        if periods:
+            console.print(f"  [cyan]Periods:[/cyan] {', '.join(periods)}")
+    except Exception as exc:
+        console.print(f"[red]Error: {exc}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command("list-snapshots")
+def list_snapshots(
+    snapshots_dir: str = typer.Option(
+        "snapshots",
+        help="Directory containing database snapshots",
+    ),
+):
+    """List available database snapshots."""
+    from .register.db_export import list_database_snapshots
+
+    snapshots_path = Path(snapshots_dir)
+    snapshots = list_database_snapshots(snapshots_path)
+
+    if not snapshots:
+        console.print(f"[yellow]No snapshots found in {snapshots_path}[/yellow]")
+        return
+
+    table = Table(title="Available Database Snapshots")
+    table.add_column("Name", style="cyan")
+    table.add_column("Periods", style="magenta")
+    table.add_column("Lines", justify="right")
+    table.add_column("JEs", justify="right")
+    table.add_column("Path")
+
+    for name, path, metadata in snapshots:
+        periods = ", ".join(metadata["periods"]) if metadata["periods"] else "—"
+        table.add_row(
+            name,
+            periods,
+            str(metadata["lines"]),
+            str(metadata["journal_entries"]),
+            str(path),
+        )
+
+    console.print(table)
 
 
 def main() -> None:
