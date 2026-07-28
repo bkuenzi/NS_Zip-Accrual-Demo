@@ -7,7 +7,6 @@ import shutil
 import sqlite3
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Optional
 
 import pytest
 
@@ -20,10 +19,10 @@ from accrual_agent.runtime import Runtime
 class IsolatedDatabaseContext:
     """Context manager for isolated test database (copy of conftest version)."""
 
-    def __init__(self, snapshot_path: Optional[Path] = None):
+    def __init__(self, snapshot_path: Path | None = None):
         self.snapshot_path = snapshot_path
-        self.tmpdir: Optional[TemporaryDirectory] = None
-        self.db_path: Optional[Path] = None
+        self.tmpdir: TemporaryDirectory | None = None
+        self.db_path: Path | None = None
 
     def __enter__(self) -> Path:
         self.tmpdir = TemporaryDirectory()
@@ -95,9 +94,9 @@ def test_status_with_snapshot(snapshot_path):
         assert len(lines) > 0, "Expected lines in 2026-06 period"
 
         # Check for various statuses
-        estimated = [l for l in lines if l.status == AccrualStatus.ESTIMATED]
-        posted = [l for l in lines if l.status == AccrualStatus.POSTED]
-        cleared = [l for l in lines if l.status == AccrualStatus.CLEARED]
+        estimated = [line for line in lines if line.status == AccrualStatus.ESTIMATED]
+        posted = [line for line in lines if line.status == AccrualStatus.POSTED]
+        cleared = [line for line in lines if line.status == AccrualStatus.CLEARED]
 
         # The demo should have lines in different states
         assert len(estimated) + len(posted) + len(cleared) > 0
@@ -190,7 +189,7 @@ class TestDemoScenarios:
     def test_closed_lines_are_cleared(self):
         """Verify that closed accruals transition to cleared status."""
         lines = self.rt.repo.lines(period="2026-06")
-        cleared = [l for l in lines if l.status == AccrualStatus.CLEARED]
+        cleared = [line for line in lines if line.status == AccrualStatus.CLEARED]
 
         for line in cleared:
             assert line.cleared_invoice_amount is not None, (
@@ -200,7 +199,7 @@ class TestDemoScenarios:
     def test_held_lines_have_hold_reason(self):
         """Verify that held lines have a reason."""
         lines = self.rt.repo.lines(period="2026-06")
-        held = [l for l in lines if l.status == AccrualStatus.HELD_FOR_REVIEW]
+        held = [line for line in lines if line.status == AccrualStatus.HELD_FOR_REVIEW]
 
         for line in held:
             assert line.hold_reason, (

@@ -5,12 +5,11 @@ import shutil
 import sqlite3
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Optional
 
 import pytest
 
 from accrual_agent.config import Settings
-from accrual_agent.register.repository import Repository, SCHEMA
+from accrual_agent.register.repository import SCHEMA, Repository
 from accrual_agent.runtime import Runtime
 
 
@@ -103,10 +102,10 @@ def test_repository(blank_test_db: Path) -> Repository:
 class IsolatedDatabaseContext:
     """Context manager for working with isolated test databases."""
 
-    def __init__(self, snapshot_path: Optional[Path] = None):
+    def __init__(self, snapshot_path: Path | None = None):
         self.snapshot_path = snapshot_path
-        self.tmpdir: Optional[TemporaryDirectory] = None
-        self.db_path: Optional[Path] = None
+        self.tmpdir: TemporaryDirectory | None = None
+        self.db_path: Path | None = None
 
     def __enter__(self) -> Path:
         self.tmpdir = TemporaryDirectory()

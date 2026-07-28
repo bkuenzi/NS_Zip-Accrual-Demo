@@ -10,7 +10,6 @@ from __future__ import annotations
 import shutil
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 from ..config import Settings
 
@@ -20,7 +19,7 @@ def export_database(
     output_path: Path,
     include_audit: bool = True,
     include_comms: bool = True,
-    period: Optional[str] = None,
+    period: str | None = None,
 ) -> Path:
     """Export accounting data to a standalone SQLite database.
 
@@ -183,7 +182,7 @@ def _clean_unused_tables(
 
 def create_test_database(
     settings: Settings,
-    snapshot_path: Optional[Path] = None,
+    snapshot_path: Path | None = None,
 ) -> Path:
     """Create an isolated test database.
 
