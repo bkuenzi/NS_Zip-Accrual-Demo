@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDemo } from "./demo-context";
 import { Card } from "./ui/card";
-import { demoData } from "@/lib/data";
 import { cn } from "@/lib/cn";
 import { moneyCompact } from "@/lib/format";
 
@@ -62,19 +61,19 @@ function Kpi({
 }
 
 export function KpiCards() {
-  const { step, raw } = useDemo();
+  const { step, raw, data } = useDemo();
   const k = step.kpis;
-  const daysLeft = Math.max(demoData.finalCloseDay - raw.closeDay, 0);
+  const daysLeft = Math.max(data.finalCloseDay - raw.closeDay, 0);
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       <Kpi label="register lines" value={k.lineCount} />
       <Kpi
-        label={`total accrual (${demoData.baseCurrency})`}
+        label={`total accrual (${data.baseCurrency})`}
         value={Number(k.baseTotal)}
         display={moneyCompact}
       />
       <Kpi
-        label={`posted (${demoData.baseCurrency})`}
+        label={`posted (${data.baseCurrency})`}
         value={Number(k.postedTotal)}
         display={moneyCompact}
       />

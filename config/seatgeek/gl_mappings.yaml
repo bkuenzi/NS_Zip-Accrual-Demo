@@ -1,0 +1,67 @@
+# GL mapping for the SeatGeek dataset (mvp profile). Mirrors config/gl_mappings.yaml
+# but against the SeatGeek NetSuite chart of accounts and vendor master. Used
+# only when ACCRUAL_PROFILE=mvp. Vendor coding here is a fallback — SeatGeek PO
+# and Zip lines already carry their own GL/department in the dataset.
+
+accrued_liability_account: "21000"   # Cr side of every accrual JE (Accrued Liabilities)
+
+vendors:
+  V-AWS:
+    gl_account: "50400"       # Hosting & Infrastructure - COGS
+    cost_center: "DEP-ENG"
+  V-GOOGLE:
+    gl_account: "60000"       # Advertising - Paid Search
+    cost_center: "DEP-MKT"
+  V-META:
+    gl_account: "60100"       # Advertising - Paid Social
+    cost_center: "DEP-MKT"
+  V-TTD:
+    gl_account: "60200"       # Advertising - Display & Programmatic
+    cost_center: "DEP-MKT"
+  V-IHEART:
+    gl_account: "60300"       # Advertising - TV, Audio & Brand
+    cost_center: "DEP-MKT"
+  V-IMPACT:
+    gl_account: "60400"       # Affiliate & Partner Marketing
+    cost_center: "DEP-MKT"
+  V-BSE:
+    gl_account: "60500"       # Team & Venue Sponsorships
+    cost_center: "DEP-SALES"
+  V-STRIPE:
+    gl_account: "50000"       # Payment Processing Fees
+    cost_center: "DEP-FIN"
+  V-SNOWFLAKE:
+    gl_account: "61200"       # Data & Analytics Platforms
+    cost_center: "DEP-ENG"
+  V-RXR:
+    gl_account: "64000"       # Rent & Occupancy
+    cost_center: "DEP-GA"
+  V-CONTENTSQ:
+    gl_account: "60900"       # Marketing Technology
+    cost_center: "DEP-MKT"
+  V-STORMFACT:
+    gl_account: "60700"       # Marketing Creative & Production
+    cost_center: "DEP-MKT"
+  # V-APEXSTAFF (Apex Staffing) intentionally unmapped -> unmapped-vendor escalation
+
+# Zip business unit -> NetSuite subsidiary
+zip_business_units:
+  BU-US-MKT: "2"
+  BU-UK-MKT: "4"
+
+# Ad account -> vendor + subsidiary (API-sourced accrual lines)
+ad_accounts:
+  "GAD-118-4420-9917":     # Google Ads customer id
+    vendor_id: V-GOOGLE
+    subsidiary_id: "2"
+  "act_559002841":         # Meta ad account id
+    vendor_id: V-META
+    subsidiary_id: "2"
+
+# Per-vendor / per-GL variance-threshold overrides (percent).
+variance_overrides:
+  vendors:
+    V-GOOGLE: 2.0     # large media spend: tighter gate
+    V-META: 2.0
+  gl_accounts:
+    "63200": 10.0     # small consulting engagements: looser gate

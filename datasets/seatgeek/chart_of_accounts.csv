@@ -1,0 +1,112 @@
+account_number,account_name,acct_type,subtype,description
+10100,Operating Bank - JPMorgan Chase,Bank,Checking,Primary USD operating account
+10150,Operating Bank - Barclays GBP,Bank,Checking,UK subsidiary operating account (GBP)
+10200,Payroll Bank - SVB,Bank,Checking,US payroll funding account
+10300,Corporate Money Market,Bank,Savings,Short-term treasury investments
+10400,Merchant Settlement Clearing - Stripe,OthCurrAsset,,Card settlements in transit from payment processor
+10410,Merchant Settlement Clearing - Braintree,OthCurrAsset,,PayPal/Braintree settlements in transit
+11000,Accounts Receivable,AcctRec,,Trade receivables (Enterprise clients)
+11100,Ticket Buyer Receivable,OthCurrAsset,,Authorized card charges not yet settled
+11500,Allowance for Doubtful Accounts,AcctRec,,Contra-AR reserve
+12000,Prepaid Expenses,OthCurrAsset,,General prepaids
+12100,Prepaid Software Subscriptions,OthCurrAsset,,"Annual SaaS prepaid, amortized monthly"
+12200,Prepaid Insurance,OthCurrAsset,,D&O and general liability prepaid
+12300,Prepaid Marketing & Sponsorships,OthCurrAsset,,Upfront team/venue sponsorship prepaid
+12400,Prepaid Rent,OthCurrAsset,,Office rent paid in advance
+13000,Deferred Contract Acquisition Costs,OthCurrAsset,,Capitalized enterprise sales commissions (ASC 340-40)
+14000,Other Current Assets,OthCurrAsset,,Miscellaneous current assets
+15000,Computer Equipment,FixedAsset,,"Laptops, servers, network gear (at cost)"
+15100,Furniture & Fixtures,FixedAsset,,Office furniture (at cost)
+15200,Leasehold Improvements,FixedAsset,,Buildout of leased office space
+15300,Capitalized Software Development,FixedAsset,,Internal-use software (ASC 350-40)
+15900,Accumulated Depreciation,FixedAsset,,Contra-asset for fixed-asset depreciation
+16000,Operating Lease ROU Asset,OthAsset,,Right-of-use asset for office leases (ASC 842)
+17000,Goodwill,OthAsset,,Goodwill from acquisitions
+17100,Intangible Assets - Developed Technology,OthAsset,,Acquired technology and trade names
+17200,Accumulated Amortization,OthAsset,,Contra-asset for intangible amortization
+20000,Accounts Payable,AcctPay,,Trade payables
+21000,Accrued Liabilities,OthCurrLiab,,General month-end accruals (default accrual credit account)
+21100,Accrued Marketing & Advertising,OthCurrLiab,,Incurred-but-uninvoiced media and sponsorship spend
+21200,Accrued Payroll & Bonus,OthCurrLiab,,"Earned but unpaid wages, bonus, and commission"
+21300,Accrued Sales Commissions,OthCurrLiab,,Enterprise sales commission payable
+21400,Accrued Professional Fees,OthCurrLiab,,"Legal, audit, and consulting accruals"
+21500,Accrued Payment Processing Fees,OthCurrLiab,,Processor fees incurred but not yet invoiced
+22000,Sales Tax Payable,OthCurrLiab,,US sales/amusement tax collected
+22100,VAT Payable,OthCurrLiab,,UK/EU value-added tax collected
+23000,Deferred Revenue - Tickets,OthCurrLiab,,Buyer fees on tickets to future events
+23100,Deferred Revenue - Enterprise SaaS,OthCurrLiab,,Unearned platform subscription revenue
+24000,Customer Deposits,OthCurrLiab,,Prepaid buyer wallet balances / credits
+24100,Seller Payable - Marketplace,OthCurrLiab,,Face value owed to marketplace ticket sellers
+25000,Credit Card Payable,CredCard,,Corporate card program balance
+26000,Operating Lease Liability - Current,OthCurrLiab,,Current portion of lease obligations (ASC 842)
+26100,Operating Lease Liability - Long Term,LongTermLiab,,Long-term lease obligations (ASC 842)
+27000,Deferred Tax Liability,LongTermLiab,,Net deferred tax liability
+28000,Term Loan Payable,LongTermLiab,,Long-term debt / venture facility
+30000,Common Stock,Equity,,Par value of common shares
+30100,Preferred Stock,Equity,,Convertible preferred (venture financing)
+31000,Additional Paid-in Capital,Equity,,Capital raised above par
+32000,Accumulated Deficit,Equity,,Cumulative retained earnings / (deficit)
+33000,Accumulated OCI - FX Translation,Equity,,Cumulative translation adjustment
+40000,Marketplace Revenue - Buyer Fees,Income,,Service fees charged to ticket buyers
+40100,Marketplace Revenue - Seller Fees,Income,,Fees charged to ticket sellers
+40200,Primary Ticketing Revenue,Income,,Per-ticket fees on SeatGeek Enterprise primary sales
+40300,Enterprise SaaS Revenue,Income,,Platform subscription / licensing revenue
+40400,Sponsorship & Advertising Revenue,Income,,On-platform advertising and sponsorship
+40500,Delivery & Fulfillment Fee Revenue,Income,,Ticket delivery / handling fees
+40900,Other Revenue,Income,,Miscellaneous revenue
+49000,Refunds & Cancellations,Income,,Contra-revenue for refunded orders
+49100,Chargebacks - Revenue Reversals,Income,,Contra-revenue for disputed/charged-back orders
+50000,Payment Processing Fees,COGS,,Interchange and processor fees on GMV
+50100,Ticket Fulfillment & Delivery,COGS,,"Mobile delivery, print-at-home, courier"
+50200,Chargeback & Fraud Losses,COGS,,Net fraud and dispute losses
+50300,Customer Support - Cost of Revenue,COGS,,Front-line buyer/seller support
+50400,Hosting & Infrastructure - COGS,COGS,,Production cloud infrastructure serving the marketplace
+50500,Content & Data Licensing,COGS,,"Event, venue, and seat-map data licensing"
+50600,Partner Revenue Share,COGS,,Team/venue/league revenue share on primary sales
+60000,Advertising - Paid Search,Expense,,Google Ads and search engine marketing
+60100,Advertising - Paid Social,Expense,,"Meta, TikTok, and social advertising"
+60200,Advertising - Display & Programmatic,Expense,,The Trade Desk and programmatic display
+60300,"Advertising - TV, Audio & Brand",Expense,,"Linear/streaming TV, podcast, out-of-home"
+60400,Affiliate & Partner Marketing,Expense,,Affiliate networks and referral partners
+60500,Team & Venue Sponsorships,Expense,,Naming rights and marketing sponsorship fees
+60600,Promotions & Buyer Incentives,Expense,,Discount codes and promotional credits
+60700,Marketing Creative & Production,Expense,,Creative agencies and content production
+60800,Field & Event Marketing,Expense,,On-site activations and event marketing
+60900,Marketing Technology,Expense,,"Martech, attribution, and CRM tooling"
+61000,Cloud Hosting & Infrastructure,Expense,,"Non-production AWS, staging, and internal tooling"
+61100,Software Subscriptions,Expense,,SaaS applications and licenses
+61200,Data & Analytics Platforms,Expense,,"Warehouse, BI, and analytics tooling"
+61300,Security & Compliance Tools,Expense,,"Security, PCI, and compliance tooling"
+61400,Telecommunications,Expense,,"SMS, voice, and connectivity"
+61500,Engineering Contractors,Expense,,Contract and staff-aug engineering
+62000,Salaries & Wages,Expense,,Base salary and wages
+62100,Bonus & Commission,Expense,,Discretionary bonus and sales commission
+62200,Payroll Taxes,Expense,,Employer payroll taxes
+62300,Employee Benefits,Expense,,"Health, retirement, and other benefits"
+62400,Stock-Based Compensation,Expense,,Non-cash equity compensation
+62500,Recruiting & Hiring,Expense,,"Agencies, job boards, and relocation"
+62600,Contract & Temporary Labor,Expense,,Non-engineering contractors and temps
+62700,Training & Development,Expense,,L&D and professional development
+63000,Legal Fees,Expense,,Outside counsel
+63100,Audit & Accounting Fees,Expense,,"External audit, tax prep, and outsourced accounting"
+63200,Consulting & Professional Services,Expense,,Management and technical consulting
+63300,Tax Services,Expense,,Tax advisory and compliance
+64000,Rent & Occupancy,Expense,,Office lease expense (ASC 842 straight-line)
+64100,Utilities,Expense,,"Electricity, internet, and building services"
+64200,Office Supplies & Expenses,Expense,,"Supplies, snacks, and office operations"
+64300,Repairs & Maintenance,Expense,,Facilities repairs and maintenance
+64400,Depreciation Expense,Expense,,Depreciation of fixed assets
+64500,Amortization Expense,Expense,,Amortization of intangibles and cap-dev software
+65000,Travel & Entertainment,Expense,,Employee travel and client entertainment
+65100,Insurance,Expense,,"D&O, cyber, and general liability"
+65200,Bank & Merchant Fees - G&A,Expense,,Corporate banking and non-COGS merchant fees
+65300,Dues & Subscriptions,Expense,,Memberships and publications
+65400,Bad Debt Expense,Expense,,Write-offs of uncollectible receivables
+65500,Business Taxes & Licenses,Expense,,"Franchise tax, licenses, and permits"
+65900,Other Operating Expense,Expense,,Miscellaneous operating expense
+80000,Interest Income,OthIncome,,Interest earned on treasury balances
+80100,Other Income,OthIncome,,Non-operating income
+81000,Interest Expense,OthExpense,,Interest on debt facilities
+81100,Foreign Exchange Gain/Loss,OthExpense,,Realized and unrealized FX
+82000,Loss on Disposal of Assets,OthExpense,,Fixed-asset disposals
+90000,Income Tax Expense,OthExpense,,Current and deferred income tax

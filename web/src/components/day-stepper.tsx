@@ -3,13 +3,20 @@
 import { Check, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { useEffect } from "react";
 import { useDemo } from "./demo-context";
-import { steps } from "@/lib/data";
 import { cn } from "@/lib/cn";
 import { fmtDate } from "@/lib/format";
 
 export function DayStepper() {
-  const { index, setIndex, raw, decisions, resetReview, pendingReview, isReviewStep } =
-    useDemo();
+  const {
+    steps,
+    index,
+    setIndex,
+    raw,
+    decisions,
+    resetReview,
+    pendingReview,
+    isReviewStep,
+  } = useDemo();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

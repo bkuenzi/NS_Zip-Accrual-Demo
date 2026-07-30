@@ -1,0 +1,21 @@
+vendor_id,name,domain,subsidiary_id,currency,gl_account,department,class_id,category
+V-AWS,"Amazon Web Services, Inc.",aws.amazon.com,2,USD,50400,DEP-ENG,CLS-CORP,Cloud Infrastructure
+V-GOOGLE,Google LLC,google.com,2,USD,60000,DEP-MKT,CLS-MKT,Paid Search
+V-META,"Meta Platforms, Inc.",meta.com,2,USD,60100,DEP-MKT,CLS-MKT,Paid Social
+V-TTD,"The Trade Desk, Inc.",thetradedesk.com,2,USD,60200,DEP-MKT,CLS-MKT,Programmatic Display
+V-IHEART,"iHeartMedia + Entertainment, Inc.",iheartmedia.com,2,USD,60300,DEP-MKT,CLS-MKT,Audio / Brand Media
+V-IMPACT,impact.com,impact.com,2,USD,60400,DEP-MKT,CLS-MKT,Affiliate Marketing
+V-BSE,"Brooklyn Sports & Entertainment, LLC",brooklynse.com,2,USD,60500,DEP-SALES,CLS-MKT,Sponsorship
+V-STRIPE,"Stripe, Inc.",stripe.com,2,USD,50000,DEP-FIN,CLS-CORP,Payment Processing
+V-BRAINTREE,PayPal / Braintree,braintreepayments.com,2,USD,50000,DEP-FIN,CLS-CORP,Payment Processing
+V-TWILIO,Twilio Inc.,twilio.com,2,USD,61400,DEP-ENG,CLS-CORP,Communications API
+V-SNOWFLAKE,Snowflake Inc.,snowflake.com,2,USD,61200,DEP-ENG,CLS-CORP,Data Platform
+V-DATADOG,"Datadog, Inc.",datadoghq.com,2,USD,61300,DEP-IT,CLS-CORP,Observability
+V-SFDC,"Salesforce, Inc.",salesforce.com,3,USD,61100,DEP-SALES,CLS-ENT,CRM
+V-ZENDESK,"Zendesk, Inc.",zendesk.com,2,USD,50300,DEP-OPS,CLS-MKT,Support Platform
+V-KPMG,KPMG LLP,kpmg.com,1,USD,63100,DEP-FIN,CLS-CORP,Audit
+V-COOLEY,Cooley LLP,cooley.com,1,USD,63000,DEP-GA,CLS-CORP,Legal
+V-RXR,RXR Realty (902 Broadway),rxrrealty.com,2,USD,64000,DEP-GA,CLS-CORP,Office Lease
+V-CONTENTSQ,Contentsquare SAS,contentsquare.com,4,GBP,60900,DEP-MKT,CLS-MKT,Experience Analytics
+V-STORMFACT,Stormfactory Creative Ltd,stormfactory.example,4,GBP,60700,DEP-MKT,CLS-MKT,Creative Production
+V-APEXSTAFF,Apex Staffing Partners,apexstaffing.example,2,USD,,,,Contract Labor (UNMAPPED)

@@ -7,8 +7,10 @@ needs attention leads, drill-down (register, threads, audit) is opt-in.
 from __future__ import annotations
 
 import datetime as dt
+import os
 import sys
 from decimal import Decimal
+from enum import StrEnum
 from pathlib import Path
 
 import typer
@@ -29,6 +31,23 @@ app.add_typer(review_app, name="review")
 app.add_typer(contacts_app, name="contacts")
 
 console = Console()
+
+
+class Profile(StrEnum):
+    demo = "demo"
+    mvp = "mvp"
+
+
+_PROFILE_OPTION = typer.Option(
+    Profile.demo, "--profile",
+    help="Dataset: demo (toy walkthrough) or mvp (SeatGeek dataset)",
+)
+
+
+def _apply_profile(profile: Profile) -> None:
+    """Select the dataset profile for this invocation (demo | mvp)."""
+    os.environ["ACCRUAL_PROFILE"] = profile.value
+    get_settings.cache_clear()
 
 
 def _runtime(now: dt.datetime | None = None) -> Runtime:
@@ -416,7 +435,8 @@ def doctor():
     """Check configuration and connectivity for every integration."""
     settings = get_settings()
     configure_logging(settings.output_dir, json_file=False)
-    console.print(f"mode: [bold]{settings.mode}[/bold] · outbound: "
+    profile_note = f" · profile: {settings.profile}" if settings.mode == "mock" else ""
+    console.print(f"mode: [bold]{settings.mode}[/bold]{profile_note} · outbound: "
                   f"{settings.effective_outbound_mode} · base ccy: {settings.base_currency}")
     checks: list[tuple[str, str]] = []
 
@@ -453,16 +473,22 @@ def doctor():
 
 @app.command()
 def demo(
+    profile: Profile = _PROFILE_OPTION,
     keep: bool = typer.Option(False, help="Keep existing demo register instead of resetting"),
 ):
     """Scripted end-to-end walkthrough of the 2026-06 close in mock mode."""
     from .demo_runner import run_scripted_demo
 
+    _apply_profile(profile)
     settings = get_settings()
     if settings.mode != "mock":
         console.print("[red]demo requires ACCRUAL_MODE=mock[/red]")
         raise typer.Exit(1)
     configure_logging(settings.output_dir)
+    console.print(
+        f"[bold]{settings.effective_company_name}[/bold] · profile: "
+        f"[cyan]{settings.profile}[/cyan]"
+    )
 
     result = run_scripted_demo(
         settings, console, keep=keep, print_summary=_print_run_summary
@@ -478,22 +504,27 @@ def demo(
 
 @app.command("export-web")
 def export_web(
-    out: str = typer.Option(
-        "web/src/data/demo-data.json",
-        help="Output path for the web demo data snapshot",
+    profile: Profile = _PROFILE_OPTION,
+    out: str | None = typer.Option(
+        None,
+        help="Output path (defaults to web/src/data/{demo,mvp}-data.json per profile)",
     ),
 ):
     """Run the scripted demo and export per-day JSON snapshots for the web UI."""
     from .reporting.web_export import export_demo_data
 
+    _apply_profile(profile)
     settings = get_settings()
     if settings.mode != "mock":
         console.print("[red]export-web requires ACCRUAL_MODE=mock[/red]")
         raise typer.Exit(1)
     configure_logging(settings.output_dir)
 
-    path = export_demo_data(settings, console, Path(out))
-    console.print(f"[bold green]Web demo data written:[/bold green] {path}")
+    default_out = f"web/src/data/{settings.profile}-data.json"
+    path = export_demo_data(settings, console, Path(out or default_out))
+    console.print(
+        f"[bold green]Web {settings.profile} data written:[/bold green] {path}"
+    )
 
 
 def main() -> None:
