@@ -127,7 +127,7 @@ class MockLLMExtractor:
 
     def extract(self, body: str) -> ParsedVendorReply | None:
         eu_match = re.search(
-            r"(EUR|CHF|SEK|DKK|PLN)\s*([\d.]+,\d{2})", body, re.IGNORECASE
+            r"(EUR|GBP|CHF|SEK|DKK|PLN)\s*([\d.]+,\d{2})", body, re.IGNORECASE
         )
         us_match = re.search(r"[$]\s*([\d,]+(?:\.\d{2})?)", body)
         amount = currency = None

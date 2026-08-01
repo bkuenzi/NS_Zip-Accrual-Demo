@@ -51,6 +51,40 @@ FINAL_NARRATION = (
     "the three calls that needed judgment."
 )
 
+# MVP profile narration — same close mechanics against the SeatGeek dataset.
+MVP_NARRATION = {
+    1: "Day 1 — identify uninvoiced spend across NetSuite POs, Zip commitments, "
+       "and ad platforms; Google/Meta actuals land as auto-confirms (Meta still "
+       "provisional inside the 72h settle window); initial vendor requests go out "
+       "(RXR blocked — no verified contact).",
+    3: "Day 3 — AWS and The Trade Desk confirm by email; first reminders fire for "
+       "silent vendors; Meta spend still inside the settle window.",
+    5: "Day 5 checkpoint — Stormfactory's European-format reply routes through the "
+       "LLM fallback; iHeart and impact.com confirm; settled ad figures post; "
+       "exception report goes out.",
+    7: "Day 7 — Snowflake's true-up ($212.4k vs $185k) breaches the ±5% gate and "
+       "is held for review; Brooklyn Sports and Contentsquare confirm; second "
+       "reminders fire.",
+    10: "Day 10 (final) — Stripe exhausted the ladder: non-responsive escalation + "
+        "close-risk; Apex Staffing has no GL mapping (unmapped escalation); "
+        "arriving July invoices clear posted accruals.",
+}
+
+MVP_FINAL_NARRATION = (
+    "Controller review — the held Snowflake true-up and any close-risk estimates "
+    "are reviewed and approved; their journal entries post and the SeatGeek close "
+    "completes."
+)
+
+
+def narration_for(profile: str) -> dict[int, str]:
+    return MVP_NARRATION if profile == "mvp" else NARRATION
+
+
+def final_narration_for(profile: str) -> str:
+    return MVP_FINAL_NARRATION if profile == "mvp" else FINAL_NARRATION
+
+
 # Cleared-and-invoiced accruals from prior closes (May/April) so the demo's
 # trust ladder has real history to measure Acme's accuracy streak against.
 TRUST_HISTORY = (
@@ -126,16 +160,20 @@ def run_scripted_demo(
     def banner(text: str) -> None:
         console.rule(f"[bold cyan]{text}")
 
+    narration = narration_for(settings.profile)
     summary = print_summary or (lambda result: None)
     approvals: list[dict] = []
 
     with advisory_lock(settings.db_path):
-        seed_trust_history(
-            Runtime(settings, now_provider=lambda: simulated_now(settings, 1))
-        )
+        if settings.profile != "mvp":
+            # Trust-ladder history is a demo-narrative device keyed to the demo
+            # vendor master; the SeatGeek (mvp) dataset drives its own scenarios.
+            seed_trust_history(
+                Runtime(settings, now_provider=lambda: simulated_now(settings, 1))
+            )
         for day in DEMO_DAYS:
             banner(f"Close day {day} — {simulated_now(settings, day).date()}")
-            console.print(NARRATION[day], style="dim")
+            console.print(narration[day], style="dim")
             rt = Runtime(settings, now_provider=lambda d=day: simulated_now(settings, d))
             result = CloseCycleRunner(rt).run(close_day=day)
             summary(result)

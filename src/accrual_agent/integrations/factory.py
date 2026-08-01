@@ -24,6 +24,16 @@ def build_adapters(
 ) -> AdapterSet:
     """`now_provider` lets the demo simulate close days; live mode ignores it."""
     if settings.mode == "mock":
+        if settings.profile == "mvp":
+            from .seatgeek.adapters import build_seatgeek_adapters
+
+            netsuite, zip_adapter, ad_platforms = build_seatgeek_adapters(
+                settings.ad_settle_hours, now_provider
+            )
+            return AdapterSet(
+                netsuite=netsuite, zip=zip_adapter, ad_platforms=ad_platforms
+            )
+
         from .netsuite.mock import MockNetSuite
         from .zip_client.mock import MockZip
 

@@ -256,3 +256,76 @@ DEMO_REPLY_FIXTURES: dict[str, tuple[int, str, list[tuple[str, bytes]]]] = {
     ),
     # V-BETA intentionally never replies -> full reminder ladder + escalation
 }
+
+
+MVP_REPLY_FIXTURES: dict[str, tuple[int, str, list[tuple[str, bytes]]]] = {
+    # SeatGeek dataset (mvp profile). Amounts tie to the identification engine's
+    # estimates so each reply exercises a specific confirmation path.
+    # AWS — clean confirmation within threshold -> heuristic confirm
+    "V-AWS": (
+        3,
+        "Hi,\n\nConfirming $487,500.00 of production infrastructure usage for "
+        "June 2026 (PO-2101). The AWS June invoice will post to your AP inbox by "
+        "2026-07-06.\n\nThanks,\nJordan\nAWS Billing",
+        [],
+    ),
+    # The Trade Desk — Zip committed spend, clean confirm
+    "V-TTD": (
+        3,
+        "Hello,\n\nWe confirm $420,000.00 of managed programmatic spend for the "
+        "June 2026 flight. Invoice to follow by 2026-07-08.\n\nBest,\nMorgan\n"
+        "The Trade Desk",
+        [],
+    ),
+    # iHeartMedia — prorated service-PO estimate, agrees within threshold
+    "V-IHEART": (
+        5,
+        "Hi team,\n\nThat aligns with our records — we confirm $587,000.00 for the "
+        "June portion of the national audio brand campaign (PO-2104). Monthly "
+        "billing per the IO; June's invoice lands 2026-07-15.\n\nCasey\niHeartMedia",
+        [],
+    ),
+    # impact.com — affiliate Zip spend, clean confirm
+    "V-IMPACT": (
+        5,
+        "Hello,\n\nConfirmed: $185,000.00 in affiliate and partner payouts for "
+        "June 2026. Statement will be issued 2026-07-10.\n\nRegards,\nTaylor\n"
+        "impact.com",
+        [],
+    ),
+    # Stormfactory (GBP, sub 4) — European number format -> LLM fallback path
+    "V-STORMFACT": (
+        5,
+        "Hello,\n\nwe confirm the June creative production services, invoice "
+        "SF-2026-0442, total GBP 72.000,00. The invoice follows in early July.\n\n"
+        "Kind regards,\nEleanor Voss\nStormfactory Creative Ltd",
+        [("SF-2026-0442-proforma.pdf", b"%PDF-1.4 placeholder proforma")],
+    ),
+    # Snowflake — reports a higher true-up -> variance breach at 5% -> held
+    "V-SNOWFLAKE": (
+        7,
+        "Hi,\n\nThe June warehouse consumption true-up came to $212,400.00 "
+        "(invoice SNOW-INV-77120, dated 2026-07-09), a little above the estimate. "
+        "It's on its way to AP.\n\nAvery\nSnowflake",
+        [],
+    ),
+    # Brooklyn Sports — prorated sponsorship, agrees within threshold
+    "V-BSE": (
+        7,
+        "Hello,\n\nWe confirm $293,478.26 for the June share of the Barclays "
+        "Center marketing sponsorship (PO-2108). Quarterly invoice issues "
+        "2026-07-12.\n\nJamie\nBrooklyn Sports & Entertainment",
+        [],
+    ),
+    # Contentsquare (GBP) — clean confirm with invoice + date
+    "V-CONTENTSQ": (
+        7,
+        "Bonjour,\n\nWe confirm £48,000.00 for June 2026 experience-analytics "
+        "services, invoice INV-CS-3391, dated 2026-07-14.\n\nMerci,\nLucie\n"
+        "Contentsquare",
+        [],
+    ),
+    # V-STRIPE never replies -> full reminder ladder + non-responsive escalation
+    # V-RXR has no verified contact -> blocked send
+    # V-APEXSTAFF has no GL mapping -> unmapped-vendor escalation
+}

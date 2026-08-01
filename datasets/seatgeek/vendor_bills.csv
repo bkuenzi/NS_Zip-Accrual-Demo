@@ -1,0 +1,6 @@
+bill_id,vendor_id,invoice_number,po_number,amount,currency,bill_date,service_period,scenario
+B-9101,V-AWS,AWS-JUN-2026,PO-2101,487500.00,USD,2026-07-06,2026-06,July invoice clears the AWS accrual
+B-9103,V-STORMFACT,SF-2026-0442,PO-2103,72000.00,GBP,2026-07-11,2026-06,GBP invoice clears the creative accrual next period
+B-9107,V-SNOWFLAKE,SNOW-INV-77120,PO-2107,212400.00,USD,2026-07-09,2026-06,"Vendor invoice ($212,400) exceeds accrual ($185,000) — variance"
+B-9110,V-GOOGLE,GOOG-JUN-A,,2100000.00,USD,2026-06-20,2026-06,Google mid-month invoice; API actual exceeds it (net accrual)
+B-9111,V-META,META-JUN-A,,1650000.00,USD,2026-06-22,2026-06,Meta mid-month invoice; API actual exceeds it (net accrual)

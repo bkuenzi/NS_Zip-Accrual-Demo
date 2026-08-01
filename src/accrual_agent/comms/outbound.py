@@ -116,7 +116,7 @@ class OutboundService:
             source_ref=line.source_ref,
             amount=f"{line.amount:,.2f}",
             currency=line.currency,
-            company_name=self.settings.company_name,
+            company_name=self.settings.effective_company_name,
             mailbox_address=self.settings.mailbox_address,
             initial_sent_date=(self.repo.initial_sent_at(line.line_id) or "")[:10],
             prior_attempts=len(sent_stages),

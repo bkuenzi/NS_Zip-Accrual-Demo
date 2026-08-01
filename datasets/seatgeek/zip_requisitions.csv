@@ -1,0 +1,4 @@
+requisition_id,vendor_id,vendor_name,business_unit,committed_amount,currency,approved_date,service_start,service_end,po_number,gl_account,department,scenario
+ZIP-5001,V-TTD,"The Trade Desk, Inc.",BU-US-MKT,420000.00,USD,2026-06-02,2026-06-01,2026-06-30,,60200,DEP-MKT,"Programmatic committed spend, no PO/bill — Zip gap accrual"
+ZIP-5002,V-IMPACT,impact.com,BU-US-MKT,185000.00,USD,2026-06-05,2026-06-01,2026-06-30,,60400,DEP-MKT,"Affiliate committed spend, no PO/bill — Zip gap accrual"
+ZIP-5003,V-CONTENTSQ,Contentsquare SAS,BU-UK-MKT,48000.00,GBP,2026-06-09,2026-06-01,2026-06-30,,60900,DEP-MKT,UK analytics committed spend (GBP) — Zip gap accrual

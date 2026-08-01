@@ -16,6 +16,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_DIR = Path(os.environ.get("ACCRUAL_CONFIG_DIR", PROJECT_ROOT / "config"))
 
+# Presentation label per dataset profile (used unless ACCRUAL_COMPANY_NAME is set).
+PROFILE_COMPANY_NAMES = {"demo": "YourCo", "mvp": "SeatGeek, Inc."}
+
 
 class Settings(BaseSettings):
     """Environment-driven settings. See .env.example for every knob."""
@@ -26,6 +29,9 @@ class Settings(BaseSettings):
 
     # runtime mode
     mode: Literal["mock", "live"] = Field("mock", alias="ACCRUAL_MODE")
+    # dataset profile (mock only): `demo` = toy walkthrough fixtures,
+    # `mvp` = the standalone SeatGeek dataset under datasets/seatgeek/.
+    profile: Literal["demo", "mvp"] = Field("demo", alias="ACCRUAL_PROFILE")
     outbound_mode: Literal["dry_run", "sandbox", "live"] = Field(
         "dry_run", alias="ACCRUAL_OUTBOUND_MODE"
     )
@@ -108,6 +114,22 @@ class Settings(BaseSettings):
     def effective_outbound_mode(self) -> str:
         # Mock mode can never touch a real mailbox.
         return "dry_run" if self.mode == "mock" else self.outbound_mode
+
+    @property
+    def config_dir(self) -> Path:
+        """Config directory for the active profile (MVP layers over config/)."""
+        if self.mode == "mock" and self.profile == "mvp":
+            return CONFIG_DIR / "seatgeek"
+        return CONFIG_DIR
+
+    @property
+    def effective_company_name(self) -> str:
+        """Company label for reports/emails; profile default unless overridden."""
+        if "ACCRUAL_COMPANY_NAME" in os.environ:
+            return self.company_name
+        if self.mode == "mock":
+            return PROFILE_COMPANY_NAMES.get(self.profile, self.company_name)
+        return self.company_name
 
     @property
     def escalation_channel_list(self) -> list[str]:

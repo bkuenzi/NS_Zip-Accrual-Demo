@@ -47,6 +47,32 @@ matching/clearing that feeds per-vendor trust-ladder accuracy streaks, and
 team-lead escalations. It ends with `output/dashboard_2026-06.html` and a
 checkpoint exception report.
 
+## Two run modes: Demo vs MVP
+
+The agent runs the identical close engine against one of two credential-free
+datasets — a deliberate choice made **at initiation** in both the CLI and the
+UI:
+
+| Mode | Dataset | Company | Config |
+|---|---|---|---|
+| **demo** | seeded toy fixtures (Acme, Beta, Zeta…) | YourCo | `config/` |
+| **mvp** | the standalone **SeatGeek dataset** (`datasets/seatgeek/`) | SeatGeek, Inc. | `config/seatgeek/` |
+
+The MVP dataset is kept **deliberately separate** — `datasets/seatgeek/` is a
+self-contained accounting dataset, and the `mvp` profile is the only bridge to
+it (via dataset-backed adapters). Demo mode is untouched.
+
+```bash
+make demo            # accrual-agent demo --profile demo   (default)
+make mvp             # accrual-agent demo --profile mvp     (SeatGeek)
+accrual-agent demo --profile mvp
+accrual-agent run-cycle          # honors ACCRUAL_PROFILE (demo|mvp)
+```
+
+In the web UI the choice is a **launch screen** — pick *Demo walkthrough* or
+*MVP — SeatGeek dataset* to begin (`?mode=demo|mvp`), switch anytime from the
+header. Regenerate both snapshots with `make export-web`.
+
 ## Web demo UI (Vercel-deployable)
 
 `web/` contains an interactive Next.js demo that replays the scripted close
@@ -62,6 +88,25 @@ uv run accrual-agent export-web        # regenerate web/src/data/demo-data.json
 
 To deploy: import the repo in Vercel and set **Root Directory** to `web`
 (everything else is auto-detected). Details in [`web/README.md`](web/README.md).
+
+## SeatGeek accounting dataset
+
+[`datasets/seatgeek/`](datasets/seatgeek/) is a standalone, robust accounting
+dataset for a **SeatGeek-shaped ticketing marketplace on NetSuite OneWorld**: a
+111-account **NetSuite chart of accounts**, segment dimensions (subsidiaries,
+departments, classes, locations), a 20-vendor master, six months of **balanced**
+FY2026 general-ledger activity, and the procurement subledger (POs, item
+receipts, vendor bills) plus Zip requisitions and ad-platform actuals that drive
+the 2026-06 accrual scenarios. It ships as per-record CSVs and a combined JSON
+bundle.
+
+```bash
+make dataset          # regenerate + validate (trial balance prints, nets to zero)
+```
+
+The data is generated deterministically and validated end to end — every
+journal entry balances, the trial balance nets to zero, and every foreign key
+resolves. See [`datasets/seatgeek/README.md`](datasets/seatgeek/README.md).
 
 ## How it works
 

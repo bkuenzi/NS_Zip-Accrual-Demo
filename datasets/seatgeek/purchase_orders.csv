@@ -1,0 +1,9 @@
+po_number,vendor_id,subsidiary_id,currency,status
+PO-2101,V-AWS,2,USD,open
+PO-2102,V-STRIPE,2,USD,open
+PO-2103,V-STORMFACT,4,GBP,open
+PO-2104,V-IHEART,2,USD,open
+PO-2105,V-APEXSTAFF,2,USD,open
+PO-2106,V-RXR,2,USD,open
+PO-2107,V-SNOWFLAKE,2,USD,open
+PO-2108,V-BSE,2,USD,open
