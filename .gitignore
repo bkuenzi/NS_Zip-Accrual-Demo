@@ -11,3 +11,8 @@ output/
 dist/
 build/
 .coverage
+
+# Database snapshots (gitignore production/large exports, keep small test snapshots)
+snapshots/prod-*.db
+snapshots/*-comms-*.db
+snapshots/*-with-audit-*.db
