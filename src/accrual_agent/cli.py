@@ -542,7 +542,7 @@ def export_db(
 
         console.print(f"  [cyan]Accrual lines:[/cyan] {line_count}")
         console.print(f"  [cyan]Journal entries:[/cyan] {je_count}")
-    except FileNotFoundError as exc:
+    except (FileNotFoundError, sqlite3.Error) as exc:
         console.print(f"[red]Error: {exc}[/red]")
         raise typer.Exit(1) from None
 
@@ -550,8 +550,17 @@ def export_db(
 @app.command("import-db")
 def import_db(
     source: str = typer.Argument(..., help="Path to the database file to import"),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        help="Skip the overwrite confirmation prompt",
+    ),
 ):
-    """Import a standalone database snapshot into the runtime."""
+    """Import a standalone database snapshot into the runtime.
+
+    This overwrites the runtime database. The existing file, if any, is
+    backed up to '<db_path>.bak' first.
+    """
     from .register.db_export import import_database
 
     settings = get_settings()
@@ -561,6 +570,15 @@ def import_db(
     if not source_path.exists():
         console.print(f"[red]Error: Source database not found: {source_path}[/red]")
         raise typer.Exit(1)
+
+    dest_path = Path(settings.db_path)
+    if not force and dest_path.exists():
+        confirmed = typer.confirm(
+            f"This will overwrite the runtime database at {dest_path}. Continue?"
+        )
+        if not confirmed:
+            console.print("[yellow]Import cancelled.[/yellow]")
+            raise typer.Exit(0)
 
     try:
         dest = import_database(source_path, settings)
@@ -577,7 +595,7 @@ def import_db(
         console.print(f"  [cyan]Accrual lines:[/cyan] {line_count}")
         if periods:
             console.print(f"  [cyan]Periods:[/cyan] {', '.join(periods)}")
-    except Exception as exc:
+    except (FileNotFoundError, sqlite3.Error) as exc:
         console.print(f"[red]Error: {exc}[/red]")
         raise typer.Exit(1) from None
 

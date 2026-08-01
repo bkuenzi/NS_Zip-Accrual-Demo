@@ -7,11 +7,15 @@ trails, communication logs, and journal entries.
 
 from __future__ import annotations
 
+import logging
 import shutil
 import sqlite3
 from pathlib import Path
 
 from ..config import Settings
+from .repository import Repository
+
+logger = logging.getLogger(__name__)
 
 
 def export_database(
@@ -54,14 +58,20 @@ def export_database(
 def import_database(
     source_path: Path,
     settings: Settings,
+    *,
+    backup: bool = True,
 ) -> Path:
     """Import a standalone database into the runtime.
 
-    Useful for restoring test data or loading an exported snapshot.
+    Useful for restoring test data or loading an exported snapshot. This
+    overwrites the runtime database, so by default the existing file (if any)
+    is preserved alongside it as a `.bak` copy.
 
     Args:
         source_path: Path to the standalone .db file
         settings: Runtime settings where to import to
+        backup: If the destination already exists, copy it to `<dest>.bak`
+            before overwriting (default True)
 
     Returns:
         Path to the destination database
@@ -71,6 +81,11 @@ def import_database(
 
     dest_db = Path(settings.db_path)
     dest_db.parent.mkdir(parents=True, exist_ok=True)
+
+    if backup and dest_db.exists():
+        backup_path = dest_db.with_suffix(dest_db.suffix + ".bak")
+        shutil.copy2(dest_db, backup_path)
+        logger.info("Backed up existing runtime database to %s", backup_path)
 
     shutil.copy2(source_path, dest_db)
     return dest_db.resolve()
@@ -108,8 +123,8 @@ def list_database_snapshots(snapshots_dir: Path) -> list[tuple[str, Path, dict]]
                 "periods": periods,
             }
             snapshots.append((db_file.stem, db_file, metadata))
-        except sqlite3.Error:
-            pass
+        except sqlite3.Error as exc:
+            logger.warning("Skipping unreadable snapshot %s: %s", db_file, exc)
 
     return sorted(snapshots, key=lambda x: x[1].stat().st_mtime, reverse=True)
 
@@ -135,23 +150,29 @@ def _filter_database_by_period(
         """
     )
 
-    if not include_audit:
+    if include_audit:
+        # Drop audit rows orphaned by the period filter (their line no longer exists).
         cursor.execute(
             """
             DELETE FROM audit_log
             WHERE line_id NOT IN (SELECT line_id FROM accrual_lines)
             """
         )
+    else:
+        cursor.execute("DELETE FROM audit_log")
 
-    if not include_comms:
+    if include_comms:
         cursor.execute(
             """
             DELETE FROM comm_log
             WHERE line_id NOT IN (SELECT line_id FROM accrual_lines)
             """
         )
+    else:
+        cursor.execute("DELETE FROM comm_log")
 
     conn.commit()
+    cursor.execute("VACUUM")
     conn.close()
 
 
@@ -177,38 +198,30 @@ def _clean_unused_tables(
             pass
 
     conn.commit()
+    cursor.execute("VACUUM")
     conn.close()
 
 
 def create_test_database(
-    settings: Settings,
+    db_path: Path,
     snapshot_path: Path | None = None,
 ) -> Path:
     """Create an isolated test database.
 
     Args:
-        settings: Runtime settings
+        db_path: Where to create the test database
         snapshot_path: Optional existing database to copy; if None, creates blank
 
     Returns:
         Path to the test database
     """
-    test_db = Path(settings.db_path).parent / "test_accruals.db"
+    db_path = Path(db_path)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
 
     if snapshot_path and snapshot_path.exists():
-        shutil.copy2(snapshot_path, test_db)
+        shutil.copy2(snapshot_path, db_path)
     else:
-        # Create blank database with schema
-        conn = sqlite3.connect(test_db)
-        cursor = conn.cursor()
+        # Repository() creates the schema (CREATE TABLE IF NOT EXISTS) and closes cleanly.
+        Repository(db_path).conn.close()
 
-        from .repository import SCHEMA
-
-        for statement in SCHEMA.split(";"):
-            if statement.strip():
-                cursor.execute(statement)
-
-        conn.commit()
-        conn.close()
-
-    return test_db.resolve()
+    return db_path.resolve()

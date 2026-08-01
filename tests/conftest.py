@@ -1,15 +1,14 @@
 from __future__ import annotations
 
 import datetime as dt
-import shutil
-import sqlite3
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import pytest
 
 from accrual_agent.config import Settings
-from accrual_agent.register.repository import SCHEMA, Repository
+from accrual_agent.register.db_export import create_test_database
+from accrual_agent.register.repository import Repository
 from accrual_agent.runtime import Runtime
 
 
@@ -59,38 +58,17 @@ def temp_db_dir():
 @pytest.fixture
 def blank_test_db(temp_db_dir: Path) -> Path:
     """Create a blank test database with schema."""
-    db_path = temp_db_dir / "test.db"
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    for statement in SCHEMA.split(";"):
-        if statement.strip():
-            cursor.execute(statement)
-
-    conn.commit()
-    conn.close()
-    return db_path
+    return create_test_database(temp_db_dir / "test.db")
 
 
 @pytest.fixture
-def test_db_with_snapshot(temp_db_dir: Path) -> Path:
-    """Create an isolated test database (blank by default).
+def test_db_with_snapshot(temp_db_dir: Path):
+    """Factory fixture: create an isolated test database from an optional snapshot."""
 
-    Can be called with a snapshot_path parameter to load from existing DB.
-    """
-    db_path = temp_db_dir / "test_accruals.db"
+    def build(snapshot_path: Path | None = None) -> Path:
+        return create_test_database(temp_db_dir / "test_accruals.db", snapshot_path)
 
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    for statement in SCHEMA.split(";"):
-        if statement.strip():
-            cursor.execute(statement)
-
-    conn.commit()
-    conn.close()
-
-    return db_path
+    return build
 
 
 @pytest.fixture
@@ -109,19 +87,9 @@ class IsolatedDatabaseContext:
 
     def __enter__(self) -> Path:
         self.tmpdir = TemporaryDirectory()
-        self.db_path = Path(self.tmpdir.name) / "test.db"
-
-        if self.snapshot_path and self.snapshot_path.exists():
-            shutil.copy2(self.snapshot_path, self.db_path)
-        else:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            for statement in SCHEMA.split(";"):
-                if statement.strip():
-                    cursor.execute(statement)
-            conn.commit()
-            conn.close()
-
+        self.db_path = create_test_database(
+            Path(self.tmpdir.name) / "test.db", self.snapshot_path
+        )
         return self.db_path
 
     def __exit__(self, *args):

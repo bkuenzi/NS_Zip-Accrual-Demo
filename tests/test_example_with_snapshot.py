@@ -3,61 +3,13 @@
 This demonstrates how to use the exported accounting data for testing.
 """
 
-import shutil
-import sqlite3
 from pathlib import Path
-from tempfile import TemporaryDirectory
 
 import pytest
 
-from accrual_agent.config import Settings
 from accrual_agent.models import AccrualStatus
-from accrual_agent.register.repository import SCHEMA
 from accrual_agent.runtime import Runtime
-
-
-class IsolatedDatabaseContext:
-    """Context manager for isolated test database (copy of conftest version)."""
-
-    def __init__(self, snapshot_path: Path | None = None):
-        self.snapshot_path = snapshot_path
-        self.tmpdir: TemporaryDirectory | None = None
-        self.db_path: Path | None = None
-
-    def __enter__(self) -> Path:
-        self.tmpdir = TemporaryDirectory()
-        self.db_path = Path(self.tmpdir.name) / "test.db"
-
-        if self.snapshot_path and self.snapshot_path.exists():
-            shutil.copy2(self.snapshot_path, self.db_path)
-        else:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            for statement in SCHEMA.split(";"):
-                if statement.strip():
-                    cursor.execute(statement)
-            conn.commit()
-            conn.close()
-
-        return self.db_path
-
-    def __exit__(self, *args):
-        if self.tmpdir:
-            self.tmpdir.cleanup()
-
-
-def make_test_settings(db_path: Path) -> Settings:
-    """Create Settings for a test database (copy of conftest version)."""
-    base = Settings(_env_file=None)
-    return base.model_copy(
-        update={
-            "mode": "mock",
-            "outbound_mode": "dry_run",
-            "db_path": str(db_path),
-            "output_dir": str(db_path.parent / "output"),
-            "artifacts_dir": str(db_path.parent / "artifacts"),
-        }
-    )
+from conftest import IsolatedDatabaseContext, make_test_settings
 
 
 @pytest.fixture

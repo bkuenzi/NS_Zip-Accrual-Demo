@@ -43,6 +43,10 @@ uv run accrual-agent import-db snapshots/my-snapshot.db
 
 This replaces `data/accruals.db` with the snapshot. Your runtime then works with that data.
 
+You'll be asked to confirm before an existing runtime database is overwritten
+(pass `--force` to skip the prompt, e.g. in CI). The previous file is backed
+up alongside it as `data/accruals.db.bak` before being replaced.
+
 ---
 
 ## Common Workflows
@@ -83,31 +87,36 @@ uv run accrual-agent status  # inspect it safely
 For a unit test that needs specific accrual state:
 
 ```python
-import pytest
+import subprocess
 from pathlib import Path
+
+import pytest
+from accrual_agent.config import Settings
 from accrual_agent.register.db_export import create_test_database
 from accrual_agent.runtime import Runtime
-from accrual_agent.config import Settings
 
 
 @pytest.fixture
 def test_runtime_with_demo_data(tmp_path):
     """Create an isolated Runtime with demo data."""
-    # Copy the demo snapshot into a temp directory
     demo_snapshot = Path("snapshots/demo-2026-06.db")
     if not demo_snapshot.exists():
         # Generate it if it doesn't exist
-        os.system("make demo && uv run accrual-agent export-db --out snapshots/demo-2026-06.db --period 2026-06")
-    
+        subprocess.run(["make", "demo"], check=True)
+        subprocess.run(
+            [
+                "uv", "run", "accrual-agent", "export-db",
+                "--out", str(demo_snapshot), "--period", "2026-06",
+            ],
+            check=True,
+        )
+
     test_db = create_test_database(
         db_path=tmp_path / "test.db",
         snapshot_path=demo_snapshot,
     )
-    
-    # Create a Settings object pointing to the test database
-    settings = Settings()
-    settings.db_path = str(test_db)
-    
+
+    settings = Settings(_env_file=None).model_copy(update={"db_path": str(test_db)})
     return Runtime(settings)
 
 
